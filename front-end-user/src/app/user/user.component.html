@@ -7,7 +7,7 @@
       </div>
     </div>
   </aside>
-  <div class="lg:w-4/5 bg-gray-300 py-2 overflow-hidden overflow-y-scroll px-2">
+  <div class="lg:w-4/5 bg-gray-300 py-2 overflow-hidden overflow-y-scroll">
 
     <div class="flex flex-wrap items-center justify-between mx-4 overflow-hidden">
       <div class="text-gray-600 text-2xl cursor-pointer">
@@ -19,42 +19,21 @@
     </div>
     <div class="px-5 py-4 m-6">
       <app-breadcrumbs></app-breadcrumbs>
-<!--      <div class="py-3">-->
-<!--        <div class="flex justify-between items-center mb-3 px-2">-->
-<!--          <div class="current-exam lg:text-2xl font-semibold text-gray-800">-->
-<!--            <h2 class=""><i class="fa fa-bookmark text-blue-600"></i> Bài thi đang diễn ra <span>(7)</span></h2>-->
-<!--          </div>-->
-<!--          <div class="flex text-sm flex-wrap">-->
-<!--            <div-->
-<!--              class="bg-gray-400 text-gray-600 rounded mr-1 px-3 py-1 hover:bg-gray-500 hover:text-gray-700 cursor-pointer">-->
-<!--              <i class="fa fa-chevron-left"></i>-->
-<!--            </div>-->
-<!--            <div-->
-<!--              class="bg-gray-400 text-gray-600 rounded px-3 py-1 hover:bg-gray-500 hover:text-gray-700 cursor-pointer">-->
-<!--              <i class="fa fa-chevron-right"></i>-->
-<!--            </div>-->
-
-<!--          </div>-->
-<!--        </div>-->
-<!--        <div class="list-current-exam">-->
-<!--          <app-list-current-exam></app-list-current-exam>-->
-<!--        </div>-->
-
-<!--      </div>-->
-
-      <app-list-current-exam
-        listTitle="Bài thi đang diễn ra"
-        >
-
+      <!--  Start List    -->
+      <app-list-current-exam [listTitle]="listCurrent.listTitle" [listIcon]="listCurrent.listIcon">
       </app-list-current-exam>
-      <app-list-coming-exam
-        listTitle="Bài thi sắp tới"
-        listIcon="fa fa-bookmark text-blue-600"
-      ></app-list-coming-exam>
-      <app-list-complete-exam listTitle="Bài thi hoàn thành">
+      <!--End List-->
 
+      <!--  Start List    -->
+      <app-list-coming-exam [listTitle]="listComing.listTitle" [listIcon]="listComing.listIcon">
+      </app-list-coming-exam>
+      <!--End List-->
+      <!--  Start List    -->
+      <app-list-complete-exam [listTitle]="listComplete.listTitle" [listIcon]="listComplete.listIcon">
       </app-list-complete-exam>
-    </div>
+      <!--End List-->
 
+    </div>
+    <app-footer></app-footer>
   </div>
 </div>
