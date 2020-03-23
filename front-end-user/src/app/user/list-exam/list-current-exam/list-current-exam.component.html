@@ -1,0 +1,24 @@
+<div class="py-3">
+  <div class="flex justify-between items-center mb-3 px-2">
+    <div class="current-exam lg:text-2xl font-semibold text-gray-800">
+      <h2 class="select-none"><i [ngClass]="listIcon"></i> {{listTitle}} <span>(7)</span></h2>
+    </div>
+    <div class="flex text-sm flex-wrap">
+      <div
+        class="bg-gray-400 text-gray-600 rounded mr-1 px-3 py-1 hover:bg-gray-500 hover:text-gray-700 cursor-pointer">
+        <i class="fa fa-chevron-left"></i>
+      </div>
+      <div
+        class="bg-gray-400 text-gray-600 rounded px-3 py-1 hover:bg-gray-500 hover:text-gray-700 cursor-pointer">
+        <i class="fa fa-chevron-right"></i>
+      </div>
+
+    </div>
+  </div>
+  <div class="list-current-exam flex">
+    <app-exam-card></app-exam-card>
+    <app-exam-card></app-exam-card>
+    <app-exam-card></app-exam-card>
+  </div>
+
+</div>
