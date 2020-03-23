@@ -1,7 +1,10 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {Routes, RouterModule} from '@angular/router';
 import {WelcomeComponent} from './welcome/welcome.component';
 import {LoginComponent} from './login/login.component';
+import {PageNotFoundComponent} from './shared/page-not-found/page-not-found.component';
+import {UserComponent} from './user/user.component';
+import {DashboardComponent} from './user/dashboard/dashboard.component';
 
 
 const routes: Routes = [
@@ -16,8 +19,20 @@ const routes: Routes = [
     component: WelcomeComponent,
   },
   {
-    path: 'users/login',
+    path: 'login',
     component: LoginComponent
+  },
+  {
+    path: 'user',
+    component: UserComponent,
+    children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
+      { path: 'dashboard', component: DashboardComponent}
+    ]
+  },
+  {
+    path: '**',
+    component: PageNotFoundComponent
   }
 ];
 
@@ -25,4 +40,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

@@ -6,23 +6,24 @@ import { AppComponent } from './app.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { LoginComponent } from './login/login.component';
 import {HttpClientModule} from '@angular/common/http';
-import {SuccessAlertComponent} from './success-alert/success-alert.component';
-import {ErrorAlertComponent} from './error-alert/error-alert.component';
-import {DashboardComponent} from './user-dashboard/dashboard/dashboard.component';
+import {SharedModule} from './shared/shared.module';
+import {UserModule} from './user/user.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
     AppComponent,
     WelcomeComponent,
     LoginComponent,
-    SuccessAlertComponent,
-    ErrorAlertComponent,
-    DashboardComponent
+
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    SharedModule,
+    UserModule
   ],
   providers: [],
   bootstrap: [AppComponent]
