@@ -8,11 +8,12 @@ import { ListCurrentExamComponent } from './list-exam/list-current-exam/list-cur
 import { ListComingExamComponent } from './list-exam/list-coming-exam/list-coming-exam.component';
 import { ListCompleteExamComponent } from './list-exam/list-complete-exam/list-complete-exam.component';
 import { FooterComponent } from './footer/footer.component';
+import { LeftSideComponent } from './left-side/left-side.component';
 
 
 
 @NgModule({
-  declarations: [UserComponent, DashboardComponent, ExamCardComponent, ListCurrentExamComponent, ListComingExamComponent, ListCompleteExamComponent, FooterComponent],
+  declarations: [UserComponent, DashboardComponent, ExamCardComponent, ListCurrentExamComponent, ListComingExamComponent, ListCompleteExamComponent, FooterComponent, LeftSideComponent],
   imports: [
     CommonModule,
     SharedModule
