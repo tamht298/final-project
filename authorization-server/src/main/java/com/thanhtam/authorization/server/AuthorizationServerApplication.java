@@ -1,13 +1,13 @@
-package com.devzone.backendonlineexam;
+package com.thanhtam.authorization.server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BackendOnlineExamApplication {
+public class AuthorizationServerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(BackendOnlineExamApplication.class, args);
+		SpringApplication.run(AuthorizationServerApplication.class, args);
 	}
 
 }

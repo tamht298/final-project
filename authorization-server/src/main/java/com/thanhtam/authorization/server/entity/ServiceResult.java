@@ -1,8 +1,9 @@
-package com.devzone.backendonlineexam.entity;
+package com.thanhtam.authorization.server.entity;
 
-import com.devzone.backendonlineexam.ultilities.Status;
+import com.thanhtam.authorization.server.ultilities.Status;
 
 public class ServiceResult {
+
     private Status status = Status.SUCCESS;
     private String message;
     private Object data;
