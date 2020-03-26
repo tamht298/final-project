@@ -1,6 +1,7 @@
 package com.thanhtam.backend.entity;
 
 
+import com.thanhtam.backend.ultilities.ERole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,7 @@ public class Role implements Serializable {
     @Column(name = "id")
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name="name")
-    private String name;
+    private ERole name;
 }

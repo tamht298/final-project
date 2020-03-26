@@ -1,28 +1,34 @@
 package com.thanhtam.backend.controller;
 
-import com.thanhtam.backend.config.TokenProvider;
-import com.thanhtam.backend.entity.AuthToken;
+import com.thanhtam.backend.config.JwtUtils;
+
 import com.thanhtam.backend.entity.LoginUser;
-import com.thanhtam.backend.entity.User;
+import com.thanhtam.backend.entity.ServiceResult;
+import com.thanhtam.backend.payload.response.JwtResponse;
+import com.thanhtam.backend.service.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/token")
+@RequestMapping("/api/auth")
 public class AuthenticationController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private TokenProvider jwtTokenUtil;
+    JwtUtils jwtUtils;
 
 
 //    @PostMapping(value="/generate-token")
@@ -39,18 +45,30 @@ public class AuthenticationController {
 //        return ResponseEntity.ok(new AuthToken(token));
 //    }
 
-        @PostMapping(value="/generate-token")
-    public ResponseEntity register(@RequestBody LoginUser loginUser) throws AuthenticationException {
+    @PostMapping("/signin")
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginUser loginUser) {
 
-        final Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginUser.getUsername(),
-                        loginUser.getPassword()
-                )
-        );
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginUser.getUsername(), loginUser.getPassword()));
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        final String token = jwtTokenUtil.generateToken(authentication);
-        return ResponseEntity.ok(new AuthToken(token));
+        String jwt = jwtUtils.generateJwtToken(authentication);
+
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(item -> item.getAuthority())
+                .collect(Collectors.toList());
+
+//        return ResponseEntity.ok(new JwtResponse(jwt,
+//                userDetails.getId(),
+//                userDetails.getUsername(),
+//                userDetails.getEmail(),
+//                roles));
+        return ResponseEntity.ok(new JwtResponse(jwt,
+                userDetails.getId(),
+                userDetails.getUsername(),
+                userDetails.getEmail(),
+                roles));
     }
 
 }
