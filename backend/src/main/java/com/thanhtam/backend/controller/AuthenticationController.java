@@ -30,21 +30,6 @@ public class AuthenticationController {
     @Autowired
     JwtUtils jwtUtils;
 
-
-//    @PostMapping(value="/generate-token")
-//    public ResponseEntity register(@RequestBody LoginUser loginUser) throws AuthenticationException {
-//
-//        final Authentication authentication = authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(
-//                        loginUser.getUsername(),
-//                        loginUser.getPassword()
-//                )
-//        );
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//        final String token = jwtTokenUtil.generateToken(authentication);
-//        return ResponseEntity.ok(new AuthToken(token));
-//    }
-
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginUser loginUser) {
 
@@ -59,11 +44,6 @@ public class AuthenticationController {
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
-//        return ResponseEntity.ok(new JwtResponse(jwt,
-//                userDetails.getId(),
-//                userDetails.getUsername(),
-//                userDetails.getEmail(),
-//                roles));
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),

@@ -23,7 +23,5 @@ public class Profile {
     @Column(name="last_name")
     private String lastName;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private Profile profile;
+
 }

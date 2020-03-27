@@ -14,6 +14,14 @@
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.0.1.RELEASE</version>
 	</parent>
+	<properties>
+		<java.version>1.8</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<jjwt.version>0.9.0</jjwt.version>
+		<swagger.version>2.9.2</swagger.version>
+		<lombok.version>1.18.12</lombok.version>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -32,11 +40,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt</artifactId>
-			<version>0.9.0</version>
+			<version>${jjwt.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
@@ -45,9 +54,21 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.12</version>
+			<version>${lombok.version}</version>
+		</dependency>
+		<!--Swagger UI-->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${swagger.version}</version>
 		</dependency>
 
+		<!--Swagger 2-->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -63,9 +84,7 @@
 
 	</dependencies>
 
-	<properties>
-		<java.version>1.8</java.version>
-	</properties>
+
 
 	<build>
 		<plugins>

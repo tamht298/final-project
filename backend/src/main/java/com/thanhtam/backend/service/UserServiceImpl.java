@@ -28,21 +28,20 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUsername(username);
     }
 
-//    @Override
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        User user = userRepository.findByUsername(username);
-//        if(user == null){
-//            throw new UsernameNotFoundException("Invalid username or password.");
-//        }
-//
-//        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), getAuthority(user));
-//    }
-//
-//    private Set getAuthority(User user) {
-//        Set authorities = new HashSet<>();
-//        user.getRoles().forEach(role -> {
-//            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
-//        });
-//        return authorities;
-//    }
+    @Override
+    public Boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    @Override
+    public Boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    public User createUser(User user) {
+
+        return userRepository.save(user);
+    }
+
 }
