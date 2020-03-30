@@ -3,17 +3,22 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { WelcomeComponent } from './welcome/welcome.component';
+import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {SharedModule} from './shared/shared.module';
 import {UserModule} from './user/user.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {FormsModule} from '@angular/forms';
+import {AuthService} from './_services/auth.service';
+import {TokenStorageService} from './_services/token-storage.service';
+import {AuthGuard} from './_guards/auth-guard.guard';
+import {ErrorInterceptor} from './_helpers/error.interceptor';
 
 @NgModule({
   declarations: [
     AppComponent,
-    WelcomeComponent,
+    HomeComponent,
     LoginComponent,
 
   ],
@@ -22,10 +27,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    FormsModule,
     SharedModule,
     UserModule
   ],
-  providers: [],
+  providers: [AuthGuard, AuthService, TokenStorageService,
+    // { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

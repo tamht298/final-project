@@ -1,10 +1,11 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
-import {WelcomeComponent} from './welcome/welcome.component';
+import {HomeComponent} from './home/home.component';
 import {LoginComponent} from './login/login.component';
 import {PageNotFoundComponent} from './shared/page-not-found/page-not-found.component';
 import {UserComponent} from './user/user.component';
 import {DashboardComponent} from './user/dashboard/dashboard.component';
+import {AuthGuard} from './_guards/auth-guard.guard';
 
 
 const routes: Routes = [
@@ -16,7 +17,7 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    component: WelcomeComponent,
+    component: HomeComponent,
   },
   {
     path: 'login',
@@ -25,9 +26,17 @@ const routes: Routes = [
   {
     path: 'user',
     component: UserComponent,
+    canActivate: [AuthGuard],
     children: [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
-      { path: 'dashboard', component: DashboardComponent}
+      {
+        path: '',
+        canActivateChild: [AuthGuard],
+        children: [
+          {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
+          {path: 'dashboard', component: DashboardComponent}
+        ]
+      }
+
     ]
   },
   {

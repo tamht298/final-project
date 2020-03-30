@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ListExam} from '../models/list-exam';
+import {TokenStorageService} from '../_services/token-storage.service';
 
 @Component({
   selector: 'app-user',
@@ -22,15 +23,17 @@ export class UserComponent implements OnInit {
     listTitle: 'Bài thi hoàn thành'
   };
 
-  constructor() {
+  currentUser;
+  constructor(private tokenStorageService: TokenStorageService) {
   }
 
   ngOnInit(): void {
-
+    this.currentUser = this.tokenStorageService.getUser();
+    console.log(this.currentUser);
   }
 
-  initList() {
-
+  signOut() {
+    this.tokenStorageService.signOut();
+    window.location.reload();
   }
-
 }

@@ -14,16 +14,16 @@
               <img class="h-6 lg:h-8 xl:h-9" src="../../assets/images/logo.svg" alt="Tailwind UI"/>
             </div>
             <div>
-              <a [routerLink]="['../login']"
+              <a [routerLink]="[defaultUrl]"
                  class="text-sm font-semibold text-white focus:outline-none focus:underline">
-                Đăng nhập &rarr;
+                {{!isLoggedIn ? 'Đăng nhập &rarr;' : 'Vào ngay &rarr;'}}
               </a>
             </div>
           </div>
         </div>
         <div class="px-6 md:max-w-3xl md:mx-auto lg:mx-0 lg:max-w-none">
           <p class="text-sm font-semibold text-gray-300 uppercase tracking-wider">
-            Hi, friend!
+            Hi, {{!username ? 'friend' : username}}!
           </p>
           <h1
             class="mt-3 text-3xl leading-9 font-semibold font-display text-white sm:mt-6 sm:text-4xl sm:leading-10 xl:text-5xl xl:leading-none">
@@ -38,11 +38,11 @@
             outcomes.</a>
           </p>
           <div class="mt-6 sm:flex sm:mt-8 xl:mt-12">
-            <a [routerLink]="['../login']"
+            <a [routerLink]="[defaultUrl]"
                class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-transparent text-base leading-6 font-semibold rounded-md text-gray-900 bg-white shadow-sm hover:text-gray-600 focus:outline-none focus:text-gray-600 transition ease-in-out duration-150 xl:text-lg xl:py-4">
               Tìm hiểu thêm
             </a>
-            <a [routerLink]="['../login']"
+            <a [routerLink]="[defaultUrl]"
                class="mt-4 sm:ml-4 sm:mt-0 w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-transparent text-base leading-6 font-semibold rounded-md text-white bg-gray-800 shadow-sm hover:bg-gray-700 focus:outline-none focus:bg-gray-700 transition ease-in-out duration-150 xl:text-lg xl:py-4">
               Khám phá ngay &rarr;
             </a>

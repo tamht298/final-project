@@ -1,5 +1,6 @@
 package com.thanhtam.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,7 @@ public class User implements Serializable {
 
     @Column(name = "username", nullable = false, unique = false)
     private String username;
+    @JsonIgnore
     @Column(name = "password")
     private String password;
 

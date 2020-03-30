@@ -20,6 +20,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Null;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @RestController
@@ -99,6 +100,16 @@ public class UserController {
         roles.add(userRole);
     }
 
-    
+    @GetMapping("/username/{uid}")
+    public ResponseEntity<?> getUser(@PathVariable String uid){
+        Optional<User> user = userService.getUserByUsername(uid);
+        if(!user.isPresent()){
+            return ResponseEntity.ok(new ServiceResult(HttpStatus.NOT_FOUND.value(), "Tên đăng nhâp "+uid+" không tìm thấy!", null)) ;
+        }
+        return ResponseEntity.ok(new ServiceResult(HttpStatus.OK.value(), "Lấy thông tin user " + uid +" thành công!", user)) ;
+    }
+
+
+
 
 }

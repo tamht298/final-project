@@ -1,4 +1,4 @@
-<div class="bg-gray-500 w-screen h-screen flex justify-center items-center">
+<div class="bg-gray-100 w-screen h-screen flex justify-center items-center">
   <!-- modal -->
   <div class="flex fixed max-w-5xl w-5/6 sm:w-4/5 bg-white rounded-sm shadow-2xl">
     <div class="hidden md:block w-6/12 md:w-5/12">
@@ -31,21 +31,57 @@
         </div>
 
         <!-- Form Login -->
-        <form action="">
+        <form *ngIf="!isLoggedIn"
+              name="form"
+              (ngSubmit)="f.form.valid && onSubmit()"
+              #f="ngForm"
+              novalidate>
           <!-- Username input -->
           <div class="form-group md:mx-1 lg:mx-6 w-full sm:w-4/5 md:w-2/3 pb-3">
-            <label for="username" class="text-gray-500 text-sm md:text-xs font-semibold select-none">Tên đăng
-              nhập*</label>
+            <div class="flex flex-row justify-between">
+              <label for="username" class="text-gray-500 text-sm md:text-xs font-semibold select-none">Tên đăng
+                nhập*</label>
+              <div
+                class="alert alert-danger"
+                role="alert"
+                *ngIf="f.submitted && username.invalid"
+              >
+                Ô này không bỏ trống!
+              </div>
+            </div>
+
+
             <input
-              class="appearance-none border rounded-md w-full py-2 px-3 mt-1 text-gray-600 font-semibold bg-gray-200 leading-tight outline-none focus:border-green-500"
-              id="username" type="text" placeholder="Username">
+              class="appearance-none border rounded-md w-full py-2 px-3 my-1 text-gray-600 font-semibold bg-gray-200 leading-tight outline-none focus:border-green-500"
+              id="username" type="text" placeholder="Username" autocomplete="off"
+              name="username"
+              [(ngModel)]="form.username"
+              required
+              #username="ngModel"
+            />
+
           </div>
           <!-- Password input -->
           <div class="form-group md:mx-1 lg:mx-6 w-full sm:w-4/5 md:w-2/3 pb-3 relative">
-            <label for="password" class="text-gray-500 text-sm md:text-xs font-semibold select-none">Mật khẩu*</label>
+            <div class="flex flex-row justify-between">
+              <label for="password" class="text-gray-500 text-sm md:text-xs font-semibold select-none">Mật khẩu*</label>
+              <div
+                class="alert alert-danger"
+                role="alert"
+                *ngIf="f.submitted && password.invalid">
+                <div *ngIf="password.errors.required">Ô này không bỏ trống!</div>
+
+              </div>
+            </div>
             <input
               class="appearance-none border rounded-md w-full py-2 px-3 mt-1 text-gray-600 font-bold bg-gray-200 leading-tight outline-none focus:border-green-500"
-              id="password" type="password" placeholder="**********">
+              id="password" type="password" placeholder="**********"
+              name="password"
+              [(ngModel)]="form.password"
+              required
+
+              #password="ngModel"/>
+
           </div>
           <div class="flex justify-between  lg:flex md:px-1 lg:px-6 w-full sm:w-4/5 md:w-2/3 pb-3 mt-2 mx-2">
             <label
@@ -58,10 +94,26 @@
               class="text-sm md:text-xs text-green-500 hover:text-green-600 focus:underline font-bold mr-4 lg:-mr-6 outline-none select-none"
               href="#">Quên mật khẩu?</a>
           </div>
-          <button type="submit" (click)="onLogin()"
-                  class="bg-blue-500 hover:bg-blue-400 focus:outline-none text-white rounded-md px-1 px-6 py-2 ml-3 lg:ml-8 mb-3 shadow-xl transition duration-500 ease-in-out">
-            Đăng nhập
-          </button>
+          <div class="flex justify-start items-center">
+            <button
+              class="bg-blue-500 hover:bg-blue-400 focus:outline-none text-white rounded-md px-1 px-6 py-2 ml-3 lg:ml-8 mb-3 shadow-xl transition duration-500 ease-in-out">
+              Đăng nhập
+            </button>
+            <ng-template [ngIf]="preLoading">
+              <app-spinner></app-spinner>
+            </ng-template>
+
+          </div>
+
+          <div class="form-group">
+            <div
+              class="alert alert-danger ml-8"
+              role="alert"
+              *ngIf="f.submitted && isLoginFailed"
+            >
+              Đăng nhập thất bại: {{ errorMessage }}
+            </div>
+          </div>
         </form>
         <!-- End Form Login -->
         <div class="mt-3 mb-4 flex justify-start ">
