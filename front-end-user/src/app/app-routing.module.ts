@@ -6,6 +6,7 @@ import {PageNotFoundComponent} from './shared/page-not-found/page-not-found.comp
 import {UserComponent} from './user/user.component';
 import {DashboardComponent} from './user/dashboard/dashboard.component';
 import {AuthGuard} from './_guards/auth-guard.guard';
+import {ProfileComponent} from './user/profile/profile.component';
 
 
 const routes: Routes = [
@@ -33,7 +34,8 @@ const routes: Routes = [
         canActivateChild: [AuthGuard],
         children: [
           {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
-          {path: 'dashboard', component: DashboardComponent}
+          {path: 'dashboard', component: DashboardComponent},
+          {path: 'profile', component: ProfileComponent}
         ]
       }
 

@@ -1,12 +1,11 @@
 package com.thanhtam.backend.controller;
 
 import com.thanhtam.backend.entity.Role;
-import com.thanhtam.backend.entity.ServiceResult;
+import com.thanhtam.backend.dto.ServiceResult;
 import com.thanhtam.backend.entity.User;
 import com.thanhtam.backend.service.RoleService;
 import com.thanhtam.backend.service.UserService;
 import com.thanhtam.backend.ultilities.ERole;
-import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +16,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Null;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 @RestController
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(value = "/api/users")
 public class UserController {
 
@@ -37,6 +36,15 @@ public class UserController {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.roleService = roleService;
+    }
+
+    @GetMapping("/username/{uid}")
+    public ResponseEntity<?> getUser(@PathVariable String uid){
+        Optional<User> user = userService.getUserByUsername(uid);
+        if(!user.isPresent()){
+            return ResponseEntity.ok(new ServiceResult(HttpStatus.NOT_FOUND.value(), "Tên đăng nhâp "+uid+" không tìm thấy!", null)) ;
+        }
+        return ResponseEntity.ok(new ServiceResult(HttpStatus.OK.value(), "Lấy thông tin user " + uid +" thành công!", user)) ;
     }
 
     @GetMapping()
@@ -100,14 +108,7 @@ public class UserController {
         roles.add(userRole);
     }
 
-    @GetMapping("/username/{uid}")
-    public ResponseEntity<?> getUser(@PathVariable String uid){
-        Optional<User> user = userService.getUserByUsername(uid);
-        if(!user.isPresent()){
-            return ResponseEntity.ok(new ServiceResult(HttpStatus.NOT_FOUND.value(), "Tên đăng nhâp "+uid+" không tìm thấy!", null)) ;
-        }
-        return ResponseEntity.ok(new ServiceResult(HttpStatus.OK.value(), "Lấy thông tin user " + uid +" thành công!", user)) ;
-    }
+
 
 
 

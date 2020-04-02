@@ -7,34 +7,24 @@
 <!--      </div>-->
 <!--    </div>-->
 <!--  </aside>-->
-  <app-left-side></app-left-side>
-  <div class="lg:w-4/5 bg-gray-300 py-2 overflow-hidden overflow-y-scroll">
 
-    <div class="flex flex-wrap items-center justify-between mx-4 overflow-hidden">
-      <div class="text-gray-600 text-2xl cursor-pointer">
+  <app-left-side [userProfile]="userProfile" *ngIf="!toggledMenu" [style.display]="'contents'"></app-left-side>
+  <div class="lg:w-full bg-gray-300 py-2 overflow-hidden overflow-y-scroll">
+
+    <div class="flex flex-wrap items-center justify-between mx-4 my-4 overflow-hidden">
+      <div class="text-gray-300 text-xl cursor-pointer bg-blue-700 hover:bg-blue-600 px-2 rounded shadow-2xl" (click)="toggleMenu()">
         <i class="fa fa-bars"></i>
       </div>
-      <div class="text-gray-600 text-2xl cursor-pointer flex items-center" (click)="signOut()">
-        <span class="text-base mr-2">Thoát tài khoản</span>
-        <i class="fa fa-sign-out"></i>
-
+      <div class="group text-gray-600 text-2xl cursor-pointer flex items-center" (click)="signOut()">
+        <span class="text-base"><i class="fa fa-sign-out mr-2 group-hover:mr-0"></i>Thoát</span>
       </div>
     </div>
     <div class="px-5 py-4 m-6">
       <app-breadcrumbs></app-breadcrumbs>
-      <!--  Start List    -->
-      <app-list-current-exam [listTitle]="listCurrent.listTitle" [listIcon]="listCurrent.listIcon">
-      </app-list-current-exam>
-      <!--End List-->
+      <router-outlet>
 
-      <!--  Start List    -->
-      <app-list-coming-exam [listTitle]="listComing.listTitle" [listIcon]="listComing.listIcon">
-      </app-list-coming-exam>
-      <!--End List-->
-      <!--  Start List    -->
-      <app-list-complete-exam [listTitle]="listComplete.listTitle" [listIcon]="listComplete.listIcon">
-      </app-list-complete-exam>
-      <!--End List-->
+      </router-outlet>
+
 
     </div>
     <app-footer></app-footer>

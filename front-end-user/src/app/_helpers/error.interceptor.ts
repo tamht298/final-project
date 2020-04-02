@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpRequest, HttpHandler, HttpEvent, HttpInterceptor} from '@angular/common/http';
+import {HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {TokenStorageService} from '../_services/token-storage.service';
@@ -22,3 +22,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     }));
   }
 }
+
+// export const errorInterceptorProviders = [
+//   {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
+// ];

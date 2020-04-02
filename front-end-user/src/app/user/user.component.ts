@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ListExam} from '../models/list-exam';
 import {TokenStorageService} from '../_services/token-storage.service';
+import {UserService} from '../_services/user.service';
+import {UserProfile} from '../models/user-profile';
 
 @Component({
   selector: 'app-user',
@@ -9,31 +11,29 @@ import {TokenStorageService} from '../_services/token-storage.service';
 })
 export class UserComponent implements OnInit {
 
-  listCurrent: ListExam = {
-    listIcon: 'fa fa-bookmark text-green-600',
-    listTitle: 'Bài thi đang diễn ra',
-
-  };
-  listComing: ListExam = {
-    listIcon: 'fa fa-bookmark text-yellow-600',
-    listTitle: 'Bài thi sắp tới'
-  };
-  listComplete: ListExam = {
-    listIcon: 'fa fa-bookmark text-gray-600',
-    listTitle: 'Bài thi hoàn thành'
-  };
 
   currentUser;
-  constructor(private tokenStorageService: TokenStorageService) {
+  userProfile: UserProfile;
+  toggledMenu = false;
+
+  constructor(private tokenStorageService: TokenStorageService, private  userSerivce: UserService) {
   }
 
   ngOnInit(): void {
     this.currentUser = this.tokenStorageService.getUser();
-    console.log(this.currentUser);
+    this.userSerivce.getUserInfo(this.currentUser.username).subscribe((res) => {
+      this.userProfile = res.data.profile;
+    });
   }
 
   signOut() {
     this.tokenStorageService.signOut();
     window.location.reload();
   }
+
+  toggleMenu() {
+    this.toggledMenu = !this.toggledMenu;
+  }
+
+
 }

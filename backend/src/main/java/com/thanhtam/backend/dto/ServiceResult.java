@@ -1,4 +1,4 @@
-package com.thanhtam.backend.entity;
+package com.thanhtam.backend.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
