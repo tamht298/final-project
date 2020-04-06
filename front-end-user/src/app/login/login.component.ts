@@ -17,6 +17,7 @@ export class LoginComponent implements OnInit {
   roles: string[] = [];
   preLoading = false;
 
+
   constructor(private router: Router, private authService: AuthService, private tokenStorageService: TokenStorageService) {
   }
 
@@ -64,5 +65,6 @@ export class LoginComponent implements OnInit {
       }
     );
   }
+
 
 }

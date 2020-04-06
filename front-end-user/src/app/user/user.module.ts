@@ -15,7 +15,8 @@ import { ProfileCardComponent } from './profile-card/profile-card.component';
 
 
 @NgModule({
-  declarations: [UserComponent, DashboardComponent, ExamCardComponent, ListCurrentExamComponent, ListComingExamComponent, ListCompleteExamComponent, FooterComponent, LeftSideComponent, ProfileComponent, ProfileCardComponent],
+  declarations: [
+    UserComponent, DashboardComponent, ExamCardComponent, ListCurrentExamComponent, ListComingExamComponent, ListCompleteExamComponent, FooterComponent, LeftSideComponent, ProfileComponent, ProfileCardComponent],
   imports: [
     CommonModule,
     SharedModule,

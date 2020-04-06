@@ -1,25 +1,22 @@
 package com.thanhtam.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.thanhtam.backend.audit.Auditable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-//@EntityListeners(AuditingEntityListener.class)
+
 @Table(name = "user")
 public class User implements Serializable {
     @Id
@@ -39,8 +36,8 @@ public class User implements Serializable {
     private boolean enabled = true;
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_at", updatable = false, nullable = false)
-    private Date createdAt;
+    @Column(name = "created_date", updatable = false, nullable = false)
+    private Date createdDate;
 
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
