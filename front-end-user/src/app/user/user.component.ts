@@ -16,12 +16,12 @@ export class UserComponent implements OnInit {
   userProfile: UserProfile;
   toggledMenu = false;
 
-  constructor(private tokenStorageService: TokenStorageService, private  userSerivce: UserService) {
+  constructor(private tokenStorageService: TokenStorageService, private  userService: UserService) {
   }
 
   ngOnInit(): void {
     this.currentUser = this.tokenStorageService.getUser();
-    this.userSerivce.getUserInfo(this.currentUser.username).subscribe((res) => {
+    this.userService.getUserInfo(this.currentUser.username).subscribe((res) => {
       this.userProfile = res.data.profile;
     });
   }

@@ -12,7 +12,9 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(catchError(err => {
-      if (err.status === 401) {
+
+
+      if (err.status === 401 && this.tokenStorageService.isTokenExpired()) {
         // auto logout if 401 response returned from api
         this.tokenStorageService.signOut();
       }
@@ -23,6 +25,3 @@ export class ErrorInterceptor implements HttpInterceptor {
   }
 }
 
-// export const errorInterceptorProviders = [
-//   {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
-// ];

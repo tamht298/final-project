@@ -18,10 +18,12 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     if (this.tokenStorageService.getUser()) {
       return true;
     }
-    this.authService.goLogin();
+    // this.authService.goLogin();
+    this.router.navigate(['login'], { queryParams: { returnUrl: state.url }});
     return false;
   }
 
+  // tslint:disable-next-line:max-line-length
   canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
     return this.canActivate(childRoute, state);
   }

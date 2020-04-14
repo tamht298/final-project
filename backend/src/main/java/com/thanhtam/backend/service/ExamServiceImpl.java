@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ExamServiceImpl implements ExamService {
@@ -25,5 +26,10 @@ public class ExamServiceImpl implements ExamService {
     @Override
     public List<Exam> getAll() {
         return examRepository.findAll();
+    }
+
+    @Override
+    public Optional<Exam> getExamById(Long id) {
+        return examRepository.findById(id);
     }
 }

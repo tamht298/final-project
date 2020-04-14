@@ -32,9 +32,8 @@ public class UserController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
-    public UserController(UserService userService, PasswordEncoder passwordEncoder, RoleService roleService) {
+    public UserController(UserService userService, RoleService roleService) {
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
         this.roleService = roleService;
     }
 

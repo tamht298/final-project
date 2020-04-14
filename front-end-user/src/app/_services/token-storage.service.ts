@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
+import * as jwt_decode from 'jwt-decode';
 
 const TOKEN_KEY = 'auth-token';
 const USER_KEY = 'auth-user';
@@ -10,11 +11,12 @@ const USER_KEY = 'auth-user';
 
 export class TokenStorageService {
 
-  constructor() { }
+  constructor() {
+  }
 
   signOut() {
     window.localStorage.clear();
-    window.location.reload();
+    // window.location.reload();
   }
 
   public saveToken(token: string) {
@@ -33,5 +35,32 @@ export class TokenStorageService {
 
   public getUser() {
     return JSON.parse(localStorage.getItem(USER_KEY));
+  }
+
+  getTokenExpirationDate(token: string): Date {
+    const decoded = jwt_decode(token);
+
+    if (decoded.exp === undefined) {
+      return null;
+    }
+
+    const date = new Date(0);
+    date.setUTCSeconds(decoded.exp);
+    return date;
+  }
+
+  isTokenExpired(token?: string): boolean {
+    if (!token) {
+      token = this.getToken();
+    }
+    if (!token) {
+      return true;
+    }
+
+    const date = this.getTokenExpirationDate(token);
+    if (date === undefined) {
+      return false;
+    }
+    return !(date.valueOf() > new Date().valueOf());
   }
 }

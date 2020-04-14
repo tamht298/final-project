@@ -49,7 +49,7 @@ public class ExamController {
 
     @GetMapping(value="/exams/{id}")
     public ResponseEntity<Exam> getExamById(@PathVariable("id") Long id){
-        Optional<Exam> exam =examService.findById(id);
+        Optional<Exam> exam = examService.getExamById(id);
         if (!exam.isPresent()) {
             return new ResponseEntity<>(exam.get(),
                     HttpStatus.NO_CONTENT);
