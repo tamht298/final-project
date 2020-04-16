@@ -69,37 +69,37 @@ public class UserController {
         }
 
 //        Create new user
-        User newUser = new User(user.getUsername(), passwordEncoder.encode(user.getUsername()), user.getEmail(), user.getProfile());
-
-        Set<Role> reqRoles = user.getRoles();
-        Set<Role> roles = new HashSet<>();
-
-        if (reqRoles == null) {
-            Role userRole = roleService.findByName(ERole.ROLE_STUDENT).orElseThrow(() -> new RuntimeException("Error: Role is not found"));
-            roles.add(userRole);
-        } else {
-            reqRoles.forEach(role -> {
-                switch (role.getName()) {
-                    case ROLE_ADMIN: {
-                        addRoles(ERole.ROLE_ADMIN, roles);
-                    }
-                    case ROLE_MANAGER: {
-                        addRoles(ERole.ROLE_MANAGER, roles);
-                    }
-                    case ROLE_LECTURE: {
-                        addRoles(ERole.ROLE_LECTURE, roles);
-                    }
-                    default:{
-                        addRoles(ERole.ROLE_STUDENT, roles);
-                    }
-                }
-
-            });
-        }
-
-        newUser.setRoles(roles);
-        userService.createUser(newUser);
-        return ResponseEntity.ok(new ServiceResult(HttpStatus.OK.value(), "User created successfully!", newUser));
+//        User newUser = new User(user.getUsername(), passwordEncoder.encode(user.getUsername()), user.getEmail(), user.getProfile());
+//
+//        Set<Role> reqRoles = user.getRoles();
+//        Set<Role> roles = new HashSet<>();
+//
+//        if (reqRoles == null) {
+//            Role userRole = roleService.findByName(ERole.ROLE_STUDENT).orElseThrow(() -> new RuntimeException("Error: Role is not found"));
+//            roles.add(userRole);
+//        } else {
+//            reqRoles.forEach(role -> {
+//                switch (role.getName()) {
+//                    case ROLE_ADMIN: {
+//                        addRoles(ERole.ROLE_ADMIN, roles);
+//                    }
+//                    case ROLE_MANAGER: {
+//                        addRoles(ERole.ROLE_MANAGER, roles);
+//                    }
+//                    case ROLE_LECTURE: {
+//                        addRoles(ERole.ROLE_LECTURE, roles);
+//                    }
+//                    default:{
+//                        addRoles(ERole.ROLE_STUDENT, roles);
+//                    }
+//                }
+//
+//            });
+//        }
+//
+//        newUser.setRoles(roles);
+        userService.createUser(user);
+        return ResponseEntity.ok(new ServiceResult(HttpStatus.OK.value(), "User created successfully!", user));
     }
 
     public void addRoles(ERole roleName, Set<Role> roles) {

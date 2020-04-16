@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -18,14 +19,24 @@ import java.util.stream.Stream;
 @Service
 public class FilesStorageServiceImpl implements FilesStorageService {
     private final Path root = Paths.get("uploads");
+    private final Path excelPath = Paths.get("excel-import-user");
     private static final Logger LOGGER = LoggerFactory.getLogger(FilesStorageServiceImpl.class);
 
     @Override
-    public void init() {
+    public void initRootFolder() {
         try {
             Files.createDirectory(root);
         } catch (IOException e) {
             throw new RuntimeException("Could not initialize folder for upload!");
+        }
+    }
+
+    @Override
+    public void initExcelFolder() {
+        try {
+            Files.createDirectory(excelPath);
+        } catch (IOException e) {
+            throw new RuntimeException("Could not initialize folder for excel import!");
         }
     }
 
@@ -38,9 +49,20 @@ public class FilesStorageServiceImpl implements FilesStorageService {
     }
 
     @Override
-    public void save(MultipartFile file) {
+    public boolean existExcelFolder() {
+        if (Files.notExists(excelPath)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void save(MultipartFile file, String filePath) {
+        Path uploadRoot = Paths.get(filePath);
         try {
-            Files.copy(file.getInputStream(), this.root.resolve(new Date().getTime() + "-" + file.getOriginalFilename()));
+            String fileName = new Date().getTime() + "-" + file.getOriginalFilename();
+            Files.copy(file.getInputStream(), uploadRoot.resolve(file.getOriginalFilename()));
+
         } catch (Exception e) {
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
         }
@@ -62,10 +84,11 @@ public class FilesStorageServiceImpl implements FilesStorageService {
         }
     }
 
-//    @Override
-//    public void deleteAll() {
-//        FileSystemUtils.deleteRecursively(root.toFile());
-//    }
+    @Override
+    public void deleteAllUserExcel(String fileName) throws IOException {
+//        FileSystemUtils.deleteRecursively(excelPath.toFile());
+        Files.delete(Paths.get(excelPath + "\\" + fileName));
+    }
 
     @Override
     public Stream<Path> loadAll() {

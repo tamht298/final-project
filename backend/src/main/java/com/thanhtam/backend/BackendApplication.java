@@ -14,22 +14,27 @@ import javax.annotation.Resource;
 
 @SpringBootApplication
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
-public class BackendApplication implements  CommandLineRunner{
+public class BackendApplication implements CommandLineRunner {
 
-	@Resource
-	FilesStorageService storageService;
-	@Bean
-	public AuditorAware<User> auditorAware() {
-		return new SpringSecurityAuditorAware();
-	}
-	public static void main(String[] args) {
-		SpringApplication.run(BackendApplication.class, args);
-	}
+    @Resource
+    FilesStorageService storageService;
 
-	@Override
-	public void run(String... args) throws Exception {
-		if(storageService.existRootFolder()==false){
-			storageService.init();
+    @Bean
+    public AuditorAware<User> auditorAware() {
+        return new SpringSecurityAuditorAware();
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(BackendApplication.class, args);
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        if (storageService.existRootFolder() == false) {
+            storageService.initRootFolder();
+        }
+        if (storageService.existExcelFolder() == false){
+        	storageService.initExcelFolder();
 		}
-	}
+    }
 }

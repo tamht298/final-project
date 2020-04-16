@@ -23,13 +23,13 @@ public class User implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "username", nullable = false, unique = false)
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
     @JsonIgnore
     @Column(name = "password")
     private String password;
 
-    @Column(name = "email", unique = false)
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
     @Column(name = "enabled")
     private boolean enabled = true;

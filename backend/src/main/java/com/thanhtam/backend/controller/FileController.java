@@ -3,6 +3,8 @@ package com.thanhtam.backend.controller;
 import com.thanhtam.backend.dto.ServiceResult;
 import com.thanhtam.backend.entity.FileInfo;
 import com.thanhtam.backend.service.FilesStorageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -17,8 +19,9 @@ import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
-@RequestMapping(value = "/api")
 public class FileController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileController.class);
     private FilesStorageService filesStorageService;
 
     @Autowired
@@ -29,12 +32,14 @@ public class FileController {
     public ResponseEntity<ServiceResult> uploadFile(@RequestParam("file") MultipartFile file) {
         String message = "";
         try {
-            filesStorageService.save(file);
+            filesStorageService.save(file, "uploads");
+
 
             message = "Uploaded the file successfully: " + file.getOriginalFilename();
             return ResponseEntity.ok().body(new ServiceResult(HttpStatus.OK.value(), message, file.getContentType()));
         } catch (Exception e) {
             message = "Could not upload the file: " + file.getOriginalFilename() + "!";
+            LOGGER.error(e.getMessage());
             return ResponseEntity.badRequest().body(new ServiceResult(HttpStatus.EXPECTATION_FAILED.value(), message, null));
         }
     }
