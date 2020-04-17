@@ -57,6 +57,8 @@ public class Exam extends Auditable<Long> implements Serializable {
     )
     private List<Question> questionList;
 
-
+    @ManyToOne()
+    @JoinColumn(name = "course_id")
+    private Course course;
 
 }

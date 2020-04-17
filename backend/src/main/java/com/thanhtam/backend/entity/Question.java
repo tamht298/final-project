@@ -43,7 +43,4 @@ public class Question extends Auditable<Long> implements Serializable {
     @JoinColumn(name="course_id")
     private Course course;
 
-
-
-
 }

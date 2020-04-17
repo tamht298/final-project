@@ -28,27 +28,28 @@ public class ExamController {
     }
 
     @GetMapping(value = "/exams")
-    public ResponseEntity<List<Exam>> getAll(){
+    public ResponseEntity<List<Exam>> getAll() {
         List<Exam> exams = examService.getAll();
         if (exams.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(exams, HttpStatus.OK);
     }
+
     @PostMapping(value = "/exams")
     public ResponseEntity<?> createExam(@Valid @RequestBody Exam exam) {
-        try{
+        try {
             examService.createExam(exam);
             logger.info(String.valueOf(exam));
-            return ResponseEntity.ok(new ServiceResult( HttpStatus.OK.value(), "created exam succesfully!", exam));
+            return ResponseEntity.ok(new ServiceResult(HttpStatus.OK.value(), "created exam successfully!", exam));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
         }
 
     }
 
-    @GetMapping(value="/exams/{id}")
-    public ResponseEntity<Exam> getExamById(@PathVariable("id") Long id){
+    @GetMapping(value = "/exams/{id}")
+    public ResponseEntity<Exam> getExamById(@PathVariable("id") Long id) {
         Optional<Exam> exam = examService.getExamById(id);
         if (!exam.isPresent()) {
             return new ResponseEntity<>(exam.get(),

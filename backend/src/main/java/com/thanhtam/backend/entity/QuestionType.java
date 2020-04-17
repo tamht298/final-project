@@ -1,5 +1,6 @@
 package com.thanhtam.backend.entity;
 
+import com.thanhtam.backend.ultilities.EQTypeCode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,9 +19,12 @@ public class QuestionType implements Serializable {
     @Column(name="id")
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type_code")
+    private EQTypeCode typeCode;
 
-    @Column(name="description")
+    @Column(name = "description")
     private String description;
+
+
 }
