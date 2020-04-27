@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router, CanActivateChild} from '@angular/router';
+import {ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs';
 import {AuthService} from '../_services/auth.service';
 import {TokenStorageService} from '../_services/token-storage.service';
@@ -15,11 +15,17 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (this.tokenStorageService.getUser()) {
+    const currentUser = this.tokenStorageService.getUser();
+    if (currentUser) {
+      console.log('user: ' + currentUser.role);
+      if (next.data.roles && next.data.roles.indexOf(currentUser.role) === -1) {
+        this.router.navigate(['/']);
+        return false;
+      }
       return true;
     }
     // this.authService.goLogin();
-    this.router.navigate(['login'], { queryParams: { returnUrl: state.url }});
+    this.router.navigate(['/login'], {queryParams: {returnUrl: state.url}});
     return false;
   }
 

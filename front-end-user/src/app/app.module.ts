@@ -16,34 +16,41 @@ import {AuthGuard} from './_guards/auth-guard.guard';
 import {AuthInterceptor} from './_helpers/auth.interceptor';
 import {ErrorInterceptor} from './_helpers/error.interceptor';
 import {LoadingBarHttpClientModule} from '@ngx-loading-bar/http-client';
+import {AdminModule} from './admin/admin.module';
+import { CardStatsComponent } from './admin/card-stats/card-stats.component';
 
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    LoginComponent,
+    declarations: [
+        AppComponent,
+        HomeComponent,
+        LoginComponent,
+        CardStatsComponent,
 
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    LoadingBarHttpClientModule,
+    ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        FormsModule,
+        LoadingBarHttpClientModule,
 
-    SharedModule,
-    UserModule
-  ],
-  providers: [
-    AuthGuard,
-    AuthService,
-    TokenStorageService,
-    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
-  ],
-  bootstrap: [AppComponent]
+        SharedModule,
+        UserModule,
+        AdminModule
+    ],
+    providers: [
+        AuthGuard,
+        AuthService,
+        TokenStorageService,
+        {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+        {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
+    ],
+    exports: [
+        CardStatsComponent
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 }

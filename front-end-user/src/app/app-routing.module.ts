@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 import {HomeComponent} from './home/home.component';
 import {LoginComponent} from './login/login.component';
 import {PageNotFoundComponent} from './shared/page-not-found/page-not-found.component';
@@ -7,6 +7,8 @@ import {UserComponent} from './user/user.component';
 import {DashboardComponent} from './user/dashboard/dashboard.component';
 import {AuthGuard} from './_guards/auth-guard.guard';
 import {ProfileComponent} from './user/profile/profile.component';
+import {AdminComponent} from './admin/admin.component';
+import {AdminDashboardComponent} from './admin/dashboard/dashboard.component';
 
 
 const routes: Routes = [
@@ -35,6 +37,24 @@ const routes: Routes = [
         children: [
           {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
           {path: 'dashboard', component: DashboardComponent},
+          {path: 'profile', component: ProfileComponent}
+        ]
+      }
+
+    ]
+  },
+  {
+    path: 'admin',
+    component: AdminComponent,
+    canActivate: [AuthGuard],
+
+    children: [
+      {
+        path: '',
+        canActivateChild: [AuthGuard],
+        children: [
+          {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
+          {path: 'dashboard', component: AdminDashboardComponent},
           {path: 'profile', component: ProfileComponent}
         ]
       }

@@ -10,8 +10,8 @@ import {ListCompleteExamComponent} from './list-exam/list-complete-exam/list-com
 import {FooterComponent} from './footer/footer.component';
 import {LeftSideComponent} from './left-side/left-side.component';
 import {RouterModule} from '@angular/router';
-import { ProfileComponent } from './profile/profile.component';
-import { ProfileCardComponent } from './profile-card/profile-card.component';
+import {ProfileComponent} from './profile/profile.component';
+import {ProfileCardComponent} from './profile-card/profile-card.component';
 
 
 @NgModule({

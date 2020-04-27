@@ -11,4 +11,5 @@ public interface CourseService {
     void saveCourse(Course course);
     void delete(Long id);
     boolean existsByCode(String code);
+    boolean existsById(Long id);
 }

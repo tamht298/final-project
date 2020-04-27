@@ -43,4 +43,9 @@ public class CourseServiceImpl implements CourseService {
         return courseRepository.existsByCourseCode(code);
     }
 
+    @Override
+    public boolean existsById(Long id) {
+        return courseRepository.existsById(id);
+    }
+
 }

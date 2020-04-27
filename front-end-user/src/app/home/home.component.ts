@@ -1,5 +1,6 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TokenStorageService} from '../_services/token-storage.service';
+import {UserRole} from '../models/user-role.enum';
 
 @Component({
   selector: 'app-welcome',
@@ -17,14 +18,18 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     const user = this.tokenStorageService.getUser();
+
+    this.username = user?.username;
+    if (user?.roles.includes(UserRole.ROLE_ADMIN)) {
+
+      this.isLoggedIn = true;
+      this.defaultUrl = '../admin';
+    }
     if (user?.roles.includes('ROLE_STUDENT')) {
       this.isLoggedIn = true;
       this.defaultUrl = '../user/dashboard';
-      this.username = user.username;
     }
 
-    console.log('isLoggedIn:' + this.isLoggedIn);
-    console.log('username:' + this.username);
   }
 
 

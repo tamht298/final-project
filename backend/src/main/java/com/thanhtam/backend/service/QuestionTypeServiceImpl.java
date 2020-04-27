@@ -37,4 +37,9 @@ public class QuestionTypeServiceImpl implements QuestionTypeService {
     public void delete(Long id) {
         questionTypeRepository.deleteById(id);
     }
+
+    @Override
+    public boolean existsById(Long id) {
+        return questionTypeRepository.existsById(id);
+    }
 }
