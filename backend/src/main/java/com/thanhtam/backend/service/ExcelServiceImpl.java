@@ -26,9 +26,8 @@ import java.util.*;
 
 @Service
 public class ExcelServiceImpl implements ExcelService {
-    private final Path root = Paths.get("uploads");
     private static final Logger LOGGER = LoggerFactory.getLogger(ExcelServiceImpl.class);
-
+    private final Path root = Paths.get("uploads");
     private FilesStorageService filesStorageService;
     private PasswordEncoder passwordEncoder;
     private UserRepository userRepository;

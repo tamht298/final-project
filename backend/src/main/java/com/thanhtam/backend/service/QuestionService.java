@@ -9,10 +9,15 @@ import java.util.Optional;
 
 public interface QuestionService {
     Optional<Question> getQuestionById(Long id);
+
     List<Question> getQuestionByCourse(Course course);
+
     List<Question> getQuestionByQuestionType(QuestionType questionType);
+
     List<Question> getQuestionList();
+
     void save(Question question);
+
     void delete(Long id);
 
 }

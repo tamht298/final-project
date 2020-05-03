@@ -9,9 +9,11 @@ import java.util.stream.Stream;
 
 public interface FilesStorageService {
     public void initRootFolder();
+
     public void initExcelFolder();
 
     public boolean existRootFolder();
+
     public boolean existExcelFolder();
 
     public void save(MultipartFile file, String filePath);

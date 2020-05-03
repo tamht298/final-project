@@ -28,6 +28,7 @@ public class FileController {
     public FileController(FilesStorageService filesStorageService) {
         this.filesStorageService = filesStorageService;
     }
+
     @PostMapping("/upload")
     public ResponseEntity<ServiceResult> uploadFile(@RequestParam("file") MultipartFile file) {
         String message = "";

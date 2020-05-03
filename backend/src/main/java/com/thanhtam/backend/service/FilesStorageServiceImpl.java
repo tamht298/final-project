@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -18,9 +17,9 @@ import java.util.stream.Stream;
 
 @Service
 public class FilesStorageServiceImpl implements FilesStorageService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(FilesStorageServiceImpl.class);
     private final Path root = Paths.get("uploads");
     private final Path excelPath = Paths.get("excel-import-user");
-    private static final Logger LOGGER = LoggerFactory.getLogger(FilesStorageServiceImpl.class);
 
     @Override
     public void initRootFolder() {

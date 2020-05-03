@@ -7,9 +7,14 @@ import java.util.Optional;
 
 public interface CourseService {
     Optional<Course> getCourseById(Long id);
+
     List<Course> getCourseList();
+
     void saveCourse(Course course);
+
     void delete(Long id);
+
     boolean existsByCode(String code);
+
     boolean existsById(Long id);
 }

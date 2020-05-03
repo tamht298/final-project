@@ -17,13 +17,13 @@
       class="md:block text-left md:pb-2 text-gray-700 mr-0 inline-block whitespace-no-wrap text-sm uppercase font-bold p-4 px-0"
       href="javascript:void(0)"
     >
-      Tailwind Starter Kit
+      TDMU Quiz
     </a>
     <!-- User -->
     <ul class="md:hidden items-center flex flex-wrap list-none">
-<!--      <li class="inline-block relative">-->
-<!--        <app-notification-dropdown></app-notification-dropdown>-->
-<!--      </li>-->
+      <!--      <li class="inline-block relative">-->
+      <!--        <app-notification-dropdown></app-notification-dropdown>-->
+      <!--      </li>-->
       <li class="inline-block relative">
         <app-user-dropdown></app-user-dropdown>
       </li>
@@ -70,58 +70,27 @@
       <!-- Navigation -->
       <ul class="md:flex-col md:min-w-full flex flex-col list-none">
         <li class="items-center">
-          <a [routerLink]="['dashboard']" routerLinkActive="text-blue-500 hover:text-blue-600 text-xs uppercase py-3 font-bold block"
-            class="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block"
+          <a [routerLink]="['dashboard']"
+             routerLinkActive="text-blue-500 hover:text-blue-600"
+             class="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block"
 
           ><i class="fa fa-tv opacity-75 mr-2 text-sm"></i>
             Dashboard</a
           >
         </li>
         <li class="items-center">
-          <a
-            class="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block"
-            href="#/landing"
-          ><i class="fa fa-newspaper text-gray-500 mr-2 text-sm"></i>
-            Landing Page</a
+          <a [routerLink]="['users']"
+             routerLinkActive="text-blue-500 hover:text-blue-600"
+             class="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block"
+
+          ><i class="fa fa-user text-gray-500 mr-2 text-sm"></i>
+            Quản trị tài khoản</a
           >
         </li>
-        <li class="items-center">
-          <a
-            class="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block"
-            href="#/profile"
-          ><i class="fa fa-user-circle text-gray-500 mr-2 text-sm"></i>
-            Profile Page</a
-          >
-        </li>
-        <li class="items-center">
-          <a
-            class="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block"
-            href="#/login"
-          ><i class="fa fa-fingerprint text-gray-500 mr-2 text-sm"></i>
-            Login</a
-          >
-        </li>
-        <li class="items-center">
-          <a
-            class="text-gray-400 text-xs uppercase py-3 font-bold block"
-            href="#pablo"
-          ><i
-            class="fa fa-clipboard-list text-gray-400 mr-2 text-sm"
-          ></i>
-            Register (soon)</a
-          >
-        </li>
-        <li class="items-center">
-          <a
-            class="text-gray-400 text-xs uppercase py-3 font-bold block"
-            href="#pablo"
-          ><i class="fa fa-tools text-gray-400 mr-2 text-sm"></i>
-            Settings (soon)</a
-          >
-        </li>
+
       </ul>
       <!-- Divider -->
-      <hr class="my-4 md:min-w-full" />
+      <hr class="my-4 md:min-w-full"/>
       <!-- Heading -->
       <h6
         class="md:min-w-full text-gray-600 text-xs uppercase font-bold block pt-1 pb-4 no-underline"

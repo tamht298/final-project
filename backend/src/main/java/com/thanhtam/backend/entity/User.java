@@ -1,11 +1,11 @@
 package com.thanhtam.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.thanhtam.backend.audit.Auditable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -33,10 +33,18 @@ public class User implements Serializable {
     private String email;
     @Column(name = "enabled")
     private boolean enabled = true;
+    @Column(name="deleted", nullable = false)
+    private boolean deleted = false;
+
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_date", updatable = false, nullable = false)
     private Date createdDate;
+
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "lastest_login_date", updatable = true, nullable = true)
+    private Date lastLoginDate;
 
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
@@ -55,6 +63,9 @@ public class User implements Serializable {
         this.profile = profile;
     }
 
+    public User(boolean deleted) {
+        this.deleted = deleted;
+    }
 
     public User(String username, String password, String email, Profile profile) {
         this.username = username;

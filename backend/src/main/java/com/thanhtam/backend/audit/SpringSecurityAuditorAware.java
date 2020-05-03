@@ -2,14 +2,11 @@ package com.thanhtam.backend.audit;
 
 import com.thanhtam.backend.entity.User;
 import com.thanhtam.backend.repository.UserRepository;
-import com.thanhtam.backend.service.UserDetailsImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.AuditorAware;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-
 
 import java.util.Optional;
 

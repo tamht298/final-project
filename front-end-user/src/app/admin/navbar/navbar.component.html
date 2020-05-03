@@ -3,7 +3,7 @@
   class="absolute top-0 left-0 w-full z-10 bg-transparent md:flex-row md:flex-no-wrap md:justify-start flex items-center p-4"
 >
   <div
-    class="w-full mx-autp items-center flex justify-between md:flex-no-wrap flex-wrap md:px-10 px-4"
+    class="w-full mx-auto items-center flex justify-between md:flex-no-wrap flex-wrap md:px-10 px-4"
   >
     <!-- Brand -->
     <a
@@ -31,7 +31,51 @@
     <ul
       class="flex-col md:flex-row list-none items-center hidden md:flex"
     >
-      <app-user-dropdown></app-user-dropdown>
+      <div class="text-gray-600 block">
+        <div class="items-center flex" (click)="toggleUserDropdown=!toggleUserDropdown">
+          <span class="w-12 h-12 text-sm text-white bg-gray-300 inline-flex items-center justify-center rounded-full"
+          >
+            <img
+              alt="..."
+              class="w-full rounded-full align-middle border-none shadow-lg hover:cursor-pointer"
+              src="https://avatars1.githubusercontent.com/u/46307504?s=460&u=a75c4f0968df34649bdb9745dbab83acd628d702&v=4"
+            />
+          </span>
+        </div>
+
+        <ng-template [ngIf]="toggleUserDropdown">
+          <div
+            class="absolute bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg mt-1"
+            style="min-width:12rem; right: 1.8rem"
+
+          >
+            <a href="#pablo"
+               class="text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-transparent  text-gray-800">
+              Action
+            </a>
+            <a href="#pablo"
+               class="text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-transparent  text-gray-800">
+              Another action
+            </a>
+            <a href="#pablo"
+               class="text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-transparent  text-gray-800">
+              Something else here
+            </a>
+            <div class="h-0 my-2 border border-solid border-gray-200"></div>
+            <button (click)="signOut()"
+                 class="text-left focus:outline-none hover:bg-gray-200 text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-transparent text-gray-800">
+              Thoát
+              <span class="text-gray-800"> <i class="fa fa-sign-out"></i> </span>
+            </button>
+          </div>
+        </ng-template>
+
+
+      </div>
+
+
     </ul>
   </div>
+
 </nav>
+

@@ -9,7 +9,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {SharedModule} from './shared/shared.module';
 import {UserModule} from './user/user.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AuthService} from './_services/auth.service';
 import {TokenStorageService} from './_services/token-storage.service';
 import {AuthGuard} from './_guards/auth-guard.guard';
@@ -17,40 +17,34 @@ import {AuthInterceptor} from './_helpers/auth.interceptor';
 import {ErrorInterceptor} from './_helpers/error.interceptor';
 import {LoadingBarHttpClientModule} from '@ngx-loading-bar/http-client';
 import {AdminModule} from './admin/admin.module';
-import { CardStatsComponent } from './admin/card-stats/card-stats.component';
-
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        HomeComponent,
-        LoginComponent,
-        CardStatsComponent,
-
-    ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        HttpClientModule,
-        BrowserAnimationsModule,
-        FormsModule,
-        LoadingBarHttpClientModule,
-
-        SharedModule,
-        UserModule,
-        AdminModule
-    ],
-    providers: [
-        AuthGuard,
-        AuthService,
-        TokenStorageService,
-        {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
-        {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
-    ],
-    exports: [
-        CardStatsComponent
-    ],
-    bootstrap: [AppComponent]
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    LoginComponent,
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    LoadingBarHttpClientModule,
+    SharedModule,
+    UserModule,
+    AdminModule
+  ],
+  providers: [
+    AuthGuard,
+    AuthService,
+    TokenStorageService,
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
+  ],
+  exports: [],
+  bootstrap: [AppComponent]
 })
 export class AppModule {
 }

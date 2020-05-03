@@ -5,11 +5,12 @@ import com.thanhtam.backend.entity.User;
 import com.thanhtam.backend.repository.UserRepository;
 import com.thanhtam.backend.ultilities.ERole;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -27,10 +28,24 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
+//    @Override
+//    public List<User> getAllUsers() {
+//        return userRepository.findAll();
+//    }
+//
+//    @Override
+//    public List<User> findAllUsersByPage(Integer pageNumber, Integer pageSize, String sortBy) {
+//        Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+//
+//        Page<User> pagedResult = userRepository.findAll(paging);
+//
+//        if(pagedResult.hasContent()) {
+//            return pagedResult.getContent();
+//        } else {
+//            return new ArrayList<User>();
+//        }
+//    }
+
 
     @Override
     public Optional<User> getUserByUsername(String username) {
@@ -45,6 +60,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    public Page<User> findUsersByPage(Pageable pageable) {
+        return userRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<User> findUsersDeletedByPage(Pageable pageable, boolean deleted) {
+        return userRepository.findAllByDeleted(deleted, pageable);
     }
 
     @Override
@@ -70,7 +95,7 @@ public class UserServiceImpl implements UserService {
                     case ROLE_LECTURE: {
                         addRoles(ERole.ROLE_LECTURE, roles);
                     }
-                    default:{
+                    default: {
                         addRoles(ERole.ROLE_STUDENT, roles);
                     }
                 }
@@ -81,6 +106,17 @@ public class UserServiceImpl implements UserService {
         newUser.setRoles(roles);
         return userRepository.save(newUser);
     }
+
+    @Override
+    public Optional<User> findUserById(Long id) {
+        return userRepository.findById(id);
+    }
+
+    @Override
+    public void updateUser(User user) {
+        userRepository.save(user);
+    }
+
     public void addRoles(ERole roleName, Set<Role> roles) {
         Role userRole = roleService.findByName(roleName).orElseThrow(() -> new RuntimeException("Error: Role is not found"));
         roles.add(userRole);

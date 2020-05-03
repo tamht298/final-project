@@ -5,7 +5,6 @@ import com.thanhtam.backend.ultilities.Constants;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -22,14 +21,14 @@ public class JwtUtils {
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + Constants.ACCESS_TOKEN_VALIDITY_SECONDS*1000))
+                .setExpiration(new Date((new Date()).getTime() + Constants.ACCESS_TOKEN_VALIDITY_SECONDS * 1000))
                 .claim("role", userPrincipal.getAuthorities())
                 .signWith(SignatureAlgorithm.HS512, Constants.SIGNING_KEY)
                 .compact();
     }
 
     public String getUserNameFromJwtToken(String token) {
-        return Jwts.parser().setSigningKey( Constants.SIGNING_KEY).parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parser().setSigningKey(Constants.SIGNING_KEY).parseClaimsJws(token).getBody().getSubject();
     }
 
     public boolean validateJwtToken(String authToken) {

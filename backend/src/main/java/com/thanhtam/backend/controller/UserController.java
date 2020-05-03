@@ -1,7 +1,8 @@
 package com.thanhtam.backend.controller;
 
-import com.thanhtam.backend.entity.Role;
+import com.thanhtam.backend.dto.PageResult;
 import com.thanhtam.backend.dto.ServiceResult;
+import com.thanhtam.backend.entity.Role;
 import com.thanhtam.backend.entity.User;
 import com.thanhtam.backend.service.RoleService;
 import com.thanhtam.backend.service.UserService;
@@ -9,6 +10,9 @@ import com.thanhtam.backend.ultilities.ERole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,8 +20,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -26,10 +28,10 @@ import java.util.Set;
 @RequestMapping(value = "/api/users")
 public class UserController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     private UserService userService;
     private PasswordEncoder passwordEncoder;
     private RoleService roleService;
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     public UserController(UserService userService, RoleService roleService) {
@@ -38,19 +40,43 @@ public class UserController {
     }
 
     @GetMapping("/username/{uid}")
-    public ResponseEntity<?> getUser(@PathVariable String uid){
+    public ResponseEntity<?> getUser(@PathVariable String uid) {
         Optional<User> user = userService.getUserByUsername(uid);
-        if(!user.isPresent()){
-            return ResponseEntity.ok(new ServiceResult(HttpStatus.NOT_FOUND.value(), "Tên đăng nhâp "+uid+" không tìm thấy!", null)) ;
+        if (!user.isPresent()) {
+            return ResponseEntity.ok(new ServiceResult(HttpStatus.NOT_FOUND.value(), "Tên đăng nhâp " + uid + " không tìm thấy!", null));
         }
-        return ResponseEntity.ok(new ServiceResult(HttpStatus.OK.value(), "Lấy thông tin user " + uid +" thành công!", user)) ;
+        return ResponseEntity.ok(new ServiceResult(HttpStatus.OK.value(), "Lấy thông tin user " + uid + " thành công!", user));
     }
+
+    @GetMapping("/check-username")
+    public boolean checkUsername(@RequestParam("value") String value){
+        return userService.existsByUsername(value);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> deleteTempUser(@PathVariable Long id, @Valid @RequestBody User userPartial) {
+        User user = userService.findUserById(id).get();
+        user.setDeleted(true);
+
+        userService.updateUser(user);
+        return ResponseEntity.noContent().build();
+
+
+    }
+
 
     @GetMapping()
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> getAllUsers() {
-        List<User> users = userService.getAllUsers();
-        return ResponseEntity.ok().body(new ServiceResult(HttpStatus.OK.value(), "Get list of users successfully!", users));
+    public PageResult getUsersByPage(@PageableDefault(page = 0, size = 10, sort = "id") Pageable pageable) {
+        Page<User> userPage = userService.findUsersByPage(pageable);
+        return new PageResult(userPage);
+    }
+
+    @GetMapping("/deleted/{status}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public PageResult getUsersNotDeletedByPage(@PageableDefault(page = 0, size = 10, sort = "id") Pageable pageable, @PathVariable boolean status) {
+        Page<User> userPage = userService.findUsersDeletedByPage(pageable, status);
+        return new PageResult(userPage);
     }
 
     @PostMapping()
@@ -106,10 +132,6 @@ public class UserController {
         Role userRole = roleService.findByName(roleName).orElseThrow(() -> new RuntimeException("Error: Role is not found"));
         roles.add(userRole);
     }
-
-
-
-
 
 
 }

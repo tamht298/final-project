@@ -169,7 +169,17 @@ module.exports = {
         700: '#6d4c41',
         800: '#5d4037',
         900: '#4e342e',
-      }
+      },
+      smoke:{
+        darkest: 'rgba(0, 0, 0, 0.9)',
+        darker: 'rgba(0, 0, 0, 0.75)',
+        dark: 'rgba(0, 0, 0, 0.6)',
+        default:'rgba(0, 0, 0, 0.5)',
+        light: 'rgba(0, 0, 0, 0.4)',
+        lighter: 'rgba(0, 0, 0, 0.25)',
+        lightest: 'rgba(0, 0, 0, 0.1)',
+      },
+
     },
     spacing: {
       px: '1px',
@@ -707,7 +717,7 @@ module.exports = {
     strokeWidth: ['responsive'],
     tableLayout: ['responsive'],
     textAlign: ['responsive'],
-    textColor: ['responsive', 'hover', 'focus'],
+    textColor: ['responsive', 'hover', 'focus', 'group-hover'],
     textDecoration: ['responsive', 'hover', 'focus'],
     textTransform: ['responsive'],
     userSelect: ['responsive'],

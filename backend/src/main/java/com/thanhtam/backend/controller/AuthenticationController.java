@@ -2,8 +2,12 @@ package com.thanhtam.backend.controller;
 
 import com.thanhtam.backend.config.JwtUtils;
 import com.thanhtam.backend.dto.LoginUser;
+import com.thanhtam.backend.entity.User;
 import com.thanhtam.backend.payload.response.JwtResponse;
 import com.thanhtam.backend.service.UserDetailsImpl;
+import com.thanhtam.backend.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,11 +26,20 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/auth")
 public class AuthenticationController {
 
-    @Autowired
+    private Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
+
+    JwtUtils jwtUtils;
+
     private AuthenticationManager authenticationManager;
 
+    private UserService userService;
+
     @Autowired
-    JwtUtils jwtUtils;
+    public AuthenticationController(JwtUtils jwtUtils, AuthenticationManager authenticationManager, UserService userService) {
+        this.jwtUtils = jwtUtils;
+        this.authenticationManager = authenticationManager;
+        this.userService = userService;
+    }
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginUser loginUser) {
@@ -40,7 +54,10 @@ public class AuthenticationController {
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
-
+        User userLog = userService.getUserByUsername(userDetails.getUsername()).get();
+        userLog.setLastLoginDate(new Date());
+        userService.updateUser(userLog);
+        logger.warn(userLog.toString());
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),

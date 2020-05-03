@@ -9,10 +9,10 @@ public enum DifficultyLevel {
         this.level = level;
     }
 
-    public static DifficultyLevel getLevelByValue(int value){
-        for (DifficultyLevel lv: DifficultyLevel.values()
-             ) {
-            if(lv.level == value) return lv;
+    public static DifficultyLevel getLevelByValue(int value) {
+        for (DifficultyLevel lv : DifficultyLevel.values()
+        ) {
+            if (lv.level == value) return lv;
         }
         return null;
     }

@@ -19,13 +19,13 @@ public class BackendApplication implements CommandLineRunner {
     @Resource
     FilesStorageService storageService;
 
+    public static void main(String[] args) {
+        SpringApplication.run(BackendApplication.class, args);
+    }
+
     @Bean
     public AuditorAware<User> auditorAware() {
         return new SpringSecurityAuditorAware();
-    }
-
-    public static void main(String[] args) {
-        SpringApplication.run(BackendApplication.class, args);
     }
 
     @Override
@@ -33,8 +33,8 @@ public class BackendApplication implements CommandLineRunner {
         if (storageService.existRootFolder() == false) {
             storageService.initRootFolder();
         }
-        if (storageService.existExcelFolder() == false){
-        	storageService.initExcelFolder();
-		}
+        if (storageService.existExcelFolder() == false) {
+            storageService.initExcelFolder();
+        }
     }
 }

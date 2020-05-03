@@ -8,6 +8,8 @@ import java.util.Optional;
 public interface ExamService {
 
     Exam createExam(Exam exam);
+
     List<Exam> getAll();
+
     Optional<Exam> getExamById(Long id);
 }

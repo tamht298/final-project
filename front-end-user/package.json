@@ -12,7 +12,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "~9.0.1",
-    "@angular/cdk": "^9.2.0",
+    "@angular/cdk": "^8.2.3",
     "@angular/common": "~9.0.1",
     "@angular/compiler": "~9.0.1",
     "@angular/core": "~9.0.1",
@@ -23,13 +23,12 @@
     "@angular/router": "~9.0.1",
     "@ngx-loading-bar/core": "^4.2.0",
     "@ngx-loading-bar/http-client": "^4.2.0",
+    "chart.js": "2.9.3",
     "font-awesome": "^4.7.0",
     "jwt-decode": "^2.2.0",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
-    "zone.js": "~0.10.2",
-    "chart.js": "2.9.3",
-    "popper.js": "1.16.0"
+    "zone.js": "~0.10.2"
   },
   "devDependencies": {
     "@angular-builders/custom-webpack": "^9.0.0",

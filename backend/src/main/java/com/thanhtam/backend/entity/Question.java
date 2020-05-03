@@ -7,19 +7,17 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="question")
+@Table(name = "question")
 public class Question extends Auditable<Long> implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "question_text", columnDefinition = "text")
@@ -40,7 +38,7 @@ public class Question extends Auditable<Long> implements Serializable {
     private List<Choice> choices;
 
     @ManyToOne()
-    @JoinColumn(name="course_id")
+    @JoinColumn(name = "course_id")
     private Course course;
 
 }

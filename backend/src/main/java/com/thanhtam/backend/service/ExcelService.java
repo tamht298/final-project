@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface ExcelService {
     List<User> readUserFromExcelFile(String excelFilePath) throws IOException;
+
     void InsertUserToDB(List<User> userList);
 }

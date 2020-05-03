@@ -18,7 +18,7 @@ public class Choice implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="choice_text")
+    @Column(name = "choice_text")
     private String choiceText;
 
     @Column(name = "corrected")

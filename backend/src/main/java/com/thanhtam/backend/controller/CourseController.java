@@ -53,7 +53,7 @@ public class CourseController {
                 courseService.saveCourse(course);
                 return ResponseEntity.ok().body(new ServiceResult(HttpStatus.CREATED.value(), "Created course successfully!", course));
 
-            } else{
+            } else {
                 return ResponseEntity.badRequest().body(new ServiceResult(HttpStatus.CONFLICT.value(), "Duplicate Course!", course.getCourseCode()));
             }
         } catch (Exception e) {

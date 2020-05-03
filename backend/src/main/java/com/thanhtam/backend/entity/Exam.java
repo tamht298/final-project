@@ -29,7 +29,7 @@ public class Exam extends Auditable<Long> implements Serializable {
     @Column(name = "duration_exam")
     private int durationExam;
 
-    @Column(name="begin_exam")
+    @Column(name = "begin_exam")
     private Date beginExam;
 
     @Column(name = "finish_exam")

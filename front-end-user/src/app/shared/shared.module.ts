@@ -11,16 +11,16 @@ import {SpinnerComponent} from './spinner/spinner.component';
     PreLoadingComponent,
     PageNotFoundComponent,
     BreadcrumbsComponent,
-    SpinnerComponent
+    SpinnerComponent,
   ],
   exports: [
     PreLoadingComponent,
     BreadcrumbsComponent,
-    SpinnerComponent
+    SpinnerComponent,
 
   ],
   imports: [
-    CommonModule
+    CommonModule,
   ]
 })
 export class SharedModule {
