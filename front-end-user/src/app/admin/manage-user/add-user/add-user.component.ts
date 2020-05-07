@@ -1,8 +1,11 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {UserService} from '../../../_services/user.service';
 import {UserAccount} from '../../../models/user-account';
 import {UserProfile} from '../../../models/user-profile';
+import {PageResult} from '../../../models/page-result';
+import {switchMap} from 'rxjs/operators';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-user',
@@ -12,8 +15,13 @@ import {UserProfile} from '../../../models/user-profile';
 export class AddUserComponent implements OnInit {
   showModalAdd = false;
   rfAddUser: FormGroup;
+  @Output() usersAddOutput = new EventEmitter<PageResult<UserAccount>>();
+  @Input() active = false;
+  @Input() tabTitle: string;
+  openTab = 1;
+  pageResult: PageResult<UserAccount>;
 
-  constructor(private userService: UserService, private fb: FormBuilder) {
+  constructor(private userService: UserService, private fb: FormBuilder, private toast: ToastrService) {
   }
 
   get username() {
@@ -33,13 +41,18 @@ export class AddUserComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.rfAddUser.reset(this.rfAddUser.value);
     this.rfAddUser = this.fb.group({
       username: ['', {
         validators: [Validators.required, Validators.minLength(6)],
         asyncValidators: [this.userService.validateUsername()],
         updateOn: 'blur'
       }],
-      email: ['', [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      email: ['', {
+        validators: [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')],
+        asyncValidators: [this.userService.validateEmail()],
+        updateOn: 'blur'
+      }],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required]
     });
@@ -56,8 +69,22 @@ export class AddUserComponent implements OnInit {
   onSubmit() {
     const profile = new UserProfile(this.firstName.value, this.lastName.value);
     const user: UserAccount = new UserAccount(this.username.value, this.email.value, profile);
-    this.userService.addUser(user).subscribe(res => {
-      this.closeModal();
-    });
+
+    this.userService.addUser(user)
+      .pipe(switchMap(res => this.userService.getUserDeletedList(false)))
+      .subscribe(res => {
+        this.closeModal();
+        this.showSuccess();
+        this.pageResult = res;
+        this.usersAddOutput.emit(this.pageResult);
+      });
+  }
+
+  showSuccess() {
+    this.toast.success('Người dùng đã được tạo mới!', 'Thành công',);
+  }
+
+  toggleTabs($tabNumber: number) {
+    this.openTab = $tabNumber;
   }
 }

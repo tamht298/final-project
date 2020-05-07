@@ -2,6 +2,8 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {UserAccount} from '../../../models/user-account';
 import {UserService} from '../../../_services/user.service';
 import {PageResult} from '../../../models/page-result';
+import {switchMap} from 'rxjs/operators';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-delete-user',
@@ -15,7 +17,7 @@ export class DeleteUserComponent implements OnInit {
   pageResult: PageResult<UserAccount>;
   showModalDelete = false;
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private toastr: ToastrService) {
   }
 
   ngOnInit(): void {
@@ -30,15 +32,18 @@ export class DeleteUserComponent implements OnInit {
   }
 
   confirmDelete(id: number) {
-    this.userService.deleteTempUser(id).subscribe(data => {
-      this.closeModal();
-      this.userService.getUserDeletedList(false).subscribe(res => {
-          this.pageResult = res;
-          this.usersOutput.emit(this.pageResult);
-        }
-      );
-    }, error => {
-      console.error('Lỗi trong quá trình xoá người dùng');
-    });
+    this.userService.deleteTempUser(id)
+      .pipe(switchMap(res => this.userService.getUserDeletedList(false)))
+      .subscribe(res => {
+        this.closeModal();
+        this.showSuccess();
+        this.pageResult = res;
+        this.usersOutput.emit(this.pageResult);
+
+      });
+  }
+
+  showSuccess() {
+    this.toastr.success('Người dùng đã được xoá!', 'Thành công', );
   }
 }

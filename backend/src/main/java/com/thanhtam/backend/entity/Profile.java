@@ -25,4 +25,5 @@ public class Profile {
 
     @Column(name = "image")
     private String image;
+
 }

@@ -14,6 +14,14 @@ export class ManageUserComponent implements OnInit {
   paginationDetail: PaginationDetail;
   checkedAll: boolean;
 
+  pageOptions: any = [
+    {display: 20, num: 20},
+    {display: 50, num: 50},
+    {display: 100, num: 100},
+    {display: 'Tất cả', num: ''},
+  ];
+  searchKeyWord = '';
+
   constructor(private userService: UserService) {
   }
 
@@ -23,7 +31,7 @@ export class ManageUserComponent implements OnInit {
   }
 
   fetchUserList() {
-    this.userService.getUserDeletedList(false).subscribe(res => {
+    this.userService.searchUserListDeletedByPage(0, 20, this.searchKeyWord, false).subscribe(res => {
       console.table(res);
       this.userList = res.data;
       this.paginationDetail = res.paginationDetails;
@@ -37,17 +45,23 @@ export class ManageUserComponent implements OnInit {
   }
 
   exportUserToExcel() {
-
+    this.userService.exportExcel(false).subscribe( response => {
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(new Blob([response], {type: 'text/csv'}));
+      link.download = 'users.csv';
+      link.click();
+    });
   }
 
   goPreviousPage() {
     const isFirstPage: boolean = this.paginationDetail.isFirstPage;
     if (!isFirstPage) {
-      this.userService.getUserListDeletedByPage(this.paginationDetail.previousPage.pageNumber, false).subscribe(res => {
-        this.userList = res.data;
-        this.paginationDetail = res.paginationDetails;
-        console.table(this.userList);
-      });
+      this.userService.searchUserListDeletedByPage(this.paginationDetail.previousPage.pageNumber, this.paginationDetail.pageCount, this.searchKeyWord, false)
+        .subscribe(res => {
+          this.userList = res.data;
+          this.paginationDetail = res.paginationDetails;
+          console.table(this.userList);
+        });
       this.checkedAll = false;
     }
 
@@ -57,7 +71,8 @@ export class ManageUserComponent implements OnInit {
     const isLastPage = !this.paginationDetail.nextPage.available;
     if (!isLastPage) {
       this.checkedAll = false;
-      this.userService.getUserListDeletedByPage(this.paginationDetail.nextPage.pageNumber, false).subscribe(res => {
+      this.userService.searchUserListDeletedByPage(this.paginationDetail.nextPage.pageNumber, this.paginationDetail.pageCount, this.searchKeyWord, false
+      ).subscribe(res => {
         this.userList = res.data;
         this.paginationDetail = res.paginationDetails;
         console.table(this.paginationDetail);
@@ -65,7 +80,7 @@ export class ManageUserComponent implements OnInit {
     }
   }
 
-  fetchUsersAfterDeleting($event: any) {
+  fetchUsersAfterCRUD($event: any) {
     this.userList = $event.data;
     this.paginationDetail = $event.paginationDetails;
   }
@@ -78,5 +93,28 @@ export class ManageUserComponent implements OnInit {
   selectAll(event) {
     const checked = event.target.checked;
     this.userList.forEach(item => item.deleted = checked);
+  }
+
+  changePageShow(value: any) {
+    console.log(value);
+    if (!value) {
+      this.userService.getUserListDeletedByPage(0, this.paginationDetail.totalCount, false).subscribe(res => {
+        this.userList = res.data;
+        this.paginationDetail = res.paginationDetails;
+      });
+    } else {
+      this.userService.getUserListDeletedByPage(0, value, false).subscribe(res => {
+        this.userList = res.data;
+        this.paginationDetail = res.paginationDetails;
+      });
+    }
+  }
+
+  searchUser(searchKeyWord: string) {
+    console.log(searchKeyWord);
+    this.userService.searchUserListDeletedByPage(0, 20, searchKeyWord, false).subscribe(res => {
+      this.userList = res.data;
+      this.paginationDetail = res.paginationDetails;
+    });
   }
 }

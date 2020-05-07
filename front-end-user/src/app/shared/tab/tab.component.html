@@ -1,0 +1,25 @@
+<div class="flex flex-wrap px-3">
+  <div class="w-full">
+    <ul class="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row">
+      <li class="-mb-px mr-2 last:mr-0 flex-auto text-center"><a
+        class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal" (click)="toggleTabs(1)"
+        [ngClass]="{'text-blue-600 bg-white': openTab !== 1, 'text-white bg-blue-600': openTab === 1}"> <i
+        class="fa fa-user-circle text-base mr-1"></i> Profile </a></li>
+      <li class="-mb-px mr-2 last:mr-0 flex-auto text-center"><a
+        class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal" (click)="toggleTabs(2)"
+        [ngClass]="{'text-blue-600 bg-white': openTab !== 2, 'text-white bg-blue-600': openTab === 2}"> <i
+        class="fa fa-upload mr-1"></i> Import </a></li>
+
+    </ul>
+    <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+      <div class="px-4 py-5 flex-auto">
+        <div class="tab-content tab-space">
+          <div [ngClass]="{'hidden': openTab !== 1, 'block': openTab === 1}"><p> Collaboratively administrate empowered
+            markets via plug-and-play networks. Dynamically procrastinate B2C users after installed base benefits. <br/>
+            <br/> Dramatically visualize customer directed convergence without revolutionary ROI. </p></div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,15 +1,13 @@
 package com.thanhtam.backend.service;
 
+import com.thanhtam.backend.dto.UserExport;
 import com.thanhtam.backend.entity.Profile;
 import com.thanhtam.backend.entity.Role;
 import com.thanhtam.backend.entity.User;
 import com.thanhtam.backend.repository.UserRepository;
 import com.thanhtam.backend.ultilities.ERole;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,9 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -102,6 +98,67 @@ public class ExcelServiceImpl implements ExcelService {
         inputStream.close();
         LOGGER.error("List user: " + userList.toString());
         return userList;
+    }
+
+    @Override
+    public void writeUserToExcelFile(ArrayList<UserExport> userExports) throws IOException {
+        try (Workbook workbook = new XSSFWorkbook()) {
+            String[] columns = {"Username", "Họ và tên", "Email"};
+            Sheet sheet = workbook.createSheet("List of users");
+            //Custom style
+            Font headerFont = workbook.createFont();
+            headerFont.setBold(true);
+            headerFont.setFontHeightInPoints((short) 14);
+            headerFont.setColor(IndexedColors.RED.getIndex());
+
+            // Create a CellStyle with the font
+            CellStyle headerCellStyle = workbook.createCellStyle();
+            headerCellStyle.setFont(headerFont);
+
+            // Create a Row
+            Row headerRow = sheet.createRow(0);
+
+            // Create cells
+            for (int i = 0; i < columns.length; i++) {
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(columns[i]);
+                cell.setCellStyle(headerCellStyle);
+            }
+
+            // Create Other rows and cells with employees data
+            int rowNum = 1;
+            for (UserExport user : userExports) {
+                Row row = sheet.createRow(rowNum++);
+
+                // Employee's name (Column A)
+                row.createCell(0)
+                        .setCellValue(user.getUsername());
+
+                // Employee's email (Column B)
+                row.createCell(1)
+                        .setCellValue(user.getFirstName());
+
+                row.createCell(2)
+                        .setCellValue(user.getLastName());
+
+                row.createCell(3)
+                        .setCellValue(user.getEmail());
+            }
+            // Making size of column auto resize to fit with data
+            sheet.autoSizeColumn(0);
+            sheet.autoSizeColumn(1);
+            sheet.autoSizeColumn(2);
+            sheet.autoSizeColumn(3);
+            FileOutputStream fileOut = new FileOutputStream("users.xlsx");
+
+            workbook.write(fileOut);
+            fileOut.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
+
     }
 
     @Override

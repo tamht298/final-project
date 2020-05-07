@@ -8,6 +8,8 @@ import {Component, OnInit} from '@angular/core';
 export class NavSidebarComponent implements OnInit {
 
   collapseShow = 'hidden';
+  userCollapseShow = false;
+  questionBankCollapseShow = false;
 
   constructor() {
   }
@@ -19,4 +21,11 @@ export class NavSidebarComponent implements OnInit {
     this.collapseShow = classes;
   }
 
+  userCollapse() {
+    this.userCollapseShow = !this.userCollapseShow;
+  }
+
+  questionBankCollapse() {
+    this.questionBankCollapseShow = !this.questionBankCollapseShow;
+  }
 }

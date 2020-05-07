@@ -18,9 +18,12 @@ import { DetailUserComponent } from './manage-user/detail-user/detail-user.compo
 import { DeleteUserComponent } from './manage-user/delete-user/delete-user.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { UpdateUserComponent } from './manage-user/update-user/update-user.component';
+import { DeleteListUserComponent } from './manage-user/delete-list-user/delete-list-user.component';
+import { QuestionBankComponent } from './question-bank/question-bank.component';
+import { TabsComponent } from './tabs/tabs.component';
 
 @NgModule({
-  declarations: [AdminComponent, NavSidebarComponent, AdminNavbarComponent, UserDropdownComponent, LineChartComponent, BarChartComponent, AdminDashboardComponent, ManageUserComponent, AdminFooterComponent, CardStatsComponent, AddUserComponent, DetailUserComponent, DeleteUserComponent, UpdateUserComponent],
+  declarations: [AdminComponent, NavSidebarComponent, AdminNavbarComponent, UserDropdownComponent, LineChartComponent, BarChartComponent, AdminDashboardComponent, ManageUserComponent, AdminFooterComponent, CardStatsComponent, AddUserComponent, DetailUserComponent, DeleteUserComponent, UpdateUserComponent, DeleteListUserComponent, QuestionBankComponent, TabsComponent],
     imports: [
         CommonModule,
         RouterModule,

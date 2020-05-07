@@ -1,5 +1,6 @@
 package com.thanhtam.backend.service;
 
+import com.thanhtam.backend.dto.UserExport;
 import com.thanhtam.backend.entity.Role;
 import com.thanhtam.backend.entity.User;
 import com.thanhtam.backend.repository.UserRepository;
@@ -10,9 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service(value = "userService")
 public class UserServiceImpl implements UserService {
@@ -27,24 +26,6 @@ public class UserServiceImpl implements UserService {
         this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
     }
-
-//    @Override
-//    public List<User> getAllUsers() {
-//        return userRepository.findAll();
-//    }
-//
-//    @Override
-//    public List<User> findAllUsersByPage(Integer pageNumber, Integer pageSize, String sortBy) {
-//        Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
-//
-//        Page<User> pagedResult = userRepository.findAll(paging);
-//
-//        if(pagedResult.hasContent()) {
-//            return pagedResult.getContent();
-//        } else {
-//            return new ArrayList<User>();
-//        }
-//    }
 
 
     @Override
@@ -70,6 +51,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public Page<User> findUsersDeletedByPage(Pageable pageable, boolean deleted) {
         return userRepository.findAllByDeleted(deleted, pageable);
+    }
+
+    @Override
+    public Page<User> findAllByDeletedAndUsernameContains(boolean deleted, String username, Pageable pageable) {
+        return userRepository.findAllByDeletedAndUsernameContains(deleted, username, pageable);
     }
 
     @Override
@@ -110,6 +96,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findUserById(Long id) {
         return userRepository.findById(id);
+    }
+
+    @Override
+    public List<UserExport> findAllByDeletedToExport(boolean statusDelete) {
+        List<User> userList = userRepository.findAllByDeleted(statusDelete);
+        List<UserExport> userExportList = new ArrayList<>();
+        userList.forEach(user -> {
+            userExportList.add(new UserExport(user.getUsername(), user.getEmail(), user.getProfile().getFirstName(), user.getProfile().getLastName()));
+        });
+        return userExportList;
     }
 
     @Override

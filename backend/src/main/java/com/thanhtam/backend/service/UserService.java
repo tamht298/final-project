@@ -1,10 +1,12 @@
 package com.thanhtam.backend.service;
 
+import com.thanhtam.backend.dto.UserExport;
 import com.thanhtam.backend.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import javax.jws.soap.SOAPBinding;
+import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
@@ -20,10 +22,14 @@ public interface UserService {
 
     Page<User> findUsersDeletedByPage(Pageable pageable, boolean deleted);
 
+    Page<User> findAllByDeletedAndUsernameContains(boolean deleted, String username, Pageable pageable);
+
 
     User createUser(User user);
 
     Optional<User> findUserById(Long id);
+
+    List<UserExport> findAllByDeletedToExport(boolean statusDelete);
 
     void updateUser(User user);
 }

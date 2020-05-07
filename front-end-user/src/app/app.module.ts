@@ -17,6 +17,7 @@ import {AuthInterceptor} from './_helpers/auth.interceptor';
 import {ErrorInterceptor} from './_helpers/error.interceptor';
 import {LoadingBarHttpClientModule} from '@ngx-loading-bar/http-client';
 import {AdminModule} from './admin/admin.module';
+import {ToastrModule} from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,11 @@ import {AdminModule} from './admin/admin.module';
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      positionClass: 'toast-top-right',
+      tapToDismiss: true
+    }),
     FormsModule,
     ReactiveFormsModule,
     LoadingBarHttpClientModule,

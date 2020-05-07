@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -29,8 +30,10 @@ public class User implements Serializable {
     @Column(name = "password")
     private String password;
 
+    @Email
     @Column(name = "email", unique = true, nullable = false)
     private String email;
+
     @Column(name = "enabled")
     private boolean enabled = true;
     @Column(name="deleted", nullable = false)
@@ -53,7 +56,7 @@ public class User implements Serializable {
                     @JoinColumn(name = "role_id", referencedColumnName = "id")})
     private Set<Role> roles;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "profile_id", referencedColumnName = "id")
     private Profile profile;
 
@@ -70,6 +73,11 @@ public class User implements Serializable {
     public User(String username, String password, String email, Profile profile) {
         this.username = username;
         this.password = password;
+        this.email = email;
+        this.profile = profile;
+    }
+
+    public User(String email, Profile profile) {
         this.email = email;
         this.profile = profile;
     }
