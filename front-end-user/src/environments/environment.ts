@@ -4,7 +4,11 @@
 
 export const environment = {
   production: false,
-  apiEndPoint: 'http://localhost:8080/api'
+  apiEndPoint: 'http://localhost:8080/api',
+  pageMeta: {
+    pageNumber: 0,
+    pageSize: 20
+  }
 };
 
 /*

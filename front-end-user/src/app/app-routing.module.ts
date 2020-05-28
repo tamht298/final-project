@@ -11,6 +11,9 @@ import {AdminComponent} from './admin/admin.component';
 import {AdminDashboardComponent} from './admin/dashboard/dashboard.component';
 import {ManageUserComponent} from './admin/manage-user/manage-user.component';
 import {QuestionBankComponent} from './admin/question-bank/question-bank.component';
+import {ManageCourseComponent} from './admin/manage-course/manage-course.component';
+import {ListQuestionComponent} from './admin/manage-course/list-question/list-question.component';
+import {ManagePartComponent} from './admin/manage-part/manage-part.component';
 
 
 const routes: Routes = [
@@ -59,7 +62,10 @@ const routes: Routes = [
           {path: 'dashboard', component: AdminDashboardComponent},
           {path: 'profile', component: ProfileComponent},
           {path: 'users/active', component: ManageUserComponent},
-          {path: 'question-bank', component: QuestionBankComponent}
+          {path: 'question-bank', component: QuestionBankComponent},
+          {path: 'courses', component: ManageCourseComponent},
+          {path: 'courses/:id/view-question', component: ListQuestionComponent},
+          {path: 'courses/:courseId/parts', component: ManagePartComponent},
         ]
       }
 

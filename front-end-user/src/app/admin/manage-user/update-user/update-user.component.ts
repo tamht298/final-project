@@ -79,7 +79,6 @@ export class UpdateUserComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.password.value);
     const profile = new UserProfile(this.firstName.value, this.lastName.value);
     const userUpdate: UserUpdate = new UserUpdate(this.username.value, this.email.value, this.password.value, profile);
     this.showLoading = true;
@@ -98,11 +97,6 @@ export class UpdateUserComponent implements OnInit {
     this.showModalUpdate = false;
   }
 
-  checkPasswords() {
-    const pass = this.rfUpdateUser.get('pass');
-    const confirmPass = this.rfUpdateUser.get('confirmPass');
-    return pass === confirmPass ? null : {passwordNotSame: true};
-  }
 
   private showSuccess() {
     this.toast.success('Người dùng đã được cập nhật!', 'Thành công');

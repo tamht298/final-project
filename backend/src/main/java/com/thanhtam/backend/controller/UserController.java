@@ -97,7 +97,6 @@ public class UserController {
         user.setDeleted(true);
         userService.updateUser(user);
         return ResponseEntity.noContent().build();
-
     }
 
 
@@ -212,4 +211,4 @@ public class UserController {
     }
 
 
-}
+}   

@@ -1,6 +1,6 @@
 <!-- Navbar -->
 <nav
-  class="absolute top-0 left-0 w-full z-10 bg-transparent md:flex-row md:flex-no-wrap md:justify-start flex items-center p-4"
+  class="absolute top-0 left-0 w-full z-10 bg-blue-600items-center flex md:flex-row md:flex-no-wrap md:justify-start flex items-center p-4"
 >
   <div
     class="w-full mx-auto items-center flex justify-between md:flex-no-wrap flex-wrap md:px-10 px-4"
@@ -32,12 +32,12 @@
       class="flex-col md:flex-row list-none items-center hidden md:flex"
     >
       <div class="text-gray-600 block">
-        <div class="items-center flex" (click)="toggleUserDropdown=!toggleUserDropdown">
+        <div class="items-center flex cursor-pointer" (click)="toggleUserDropdown=!toggleUserDropdown">
           <span class="w-12 h-12 text-sm text-white bg-gray-300 inline-flex items-center justify-center rounded-full"
           >
             <img
               alt="..."
-              class="w-full rounded-full align-middle border-none shadow-lg hover:cursor-pointer"
+              class="w-full rounded-full align-middle border-none shadow-lg"
               src="https://avatars1.githubusercontent.com/u/46307504?s=460&u=a75c4f0968df34649bdb9745dbab83acd628d702&v=4"
             />
           </span>
@@ -78,4 +78,5 @@
   </div>
 
 </nav>
+
 

@@ -41,7 +41,7 @@ export class AddUserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.rfAddUser.reset(this.rfAddUser.value);
+    this.rfAddUser?.reset(this.rfAddUser.value);
     this.rfAddUser = this.fb.group({
       username: ['', {
         validators: [Validators.required, Validators.minLength(6)],

@@ -1,11 +1,18 @@
 package com.thanhtam.backend.controller;
 
+import com.thanhtam.backend.dto.PageResult;
 import com.thanhtam.backend.dto.ServiceResult;
 import com.thanhtam.backend.entity.Course;
+import com.thanhtam.backend.entity.User;
 import com.thanhtam.backend.service.CourseService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
@@ -16,6 +23,7 @@ import java.util.Optional;
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(value = "/api")
+@Slf4j
 public class CourseController {
     private CourseService courseService;
 
@@ -25,16 +33,40 @@ public class CourseController {
     }
 
 
-    @GetMapping(value = "/courses")
-    public ResponseEntity<ServiceResult> getAllCourse() {
-        List<Course> courseList = courseService.getCourseList();
-        if (courseList.size() == 0) {
-            return ResponseEntity.ok().body(new ServiceResult(HttpStatus.NO_CONTENT.value(), "List is empty", null));
-        }
-        return ResponseEntity.ok().body(new ServiceResult(HttpStatus.OK.value(), "Get list of course successfully!", courseList));
+//    @GetMapping(value = "/courses")
+//    public ResponseEntity<ServiceResult> getAllCourse() {
+//        List<Course> courseList = courseService.getCourseList();
+//        if (courseList.size() == 0) {
+//            return ResponseEntity.ok().body(new ServiceResult(HttpStatus.NO_CONTENT.value(), "List is empty", null));
+//        }
+//        return ResponseEntity.ok().body(new ServiceResult(HttpStatus.OK.value(), "Get list of course successfully!", courseList));
+//
+//    }
 
+    @GetMapping(value = "/courses")
+    @PreAuthorize("hasRole('ADMIN')")
+    public PageResult getCourseListByPage(@PageableDefault(page = 0, size = 10, sort = "id") Pageable pageable) {
+        Page<Course> courseListByPage = courseService.getCourseListByPage(pageable);
+        return new PageResult(courseListByPage);
     }
 
+    @GetMapping(value = "/courses/{id}/check-course-code")
+    @PreAuthorize("hasRole('ADMIN')")
+    public boolean checkCourseCode(@RequestParam String value, @PathVariable Long id) {
+        if (courseService.existsByCode(value)) {
+            if (courseService.getCourseById(id).get().getCourseCode().equals(value)) {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    @GetMapping(value = "/courses/check-course-code")
+    @PreAuthorize("hasRole('ADMIN')")
+    public boolean checkCode(@RequestParam String value) {
+        return courseService.existsByCode(value);
+    }
 
     @GetMapping(value = "/courses/{id}")
     public ResponseEntity<?> getCourseById(@PathVariable Long id) {
@@ -43,7 +75,7 @@ public class CourseController {
             throw new EntityNotFoundException("Not found with course id: " + id);
 
         }
-        return ResponseEntity.ok().body(new ServiceResult(HttpStatus.OK.value(), "Get course with id: " + id, course));
+        return ResponseEntity.ok().body(course);
     }
 
     @PostMapping(value = "/courses")
@@ -71,6 +103,7 @@ public class CourseController {
         }
         course.setId(id);
         courseService.saveCourse(course);
+        log.warn(course.toString());
         return ResponseEntity.ok().body(new ServiceResult(HttpStatus.OK.value(), "Update course with id: " + id, course));
     }
 

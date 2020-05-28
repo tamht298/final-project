@@ -3,6 +3,8 @@ package com.thanhtam.backend.service;
 import com.thanhtam.backend.entity.Course;
 import com.thanhtam.backend.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +28,11 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> getCourseList() {
         return courseRepository.findAll();
+    }
+
+    @Override
+    public Page<Course> getCourseListByPage(Pageable pageable) {
+        return courseRepository.findAll(pageable);
     }
 
     @Override

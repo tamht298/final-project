@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {AfterContentInit, AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {UserService} from '../../_services/user.service';
 import {UserAccount} from '../../models/user-account';
 import {PaginationDetail} from '../../models/pagination/pagination-detail';
@@ -8,7 +8,7 @@ import {PaginationDetail} from '../../models/pagination/pagination-detail';
   templateUrl: './manage-user.component.html',
   styleUrls: ['./manage-user.component.scss']
 })
-export class ManageUserComponent implements OnInit {
+export class ManageUserComponent implements OnInit, AfterContentInit {
 
   userList: UserAccount[] = [];
   paginationDetail: PaginationDetail;
@@ -116,5 +116,9 @@ export class ManageUserComponent implements OnInit {
       this.userList = res.data;
       this.paginationDetail = res.paginationDetails;
     });
+  }
+
+  ngAfterContentInit(): void {
+    console.log('after view init');
   }
 }
