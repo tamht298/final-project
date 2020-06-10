@@ -5,6 +5,7 @@ import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 import {BreadcrumbsComponent} from './breadcrumbs/breadcrumbs.component';
 import {SpinnerComponent} from './spinner/spinner.component';
 import { TabComponent } from './tab/tab.component';
+import {TooltipModule} from 'ng2-tooltip-directive';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { TabComponent } from './tab/tab.component';
     BreadcrumbsComponent,
     SpinnerComponent,
     TabComponent,
+    TooltipModule
 
   ],
   imports: [

@@ -33,4 +33,9 @@ public class PartServiceImpl implements PartService {
     public Optional<Part> findPartById(Long id) {
         return partRepository.findById(id);
     }
+
+    @Override
+    public boolean existsById(Long id) {
+        return partRepository.existsById(id);
+    }
 }

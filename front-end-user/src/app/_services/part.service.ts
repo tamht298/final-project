@@ -11,7 +11,6 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 })
 export class PartService {
 
-  ad;
   private baseUrl: string = environment.apiEndPoint;
 
   constructor(private http: HttpClient) {
@@ -26,5 +25,9 @@ export class PartService {
 
   updatePart(id: number, name: string): Observable<any> {
     return this.http.patch(`${this.baseUrl}/parts/${id}`, name);
+  }
+
+  getPartById(id: number): Observable<Part> {
+    return this.http.get<Part>(`${this.baseUrl}/parts/${id}`);
   }
 }

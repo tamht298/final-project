@@ -24,7 +24,7 @@ import {TabsComponent} from './tabs/tabs.component';
 import {ManageCourseComponent} from './manage-course/manage-course.component';
 import {CourseUpdateComponent} from './manage-course/course-update/course-update.component';
 import {CourseCreateComponent} from './manage-course/course-create/course-create.component';
-import {ListQuestionComponent} from './manage-course/list-question/list-question.component';
+import {ListQuestionComponent} from './manage-part/list-question/list-question.component';
 import {ManagePartComponent} from './manage-part/manage-part.component';
 
 @NgModule({

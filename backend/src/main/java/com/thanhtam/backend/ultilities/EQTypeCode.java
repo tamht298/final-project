@@ -3,9 +3,9 @@ package com.thanhtam.backend.ultilities;
 public enum EQTypeCode {
     /**
      * TF: true/false
-     * MCQ: Multiple choice question
-     * MSQ: Multiple select question
+     * MC: Multiple choice
+     * MS: Multiple select
      */
 
-    TF, MCQ, MSQ
+    TF, MC, MS
 }

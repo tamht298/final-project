@@ -2,9 +2,11 @@ package com.thanhtam.backend.controller;
 
 import com.thanhtam.backend.dto.ServiceResult;
 import com.thanhtam.backend.entity.Course;
+import com.thanhtam.backend.entity.Part;
 import com.thanhtam.backend.entity.Question;
 import com.thanhtam.backend.entity.QuestionType;
 import com.thanhtam.backend.service.CourseService;
+import com.thanhtam.backend.service.PartService;
 import com.thanhtam.backend.service.QuestionService;
 import com.thanhtam.backend.service.QuestionTypeService;
 import lombok.extern.slf4j.Slf4j;
@@ -23,14 +25,14 @@ import java.util.Optional;
 @Slf4j
 public class QuestionController {
     private QuestionService questionService;
-    private CourseService courseService;
+    private PartService partService;
     private QuestionTypeService questionTypeService;
 
 
     @Autowired
-    public QuestionController(QuestionService questionService, CourseService courseService, QuestionTypeService questionTypeService) {
+    public QuestionController(QuestionService questionService, PartService partService, QuestionTypeService questionTypeService) {
         this.questionService = questionService;
-        this.courseService = courseService;
+        this.partService = partService;
         this.questionTypeService = questionTypeService;
     }
 
@@ -50,15 +52,15 @@ public class QuestionController {
         return ResponseEntity.ok().body(new ServiceResult(HttpStatus.OK.value(), "Get question with id: " + id, questionOptional));
     }
 
-    //    Get list of question by course
-    @GetMapping(value = "/courses/{courseId}/questions")
-    public ResponseEntity<?> getQuestionsByCourse(@PathVariable Long courseId) {
-        if (courseService.existsById(courseId)) {
-            Course course = courseService.getCourseById(courseId).get();
-            List<Question> questionList = questionService.getQuestionByCourse(course);
-            return ResponseEntity.ok().body(new ServiceResult(HttpStatus.OK.value(), "Get question list with course id: " + courseId, questionList));
+    //    Get list of question by part
+    @GetMapping(value = "/parts/{partId}/questions")
+    public ResponseEntity<?> getQuestionsByPart(@PathVariable Long partId) {
+        if (partService.existsById(partId)) {
+            Part part = partService.findPartById(partId).get();
+            List<Question> questionList = questionService.getQuestionByPart(part);
+            return ResponseEntity.ok().body(new ServiceResult(HttpStatus.OK.value(), "Get question list with course id: " + partId, questionList));
         }
-        return ResponseEntity.ok().body(new ServiceResult(HttpStatus.NOT_FOUND.value(), "Not found with course id: " + courseId, null));
+        return ResponseEntity.ok().body(new ServiceResult(HttpStatus.NOT_FOUND.value(), "Not found with course id: " + partId, null));
 
     }
 

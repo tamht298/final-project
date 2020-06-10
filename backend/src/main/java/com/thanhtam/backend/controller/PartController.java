@@ -1,6 +1,7 @@
 package com.thanhtam.backend.controller;
 
 import com.thanhtam.backend.dto.PageResult;
+import com.thanhtam.backend.entity.Course;
 import com.thanhtam.backend.entity.Part;
 import com.thanhtam.backend.service.PartService;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.Optional;
 
@@ -34,6 +36,16 @@ public class PartController {
         return new PageResult(parts);
     }
 
+    @GetMapping(value="/parts/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getPartById(@PathVariable Long id) {
+        Optional<Part> part = partService.findPartById(id);
+        if (!part.isPresent()) {
+            throw new EntityNotFoundException("Not found with part id: " + id);
+
+        }
+        return ResponseEntity.ok().body(part);
+    }
     @PatchMapping(value = "/parts/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> updatePartName(@PathVariable Long id, @Valid @RequestBody String name) {

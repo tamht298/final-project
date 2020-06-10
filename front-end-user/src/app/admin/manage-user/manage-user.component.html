@@ -126,10 +126,10 @@
 
                 <td
                   class="border-t-0 px-6 align-middle flex justify-between border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 w-full">
-                  <app-detail-user class="mx-1" [userInfo]="user"></app-detail-user>
-                  <app-update-user [userInfo]="user" (usersOutput)="fetchUsersAfterCRUD($event)"></app-update-user>
+                  <app-detail-user class="mx-1" [userInfo]="user" tooltip="Xem chi tiết" placement="top" show-delay="100" hide-delay="100"></app-detail-user>
+                  <app-update-user [userInfo]="user" (usersOutput)="fetchUsersAfterCRUD($event)" tooltip="Cập nhật thông tin" placement="top" show-delay="100" hide-delay="100"></app-update-user>
                   <app-delete-user class="mx-1" [userInfo]="user"
-                                   (usersOutput)="fetchUsersAfterCRUD($event)"></app-delete-user>
+                                   (usersOutput)="fetchUsersAfterCRUD($event)" tooltip="Xoá người dùng" placement="top" show-delay="100" hide-delay="100"></app-delete-user>
                 </td>
 
               </tr>

@@ -1,6 +1,7 @@
 package com.thanhtam.backend.entity;
 
 import com.thanhtam.backend.audit.Auditable;
+import com.thanhtam.backend.ultilities.DifficultyLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,22 +24,19 @@ public class Question extends Auditable<Long> implements Serializable {
     @Column(name = "question_text", columnDefinition = "text")
     private String questionText;
 
-    @Column(name = "shuffle")
-    private boolean isShuffle = false;
+    @Column(name = "difficulty_level")
+    private DifficultyLevel difficultyLevel;
 
-    @Column(name = "point")
-    private double point;
-
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "question_type_id")
     private QuestionType questionType;
 
-    @OneToMany()
+    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "question_id")
     private List<Choice> choices;
 
     @ManyToOne()
-    @JoinColumn(name = "course_id")
-    private Course course;
+    @JoinColumn(name = "part_id")
+    private Part part;
 
 }

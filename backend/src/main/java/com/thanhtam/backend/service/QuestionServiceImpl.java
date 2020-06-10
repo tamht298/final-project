@@ -1,6 +1,7 @@
 package com.thanhtam.backend.service;
 
 import com.thanhtam.backend.entity.Course;
+import com.thanhtam.backend.entity.Part;
 import com.thanhtam.backend.entity.Question;
 import com.thanhtam.backend.entity.QuestionType;
 import com.thanhtam.backend.repository.QuestionRepository;
@@ -25,8 +26,8 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<Question> getQuestionByCourse(Course course) {
-        return questionRepository.findByCourse(course);
+    public List<Question> getQuestionByPart(Part part) {
+        return questionRepository.findByPart(part);
     }
 
     @Override

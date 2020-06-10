@@ -1,6 +1,7 @@
 package com.thanhtam.backend.service;
 
 import com.thanhtam.backend.entity.Course;
+import com.thanhtam.backend.entity.Part;
 import com.thanhtam.backend.entity.Question;
 import com.thanhtam.backend.entity.QuestionType;
 
@@ -10,7 +11,7 @@ import java.util.Optional;
 public interface QuestionService {
     Optional<Question> getQuestionById(Long id);
 
-    List<Question> getQuestionByCourse(Course course);
+    List<Question> getQuestionByPart(Part part);
 
     List<Question> getQuestionByQuestionType(QuestionType questionType);
 

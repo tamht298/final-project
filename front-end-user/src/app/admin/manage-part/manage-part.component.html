@@ -94,6 +94,7 @@
                     type="button"
                     (click)="toggleInput(part)"
                     *ngIf="selectedUpdateId!==part.id"
+                    tooltip="Cập nhật" placement="left" show-delay="100" hide-delay="100"
                   ><span><i class="fa fa-edit"></i></span>
                   </button>
 
@@ -102,9 +103,13 @@
                     type="button"
                     (click)="updatePart(part.id)"
                     *ngIf="selectedUpdateId===part.id"
+                    tooltip="Lưu" placement="left" show-delay="100" hide-delay="100"
                   ><span><i class="fa fa-save"></i></span>
                   </button>
-
+                  <a [routerLink]="[part.id,'view-question']"
+                     class="bg-white shadow-md hover:bg-blue-500 hover:text-gray-200 ml-1 transition duration-200 ease-in-out text-xs font-bold uppercase rounded outline-none focus:outline-none px-2 py-1"
+                  ><span><i class="fa fa-question-circle-o"></i> View question list</span>
+                  </a>
                 </td>
 
               </tr>

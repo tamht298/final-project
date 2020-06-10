@@ -22,7 +22,7 @@ public class Choice implements Serializable {
     private String choiceText;
 
     @Column(name = "corrected")
-    private boolean isCorrected;
+    private int isCorrected;
 
 
 }
