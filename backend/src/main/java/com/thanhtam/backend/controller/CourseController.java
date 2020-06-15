@@ -33,15 +33,12 @@ public class CourseController {
     }
 
 
-//    @GetMapping(value = "/courses")
-//    public ResponseEntity<ServiceResult> getAllCourse() {
-//        List<Course> courseList = courseService.getCourseList();
-//        if (courseList.size() == 0) {
-//            return ResponseEntity.ok().body(new ServiceResult(HttpStatus.NO_CONTENT.value(), "List is empty", null));
-//        }
-//        return ResponseEntity.ok().body(new ServiceResult(HttpStatus.OK.value(), "Get list of course successfully!", courseList));
-//
-//    }
+    @GetMapping(value = "/course-list")
+    public List<Course> getAllCourse() {
+        List<Course> courseList = courseService.getCourseList();
+        return courseList;
+
+    }
 
     @GetMapping(value = "/courses")
     @PreAuthorize("hasRole('ADMIN')")

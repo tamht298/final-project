@@ -6,6 +6,8 @@ import com.thanhtam.backend.entity.Question;
 import com.thanhtam.backend.entity.QuestionType;
 import com.thanhtam.backend.repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,6 +40,11 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public List<Question> getQuestionList() {
         return questionRepository.findAll();
+    }
+
+    @Override
+    public Page<Question> findQuestionsByPart(Pageable pageable, Part part) {
+        return questionRepository.findQuestionsByPart(pageable, part);
     }
 
     @Override

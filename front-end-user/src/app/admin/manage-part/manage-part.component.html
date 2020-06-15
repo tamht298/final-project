@@ -1,9 +1,10 @@
 <div class="bg-blue-600 md:pt-32 pb-32 pt-12">
   <div class="px-4 md:px-10 mx-auto w-full">
+    <a [routerLink]="['/admin/courses']" class="text-white cursor-pointer hover:underline"><i class="fa fa-long-arrow-left"></i><span class="mx-2">Quay về danh sách môn</span></a>
   </div>
 </div>
 
-<div class=" mx-auto w-full -m-24">
+<div class="mx-auto w-full -m-24">
 
   <div class="flex flex-wrap mt-4 justify-center">
     <div class="w-full mb-12 xl:mb-0 px-4 max-w-5xl">
@@ -94,7 +95,7 @@
                     type="button"
                     (click)="toggleInput(part)"
                     *ngIf="selectedUpdateId!==part.id"
-                    tooltip="Cập nhật" placement="left" show-delay="100" hide-delay="100"
+                    tooltip="Thay đổi nội dung" placement="left" show-delay="100" hide-delay="100"
                   ><span><i class="fa fa-edit"></i></span>
                   </button>
 
@@ -108,7 +109,7 @@
                   </button>
                   <a [routerLink]="[part.id,'view-question']"
                      class="bg-white shadow-md hover:bg-blue-500 hover:text-gray-200 ml-1 transition duration-200 ease-in-out text-xs font-bold uppercase rounded outline-none focus:outline-none px-2 py-1"
-                  ><span><i class="fa fa-question-circle-o"></i> View question list</span>
+                  ><span><i class="fa fa-question-circle-o"></i> DS câu hỏi</span>
                   </a>
                 </td>
 

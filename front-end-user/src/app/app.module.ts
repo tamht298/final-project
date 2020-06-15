@@ -37,7 +37,6 @@ import {ToastrModule} from 'ngx-toastr';
     }),
     FormsModule,
     ReactiveFormsModule,
-
     LoadingBarHttpClientModule,
     SharedModule,
     UserModule,

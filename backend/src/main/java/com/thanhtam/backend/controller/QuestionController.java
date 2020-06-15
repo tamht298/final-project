@@ -1,5 +1,6 @@
 package com.thanhtam.backend.controller;
 
+import com.thanhtam.backend.dto.PageResult;
 import com.thanhtam.backend.dto.ServiceResult;
 import com.thanhtam.backend.entity.Course;
 import com.thanhtam.backend.entity.Part;
@@ -11,6 +12,9 @@ import com.thanhtam.backend.service.QuestionService;
 import com.thanhtam.backend.service.QuestionTypeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -54,13 +58,15 @@ public class QuestionController {
 
     //    Get list of question by part
     @GetMapping(value = "/parts/{partId}/questions")
-    public ResponseEntity<?> getQuestionsByPart(@PathVariable Long partId) {
-        if (partService.existsById(partId)) {
-            Part part = partService.findPartById(partId).get();
-            List<Question> questionList = questionService.getQuestionByPart(part);
-            return ResponseEntity.ok().body(new ServiceResult(HttpStatus.OK.value(), "Get question list with course id: " + partId, questionList));
-        }
-        return ResponseEntity.ok().body(new ServiceResult(HttpStatus.NOT_FOUND.value(), "Not found with course id: " + partId, null));
+    public PageResult getQuestionsByPart(@PageableDefault(page = 0, size = 10, sort = "id") Pageable pageable, @PathVariable Long partId) {
+//        if (partService.existsById(partId)) {
+//            Part part = partService.findPartById(partId).get();
+//            List<Question> questionList = questionService.getQuestionByPart(part);
+//            return ResponseEntity.ok().body(new ServiceResult(HttpStatus.OK.value(), "Get question list with course id: " + partId, questionList));
+//        }
+        Part part = partService.findPartById(partId).get();
+        Page<Question> questions = questionService.findQuestionsByPart(pageable, part);
+        return new PageResult(questions);
 
     }
 

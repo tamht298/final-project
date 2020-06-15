@@ -6,6 +6,9 @@ import {BreadcrumbsComponent} from './breadcrumbs/breadcrumbs.component';
 import {SpinnerComponent} from './spinner/spinner.component';
 import { TabComponent } from './tab/tab.component';
 import {TooltipModule} from 'ng2-tooltip-directive';
+import { RichEditorComponent } from './rich-editor/rich-editor.component';
+import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
+import {FormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -15,17 +18,20 @@ import {TooltipModule} from 'ng2-tooltip-directive';
     BreadcrumbsComponent,
     SpinnerComponent,
     TabComponent,
+    RichEditorComponent,
   ],
   exports: [
     PreLoadingComponent,
     BreadcrumbsComponent,
     SpinnerComponent,
     TabComponent,
-    TooltipModule
-
+    TooltipModule,
+    RichEditorComponent,
   ],
   imports: [
     CommonModule,
+    FormsModule,
+    CKEditorModule
   ]
 })
 export class SharedModule {

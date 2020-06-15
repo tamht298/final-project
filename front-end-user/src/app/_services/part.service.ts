@@ -30,4 +30,8 @@ export class PartService {
   getPartById(id: number): Observable<Part> {
     return this.http.get<Part>(`${this.baseUrl}/parts/${id}`);
   }
+
+  getPartByCourse(courseId: number): Observable<Part[]> {
+    return this.http.get<Part[]>(`${this.baseUrl}/courses/${courseId}/part-list`);
+  }
 }

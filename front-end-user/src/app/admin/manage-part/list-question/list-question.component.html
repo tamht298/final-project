@@ -1,5 +1,6 @@
 <div class="bg-blue-600 md:pt-32 pb-32 pt-12">
   <div class="px-4 md:px-10 mx-auto w-full">
+    <a [routerLink]="['../../']" class="text-white cursor-pointer hover:underline"><i class="fa fa-long-arrow-left"></i><span class="mx-2">Quay lại</span></a>
   </div>
 </div>
 <div class=" mx-auto w-full -m-24">
@@ -12,7 +13,7 @@
             <div class="relative w-full px-4 max-w-full flex-grow leading-8 mb-3">
               <h3 class="font-semibold text-2xl text-gray-800">
 
-                <span class="cursor-pointer hover:underline hover:text-blue-500" tooltip="{{currentCourse.name}}" placement="top" show-delay="100" hide-delay="100">({{currentCourse?.courseCode}})</span> - [{{currentPart?.name}}]
+                <span class="cursor-pointer hover:text-blue-500" tooltip="{{currentCourse?.name}}" placement="top" show-delay="100" hide-delay="100">({{currentCourse?.courseCode}})</span> - [{{currentPart?.name}}]
               </h3>
               <br>
               <h3 class="font-semibold text-xl text-gray-700">Danh sách câu hỏi</h3>
@@ -102,30 +103,25 @@
             </thead>
 
             <tbody>
-            <ng-container *ngFor="let course of questionList; trackBy: trackById">
+            <ng-container *ngFor="let ques of questionList; trackBy: trackById">
               <tr class="border hover:bg-gray-300">
 
                 <th
                   class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 text-left"
 
                 >
-                  <a class="hover:text-blue-700" [routerLink]="[course.id,'parts']">{{course.courseCode}}</a>
+                  {{ques.questionText}}
                 </th>
 
                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
-                  {{course.name}}
+                  {{ques.difficultyLevel}}
                 </td>
-
+                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
+                  {{ques.questionType.description}}
+                </td>
 
                 <td
                   class="border-t-0 px-6 align-middle flex justify-between border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 w-full">
-<!--                  <app-course-update [courseInfo]="course"-->
-<!--                                     (courseOutput)="fetchCourseAfterCRUD($event)"></app-course-update>-->
-
-                  <a [routerLink]="[course.id,'view-question']"
-                     class="bg-white shadow-md hover:bg-blue-500 hover:text-gray-200 ml-1 transition duration-200 ease-in-out text-xs font-bold uppercase rounded outline-none focus:outline-none px-2 py-1"
-                  ><span><i class="fa fa-question-circle-o"></i> View question list</span>
-                  </a>
                 </td>
 
               </tr>
@@ -135,6 +131,7 @@
 
           </table>
         </div>
+
 
         <!--        <div *ngIf="userList.length!==0"-->
         <!--             class="px-4 py-3 bg-white border-t flex flex-row justify-between xs:flex-row items-center xs:justify-between">-->

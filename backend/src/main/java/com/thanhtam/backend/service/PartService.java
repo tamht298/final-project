@@ -13,6 +13,8 @@ public interface PartService {
 
     Page<Part> getPartLisByCourse(Pageable pageable, Long courseId);
 
+    List<Part> getPartListByCourse(Course course);
+
     Optional<Part> findPartById(Long id);
 
     boolean existsById(Long id);

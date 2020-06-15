@@ -3,6 +3,7 @@ package com.thanhtam.backend.controller;
 import com.thanhtam.backend.dto.PageResult;
 import com.thanhtam.backend.entity.Course;
 import com.thanhtam.backend.entity.Part;
+import com.thanhtam.backend.service.CourseService;
 import com.thanhtam.backend.service.PartService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -23,10 +25,12 @@ import java.util.Optional;
 @Slf4j
 public class PartController {
     private PartService partService;
+    private CourseService courseService;
 
     @Autowired
-    public PartController(PartService partService) {
+    public PartController(PartService partService, CourseService courseService) {
         this.partService = partService;
+        this.courseService = courseService;
     }
 
     @GetMapping(value = "/courses/{courseId}/parts")
@@ -34,6 +38,13 @@ public class PartController {
     public PageResult getPartListByCourse(@PageableDefault(page = 0, size = 10, sort = "id") Pageable pageable, @PathVariable Long courseId) {
         Page<Part> parts = partService.getPartLisByCourse(pageable, courseId);
         return new PageResult(parts);
+    }
+    @GetMapping(value = "/courses/{courseId}/part-list")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<Part> getPartListByCourse(@PathVariable Long courseId) {
+        Course course = courseService.getCourseById(courseId).get();
+        List<Part> parts = partService.getPartListByCourse(course);
+        return parts;
     }
 
     @GetMapping(value="/parts/{id}")

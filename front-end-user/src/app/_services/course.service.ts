@@ -17,6 +17,10 @@ export class CourseService {
   constructor(private http: HttpClient) {
   }
 
+  public getCourseList(): Observable<Course[]> {
+    return this.http.get<Course[]>(`${this.baseUrl}/course-list`);
+  }
+
   public getCourseListByPage(page?: number, size?: number): Observable<PageResult<Course>> {
     page = page || environment.pageMeta.pageNumber;
     size = size || environment.pageMeta.pageSize;

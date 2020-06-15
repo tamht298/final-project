@@ -1,5 +1,6 @@
 package com.thanhtam.backend.service;
 
+import com.thanhtam.backend.entity.Course;
 import com.thanhtam.backend.entity.Part;
 import com.thanhtam.backend.repository.PartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,6 +29,11 @@ public class PartServiceImpl implements PartService {
     @Override
     public Page<Part> getPartLisByCourse(Pageable pageable, Long courseId) {
         return partRepository.findAllByCourseId(courseId, pageable);
+    }
+
+    @Override
+    public List<Part> getPartListByCourse(Course course) {
+        return partRepository.findAllByCourse(course);
     }
 
     @Override
