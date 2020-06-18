@@ -7,5 +7,16 @@ public enum EQTypeCode {
      * MS: Multiple select
      */
 
-    TF, MC, MS
+    TF("TF"), MC("MC"), MS("MS");
+    private final String type;
+
+    private EQTypeCode(String type) {
+        this.type = type;
+    }
+
+    public String toString() {
+        return this.type;
+    }
+
+
 }

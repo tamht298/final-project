@@ -10,6 +10,7 @@ import com.thanhtam.backend.service.CourseService;
 import com.thanhtam.backend.service.PartService;
 import com.thanhtam.backend.service.QuestionService;
 import com.thanhtam.backend.service.QuestionTypeService;
+import com.thanhtam.backend.ultilities.EQTypeCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -84,10 +85,17 @@ public class QuestionController {
     }
 
     @PostMapping(value = "/questions")
-    public ResponseEntity<?> createQuestion(@Valid @RequestBody Question question) {
+    public Question createQuestion(@Valid @RequestBody Question question, @RequestParam String questionType, @RequestParam Long partId) {
+        EQTypeCode eqTypeCode = EQTypeCode.valueOf(questionType);
+        QuestionType questionType1 = questionTypeService.getQuestionTypeByCode(eqTypeCode).get();
+        Part part = partService.findPartById(partId).get();
+
+        question.setQuestionType(questionType1);
+        question.setPart(part);
         questionService.save(question);
         Question questionCreated = questionService.getQuestionById(question.getId()).get();
-        return ResponseEntity.ok().body(new ServiceResult(HttpStatus.OK.value(), "Created question successfully!", questionCreated));
+        log.info(questionCreated.toString());
+        return questionCreated;
     }
 
     @PutMapping(value = "/questions/{id}")

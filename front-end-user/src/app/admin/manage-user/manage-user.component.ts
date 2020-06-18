@@ -28,6 +28,7 @@ export class ManageUserComponent implements OnInit, AfterContentInit {
 
   ngOnInit(): void {
     this.fetchUserList();
+    console.log('manage-user');
   }
 
   fetchUserList() {
@@ -45,7 +46,7 @@ export class ManageUserComponent implements OnInit, AfterContentInit {
   }
 
   exportUserToExcel() {
-    this.userService.exportExcel(false).subscribe( response => {
+    this.userService.exportExcel(false).subscribe(response => {
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(new Blob([response], {type: 'text/csv'}));
       link.download = 'users.csv';

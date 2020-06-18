@@ -1,6 +1,7 @@
 <div class="bg-blue-600 md:pt-32 pb-32 pt-12">
   <div class="px-4 md:px-10 mx-auto w-full">
-    <a [routerLink]="['../../']" class="text-white cursor-pointer hover:underline"><i class="fa fa-long-arrow-left"></i><span class="mx-2">Quay lại</span></a>
+    <a [routerLink]="['../../']" class="text-white cursor-pointer hover:underline"><i class="fa fa-long-arrow-left"></i><span
+      class="mx-2">Quay lại</span></a>
   </div>
 </div>
 <div class=" mx-auto w-full -m-24">
@@ -13,7 +14,8 @@
             <div class="relative w-full px-4 max-w-full flex-grow leading-8 mb-3">
               <h3 class="font-semibold text-2xl text-gray-800">
 
-                <span class="cursor-pointer hover:text-blue-500" tooltip="{{currentCourse?.name}}" placement="top" show-delay="100" hide-delay="100">({{currentCourse?.courseCode}})</span> - [{{currentPart?.name}}]
+                <span class="cursor-pointer hover:text-blue-500" tooltip="{{currentCourse?.name}}" placement="top"
+                      show-delay="100" hide-delay="100">({{currentCourse?.courseCode}})</span> - [{{currentPart?.name}}]
               </h3>
               <br>
               <h3 class="font-semibold text-xl text-gray-700">Danh sách câu hỏi</h3>
@@ -49,7 +51,7 @@
                   <!--                    <app-delete-list-user></app-delete-list-user>-->
                   <!--                  </ng-container>-->
                   <!--                                    <app-add-user (courseOutput)="fetchUsersAfterCRUD($event)"></app-add-user>-->
-<!--                  <app-course-create (outputCourse)="fetchCourseAfterCRUD($event)"></app-course-create>-->
+                  <!--                  <app-course-create (outputCourse)="fetchCourseAfterCRUD($event)"></app-course-create>-->
 
                 </div>
               </div>
@@ -89,9 +91,10 @@
               </th>
 
               <th
-                class="row-difficulty px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
+                class="row-difficulty text-center px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
                 Độ khó
-              </th><th
+              </th>
+              <th
                 class="row-type px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
                 Loại câu
               </th>
@@ -110,11 +113,21 @@
                   class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 text-left"
 
                 >
-                  {{ques.questionText}}
+                  <div [innerHTML]="ques.questionText"></div>
                 </th>
 
-                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
-                  {{ques.difficultyLevel}}
+                <td class="border-t-0 text-center px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
+                  <ng-container [ngSwitch]="ques.difficultyLevel">
+                    <ng-template [ngSwitchCase]="'EASY'">
+                      <span class="px-2 py-1 bg-green-200 cursor-pointer font-medium hover:bg-green-300 transition duration-300 ease-in-out font-light text-green-600 text-xs rounded-md">{{ques.difficultyLevel}}</span>
+                    </ng-template>
+                    <ng-template [ngSwitchCase]="'MEDIUM'">
+                      <span class="px-2 py-1 bg-gray-200 cursor-pointer font-medium hover:bg-gray-400 transition duration-300 ease-in-out font-light text-gray-600 text-xs rounded-md">{{ques.difficultyLevel}}</span>
+                    </ng-template>
+                    <ng-template [ngSwitchCase]="'HARD'">
+                      <span class="px-2 py-1 bg-red-200 cursor-pointer font-medium hover:bg-red-300 transition duration-300 ease-in-out font-light text-red-600 text-xs rounded-md">{{ques.difficultyLevel}}</span>
+                    </ng-template>
+                  </ng-container>
                 </td>
                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
                   {{ques.questionType.description}}

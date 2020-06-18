@@ -18,14 +18,11 @@ export class Question {
   constructor(
     questionText: string,
     difficultyLevel: string,
-    questionType: QuestionType,
-    choices: Choice[],
-    part: Part) {
+    choices: Choice[]) {
 
     this.questionText = questionText;
     this.difficultyLevel = difficultyLevel;
-    this.questionType = questionType;
     this.choices = choices;
-    this.part = part;
+
   }
 }

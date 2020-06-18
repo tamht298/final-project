@@ -113,7 +113,7 @@
                 </th>
 
                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
-                  {{course.name}}
+                  <a class="hover:text-blue-700" [routerLink]="[course.id,'parts']" tooltip="Xem nội dung" placement="right" show-delay="100" hide-delay="100">{{course.name}}</a>
                 </td>
 
 

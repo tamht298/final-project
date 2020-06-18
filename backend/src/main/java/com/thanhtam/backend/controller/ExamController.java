@@ -2,6 +2,7 @@ package com.thanhtam.backend.controller;
 
 import com.thanhtam.backend.dto.ServiceResult;
 import com.thanhtam.backend.entity.Exam;
+import com.thanhtam.backend.entity.User;
 import com.thanhtam.backend.service.ExamService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +46,14 @@ public class ExamController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
         }
+
+    }
+
+    @PatchMapping(value="/exams/{examId}/join/users")
+    public List<User> addUserListToExam(@Valid @RequestBody List<User> users, @PathVariable Long examId){
+        Exam exam = this.examService.getExamById(examId).get();
+        exam.setId(examId);
+        exam.setUsers(users);
 
     }
 

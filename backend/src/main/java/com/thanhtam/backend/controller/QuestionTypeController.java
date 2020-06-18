@@ -3,6 +3,7 @@ package com.thanhtam.backend.controller;
 import com.thanhtam.backend.dto.ServiceResult;
 import com.thanhtam.backend.entity.QuestionType;
 import com.thanhtam.backend.service.QuestionTypeService;
+import com.thanhtam.backend.ultilities.EQTypeCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,21 +26,25 @@ public class QuestionTypeController {
     }
 
     @GetMapping(value = "/question-types")
-    public ResponseEntity<ServiceResult> getAllQuestionType() {
+    public List<QuestionType> getAllQuestionType() {
         List<QuestionType> questionTypeList = questionTypeService.getQuestionTypeList();
         log.info(questionTypeList.toString());
 
-        return ResponseEntity.ok().body(new ServiceResult(HttpStatus.OK.value(), "Get list of course successfully!", questionTypeList));
+        return questionTypeList;
 
     }
 
     @GetMapping(value = "/question-types/{id}")
-    public ResponseEntity<?> getQuestionTypeById(@PathVariable Long id) {
-        Optional<QuestionType> questionType = questionTypeService.getQuestionTypeById(id);
-        if (!questionType.isPresent()) {
-            return ResponseEntity.ok().body(new ServiceResult(HttpStatus.NOT_FOUND.value(), "Not found with id: " + id, null));
-        }
-        return ResponseEntity.ok().body(new ServiceResult(HttpStatus.OK.value(), "Get question type id: " + id, questionType));
+    public QuestionType getQuestionTypeById(@PathVariable Long id) {
+        QuestionType questionType = questionTypeService.getQuestionTypeById(id).get();
+        return questionType;
+    }
+
+    @GetMapping(value = "/question-types/{typeCode}")
+    public QuestionType getQuestionTypeByTypeCode(@PathVariable String typeCode) {
+        EQTypeCode eqTypeCode = EQTypeCode.valueOf(typeCode);
+        QuestionType questionType = questionTypeService.getQuestionTypeByCode(eqTypeCode).get();
+        return questionType;
     }
 
 //    @PostMapping(value = "/question-types")

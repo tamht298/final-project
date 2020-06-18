@@ -20,6 +20,7 @@ export class ManageCourseComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchCourseListByPage();
+
   }
 
   fetchCourseListByPage() {

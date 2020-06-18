@@ -44,7 +44,7 @@ public class Exam extends Auditable<Long> implements Serializable {
     @JoinTable(name = "exam_user",
             joinColumns = {@JoinColumn(name = "exam_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")})
-    private Set<User> users;
+    private List<User> users;
 
     @ManyToMany(
             cascade = {CascadeType.DETACH, CascadeType.REFRESH},
@@ -56,6 +56,7 @@ public class Exam extends Auditable<Long> implements Serializable {
             inverseJoinColumns = {@JoinColumn(name = "question_id")}
     )
     private List<Question> questionList;
+
 
     @ManyToOne()
     @JoinColumn(name = "course_id")

@@ -15,6 +15,7 @@ import {ManageCourseComponent} from './admin/manage-course/manage-course.compone
 import {ListQuestionComponent} from './admin/manage-part/list-question/list-question.component';
 import {ManagePartComponent} from './admin/manage-part/manage-part.component';
 import {AddQuestionComponent} from './admin/manage-question/add-question/add-question.component';
+import {ManageTestComponent} from './admin/manage-test/manage-test.component';
 
 
 const routes: Routes = [
@@ -64,8 +65,8 @@ const routes: Routes = [
           {path: 'profile', component: ProfileComponent},
           {path: 'users/active', component: ManageUserComponent},
           {path: 'question-bank', component: QuestionBankComponent},
-          {path: 'question-bank/add', component: AddQuestionComponent},
           {path: 'courses', component: ManageCourseComponent},
+          {path: 'tests', component: ManageTestComponent},
           {path: 'courses/:courseId/parts/:partId/view-question', component: ListQuestionComponent},
           {path: 'courses/:courseId/parts', component: ManagePartComponent},
         ]

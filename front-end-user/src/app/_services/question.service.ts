@@ -18,4 +18,9 @@ export class QuestionService {
     const pageParams = new HttpParams().set('page', page.toString()).set('size', size.toString());
     return this.http.get<PageResult<Question>>(`${this.baseUrl}/parts/${partId}/questions`, {params: pageParams});
   }
+
+  public createQuestion(question: Question, questionType: string, partId: number): Observable<Question> {
+    const reqParams = new HttpParams().set('questionType', questionType.toString()).set('partId', String(partId));
+    return this.http.post<Question>(`${this.baseUrl}/questions`, question, {params: reqParams});
+  }
 }

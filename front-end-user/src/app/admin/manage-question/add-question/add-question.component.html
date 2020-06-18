@@ -1,12 +1,12 @@
 <button
   class="bg-white shadow-md hover:bg-blue-500 hover:text-blue-200 transition duration-200 ease-in-out text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mx-1 mb-1"
-(click)="toggleModal()"
+  (click)="toggleModal()"
 ><span><i class="fa fa-user-plus mr-1"></i>Add new</span>
 </button>
 
-<form novalidate (ngSubmit)="onSubmit()" [formGroup]="rfAdd">
-  <div *ngIf="showModal"
-       class="fixed inset-0 overflow-auto z-50 outline-none focus:outline-none justify-center flex">
+<form novalidate (ngSubmit)="onSubmit()" [formGroup]="rfAdd" *ngIf="showModal">
+  <div
+    class="fixed inset-0 overflow-auto z-50 outline-none focus:outline-none justify-center flex">
     <div class="relative w-4/5 my-5 mx-auto max-w-4xl" style="margin-top: 2.5rem">
       <!--content-->
       <div
@@ -18,7 +18,7 @@
 
           <button
             class="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-          (click)="closeModal()"
+            (click)="closeModal()"
           >
               <span
                 class="bg-transparent text-gray-700 opacity-5 h-3 w-3 text-base block outline-none focus:outline-none">
@@ -54,9 +54,11 @@
                             Môn học
                           </label>
                           <select (change)="changeCourse($event)"
+                                  formControlName="course" name="course"
                                   class="block appearance-none w-full bg-gray-200 py-2 px-3 my-1 mt-3 pr-4 rounded shadow leading-tight focus:outline-none">
-                            <option value="">-- please choose course --</option>
-                            <option *ngFor="let course of courseList" [value]="course.id" [selected]="course.id === selectedCourseId">{{course.name}}</option>
+                            <option value="-1">-- please choose course --</option>
+                            <option *ngFor="let course of courseList" [value]="course.id"
+                                    [selected]="course.id === selectedCourseId">{{course.name}}</option>
 
                           </select>
 
@@ -67,9 +69,11 @@
                             Nội dung
                           </label>
                           <select (change)="changePart($event)"
+                                  formControlName="part" name="part"
                                   class="block appearance-none w-full bg-gray-200 py-2 px-3 my-1 mt-3 pr-4 rounded shadow leading-tight focus:outline-none">
                             <option value="">-- please choose part --</option>
-                            <option *ngFor="let part of partList" [selected]="part.id===selectedPartId" [value]="part.id">{{part.name}}</option>
+                            <option *ngFor="let part of partList" [selected]="part.id===selectedPartId"
+                                    [value]="part.id">{{part.name}}</option>
 
                           </select>
 
@@ -82,72 +86,186 @@
                           >
                             Độ khó
                           </label>
-                          <select  formControlName="difficultyLevel" name=""
+                          <select formControlName="difficultyLevel"
                                   class="block appearance-none w-full bg-gray-200 py-2 px-3 my-1 mt-3 pr-4 rounded shadow leading-tight focus:outline-none">
-                            <option value="">-- please choose difficulty level --</option>
-                            <option>Easy</option>
-                            <option>Medium</option>
-                            <option>Hard</option>
+                            <option value="-1">-- please choose difficulty level --</option>
+                            <option value="0">Easy</option>
+                            <option value="1">Medium</option>
+                            <option value="2">Hard</option>
                           </select>
                         </div>
-                      </div>
 
+                      </div>
+                      <div class="-mx-3 md:flex mb-2 w-full">
+                        <div class="md:w-full px-3">
+                          <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+                          >
+                            Kiểu câu hỏi
+                          </label>
+                          <div class="flex">
+                            <div *ngFor="let questionType of questionTypeList" class="radio-type flex-1">
+                              <div class="radio-btn">
+                                <input type="radio" id="{{questionType.id}}" formControlName="questionType"
+                                       name="questionType" value="{{questionType.typeCode}}"
+                                       (change)="changeQuestionType(questionType.typeCode)"/>
+                                <label for="{{questionType.id}}">{{questionType.description}}</label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                       <div class="-mx-3 md:flex mb-2 w-full">
                         <div class="md:w-full px-3">
                           <label class="block uppercase tracking-wide text-gray-600 text-xs font-bold mb-2"
-                                 >
+                          >
                             Nội dung câu hỏi
                           </label>
-<!--                          <input-->
-<!--                            class="appearance-none border rounded-md w-full py-2 px-3 my-1 text-gray-600 bg-gray-200 leading-tight outline-none focus:border-green-500"-->
-<!--                            id="frm-add-username"-->
-<!--                            type="text"-->
-<!--                            placeholder="Nhập nội dung"-->
-<!--                            autocomplete="off"-->
-<!--                            formControlName="questionText"-->
-<!--                            required-->
-<!--                          >-->
-                          <app-rich-editor></app-rich-editor>
+                          <!--                          <input-->
+                          <!--                            class="appearance-none border rounded-md w-full py-2 px-3 my-1 text-gray-600 bg-gray-200 leading-tight outline-none focus:border-green-500"-->
+                          <!--                            id="frm-add-username"-->
+                          <!--                            type="text"-->
+                          <!--                            placeholder="Nhập nội dung"-->
+                          <!--                            autocomplete="off"-->
+                          <!--                            formControlName="questionText"-->
+                          <!--                            required-->
+                          <!--                          >-->
+                          <ckeditor type="inline"
+                                    [config]="editorConfig" [editor]="Editor"
+                                    required [(ngModel)]="questionText"
+                                    [ngModelOptions]="{standalone: true}"></ckeditor>
                         </div>
                       </div>
 
-                      <div class="-mx-3 md:flex mb-2 w-full">
+                      <div class="-mx-3 md:flex my-2 w-full">
                         <div class="md:w-full px-3">
                           <label class="block uppercase tracking-wide text-gray-600 text-xs font-bold mb-2"
-                                 for="frm-add-username">
-                            Email
-                          </label>
-                          <input
-                            class="appearance-none border rounded-md w-full py-2 px-3 my-1 text-gray-600 bg-gray-200 leading-tight outline-none focus:border-green-500"
-                            id="frm-add-email"
-                            type="email"
-                            placeholder="Nhập thông tin email"
-                            autocomplete="off"
-
-                            required
                           >
+                            Đáp án
+                          </label>
+                          <div [ngSwitch]="currentQuestionType">
+                            <div *ngSwitchCase="'TF'">
+                              <div class="flex">
+                                <div class="radio-type flex-1">
+                                  <div class="radio-btn">
+                                    <input type="radio" id="T" formControlName="choices"
+                                           name="choices" value="True"
+                                           (change)="changeChoiceTF('True')"/>
+                                    <label for="T">True</label>
+                                  </div>
+                                </div>
 
+                                <div class="radio-type flex-1">
+                                  <div class="radio-btn">
+                                    <input type="radio" id="False" formControlName="choices"
+                                           name="choices" value="F"
+                                           (change)="changeChoiceTF('False')"/>
+                                    <label for="False">False</label>
+                                  </div>
+                                </div>
+                              </div>
+
+                            </div>
+                            <div *ngSwitchCase="'MC'">
+                              <div class="flex flex-col">
+                                <div class="w-full my-2" *ngFor="let mc of multipleChoice; let i=index">
+                                  <ckeditor type="inline"
+                                            [config]="editorConfig" [editor]="Editor"
+                                            required [(ngModel)]="mc.choiceText"
+                                            [ngModelOptions]="{standalone: true}"></ckeditor>
+
+                                  <div class="flex my-2">
+                                    <div class="radio-type">
+                                      <div class="radio-btn" style="width: 180px;">
+                                        <input type="radio" name="mcChoices" (change)="changeChoiceMC(i)"
+
+                                               id="mc-{{i}}"
+
+                                               [checked]="mc.isCorrected===1 ? true: false"
+                                               >
+                                        <label for="mc-{{i}}">Set is corrected</label>
+                                      </div>
+                                    </div>
+
+                                    <div class="radio-type" *ngIf="multipleChoice.length>2 && (i!==0 && i!==1)">
+                                      <div class="radio-btn" style="width: 180px;">
+                                        <button
+                                          type="button"
+                                          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                                          (click)="removeMCChoice(i)"><i class="fa fa-close"></i> Remove
+                                        </button>
+
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                </div>
+                                <button type="button" (click)="addMCAnswer()" class="mx-auto py-2 w-32 bg-blue-200 text-blue-500 hover:bg-blue-300 rounded-md focus:outline-none hover:text-blue-600 shadow-md">Thêm đáp
+                                  án
+                                </button>
+                              </div>
+                            </div>
+                            <div *ngSwitchCase="'MS'">
+                              <div class="flex flex-col">
+                                <div class="w-full my-2" *ngFor="let ms of multipleSelect; let index=index">
+                                  <ckeditor type="inline"
+                                            [config]="editorConfig" [editor]="Editor"
+                                            required [(ngModel)]="ms.choiceText"
+                                            [ngModelOptions]="{standalone: true}"></ckeditor>
+
+                                  <div class="flex my-2">
+                                    <div class="radio-type">
+                                      <div class="check-box-btn" style="width: 180px;">
+                                        <input type="checkbox" name="msChoices-{{index}}" (change)="changeChoiceMS(ms)"
+
+                                               value="{{ms.choiceText}}"
+                                               id="ms-{{index}}"
+                                               [(ngModel)]="ms.isCorrected"
+                                               [ngModelOptions]="{standalone: true}">
+                                        <label for="ms-{{index}}" class="check-box">Set is corrected</label>
+                                      </div>
+                                    </div>
+
+                                    <div class="radio-type" *ngIf="multipleSelect.length>2 && (index!==0 && index!==1)">
+                                      <div class="radio-btn" style="width: 180px;">
+                                        <button
+                                          type="button"
+                                          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                                          (click)="removeMSChoice(index)"><i class="fa fa-close"></i> Remove
+                                        </button>
+
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                </div>
+                                <button type="button" (click)="addMSAnswer()" class="mx-auto py-2 w-32 bg-blue-200 text-blue-500 hover:bg-blue-300 rounded-md focus:outline-none hover:text-blue-600 shadow-md">Thêm đáp
+                                  án
+                                </button>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <!--footer-->
-                  <div class="flex items-center justify-end p-6 pb-0 border-t border-solid border-gray-300 rounded-b">
-                    <button
-                      class="bg-white shadow-md hover:bg-blue-500 hover:text-blue-200 transition duration-200 ease-in-out text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
-                      type="submit"
-                      [disabled]="!rfAdd.valid"
-                      *ngIf="rfAdd.valid"
-                    ><span><i class="fa fa-user-plus mr-1"></i>Tạo user</span>
-                    </button>
-                    <button
-                      class="shadow-md bg-gray-600 text-gray-100 hover:bg-gray-700 hover:text-gray-200 transition duration-200 ease-in-out text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
-                      type="button" (click)="closeModal()"
+                    <!--footer-->
+                    <div class="flex items-center justify-end p-6 pb-0 border-t border-solid border-gray-300 rounded-b">
+                      <button
+                        class="bg-white shadow-md hover:bg-blue-500 hover:text-blue-200 transition duration-200 ease-in-out text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
+                        type="submit"
+                        [disabled]="!rfAdd.valid"
+                        *ngIf="rfAdd.valid"
+
+                      ><span><i class="fa fa-question-circle mr-1"></i>Tạo câu hỏi</span>
+                      </button>
+                      <button
+                        class="shadow-md bg-gray-600 text-gray-100 hover:bg-gray-700 hover:text-gray-200 transition duration-200 ease-in-out text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
+                        type="button" (click)="closeModal()"
                       ><span><i class="fa fa-window-close mr-1"></i>Đóng</span>
-                    </button>
+                      </button>
+
+                    </div>
 
                   </div>
-
                 </div>
               </div>
             </div>
