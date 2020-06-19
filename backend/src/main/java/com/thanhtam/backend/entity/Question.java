@@ -26,7 +26,8 @@ public class Question extends Auditable<Long> implements Serializable {
 
     @Column(name = "difficulty_level")
     private DifficultyLevel difficultyLevel;
-
+    @Column(name="point")
+    private int point;
     @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "question_type_id")
     private QuestionType questionType;

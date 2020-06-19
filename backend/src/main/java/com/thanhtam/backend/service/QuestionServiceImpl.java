@@ -48,7 +48,30 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
+    public Page<Question> findAllQuestions(Pageable pageable) {
+        return questionRepository.findAll(pageable);
+    }
+
+    @Override
     public void save(Question question) {
+        int point;
+        switch (question.getDifficultyLevel()) {
+            case EASY: {
+                point = 5;
+                break;
+            }
+            case MEDIUM: {
+                point = 10;
+                break;
+            }
+            case HARD: {
+                point = 15;
+                break;
+            }
+            default:
+                point=0;
+        }
+        question.setPoint(point);
         questionRepository.save(question);
     }
 

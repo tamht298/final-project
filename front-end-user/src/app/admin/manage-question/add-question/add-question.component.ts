@@ -151,9 +151,6 @@ export class AddQuestionComponent implements OnInit {
     });
   }
 
-  changePart(event) {
-
-  }
 
   changeQuestionType(typeCode: string) {
     this.currentQuestionType = QTYPE[typeCode];

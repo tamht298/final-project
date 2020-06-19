@@ -68,7 +68,7 @@
                           >
                             Nội dung
                           </label>
-                          <select (change)="changePart($event)"
+                          <select
                                   formControlName="part" name="part"
                                   class="block appearance-none w-full bg-gray-200 py-2 px-3 my-1 mt-3 pr-4 rounded shadow leading-tight focus:outline-none">
                             <option value="">-- please choose part --</option>
@@ -89,9 +89,9 @@
                           <select formControlName="difficultyLevel"
                                   class="block appearance-none w-full bg-gray-200 py-2 px-3 my-1 mt-3 pr-4 rounded shadow leading-tight focus:outline-none">
                             <option value="-1">-- please choose difficulty level --</option>
-                            <option value="0">Easy</option>
-                            <option value="1">Medium</option>
-                            <option value="2">Hard</option>
+                            <option value="0" class="text-green-600">Easy - 5pts</option>
+                            <option value="1" class="text-gray-600">Medium - 10pts</option>
+                            <option value="2" class="text-red-600">Hard - 15pts</option>
                           </select>
                         </div>
 

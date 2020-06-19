@@ -16,6 +16,7 @@ import {ListQuestionComponent} from './admin/manage-part/list-question/list-ques
 import {ManagePartComponent} from './admin/manage-part/manage-part.component';
 import {AddQuestionComponent} from './admin/manage-question/add-question/add-question.component';
 import {ManageTestComponent} from './admin/manage-test/manage-test.component';
+import {AddTestComponent} from './admin/manage-test/add-test/add-test.component';
 
 
 const routes: Routes = [
@@ -67,6 +68,7 @@ const routes: Routes = [
           {path: 'question-bank', component: QuestionBankComponent},
           {path: 'courses', component: ManageCourseComponent},
           {path: 'tests', component: ManageTestComponent},
+          {path: 'tests/add-test', component: AddTestComponent},
           {path: 'courses/:courseId/parts/:partId/view-question', component: ListQuestionComponent},
           {path: 'courses/:courseId/parts', component: ManagePartComponent},
         ]

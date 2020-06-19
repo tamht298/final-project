@@ -49,13 +49,14 @@ public class ExamController {
 
     }
 
-    @PatchMapping(value="/exams/{examId}/join/users")
-    public List<User> addUserListToExam(@Valid @RequestBody List<User> users, @PathVariable Long examId){
-        Exam exam = this.examService.getExamById(examId).get();
-        exam.setId(examId);
-        exam.setUsers(users);
-
-    }
+//    @PatchMapping(value="/exams/{examId}/join/users")
+//    public List<User> addUserListToExam(@Valid @RequestBody List<User> users, @PathVariable Long examId){
+//        Exam exam = this.examService.getExamById(examId).get();
+//        exam.setId(examId);
+//        exam.setUsers(users);
+//        this.examService.
+//
+//    }
 
     @GetMapping(value = "/exams/{id}")
     public ResponseEntity<Exam> getExamById(@PathVariable("id") Long id) {

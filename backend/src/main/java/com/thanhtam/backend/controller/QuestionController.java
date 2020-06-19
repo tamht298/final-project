@@ -65,6 +65,10 @@ public class QuestionController {
 //            List<Question> questionList = questionService.getQuestionByPart(part);
 //            return ResponseEntity.ok().body(new ServiceResult(HttpStatus.OK.value(), "Get question list with course id: " + partId, questionList));
 //        }
+        if (partId == 0) {
+            Page<Question> questions = questionService.findAllQuestions(pageable);
+            return new PageResult(questions);
+        }
         Part part = partService.findPartById(partId).get();
         Page<Question> questions = questionService.findQuestionsByPart(pageable, part);
         return new PageResult(questions);

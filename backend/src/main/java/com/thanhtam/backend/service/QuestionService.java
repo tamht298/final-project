@@ -19,6 +19,7 @@ public interface QuestionService {
 
     List<Question> getQuestionList();
     Page<Question> findQuestionsByPart(Pageable pageable, Part part);
+    Page<Question> findAllQuestions(Pageable pageable);
 
     void save(Question question);
 

@@ -14,12 +14,13 @@ export class Question {
   questionType: QuestionType;
   choices: Choice[];
   part: Part;
+  point: number;
+  isSelected: boolean;
 
   constructor(
     questionText: string,
     difficultyLevel: string,
     choices: Choice[]) {
-
     this.questionText = questionText;
     this.difficultyLevel = difficultyLevel;
     this.choices = choices;
