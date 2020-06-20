@@ -31,6 +31,7 @@ import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
 import { ManageTestComponent } from './manage-test/manage-test.component';
 import { AddTestComponent } from './manage-test/add-test/add-test.component';
 import {NgxSkeletonLoaderModule} from 'ngx-skeleton-loader';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [AdminComponent, NavSidebarComponent, AdminNavbarComponent, UserDropdownComponent, LineChartComponent, BarChartComponent, AdminDashboardComponent, ManageUserComponent, AdminFooterComponent, CardStatsComponent, AddUserComponent, DetailUserComponent, DeleteUserComponent, UpdateUserComponent, DeleteListUserComponent, QuestionBankComponent, TabsComponent, ManageCourseComponent, CourseUpdateComponent, CourseCreateComponent, ListQuestionComponent, ManagePartComponent, AddQuestionComponent, ManageTestComponent, AddTestComponent],
@@ -43,6 +44,7 @@ import {NgxSkeletonLoaderModule} from 'ngx-skeleton-loader';
     ReactiveFormsModule,
     CKEditorModule,
     NgxSkeletonLoaderModule,
+    DragDropModule,
 
   ]
 })

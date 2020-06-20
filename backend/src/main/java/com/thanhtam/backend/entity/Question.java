@@ -1,5 +1,6 @@
 package com.thanhtam.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thanhtam.backend.audit.Auditable;
 import com.thanhtam.backend.ultilities.DifficultyLevel;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -26,8 +28,10 @@ public class Question extends Auditable<Long> implements Serializable {
 
     @Column(name = "difficulty_level")
     private DifficultyLevel difficultyLevel;
+
     @Column(name="point")
     private int point;
+
     @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "question_type_id")
     private QuestionType questionType;
@@ -39,5 +43,9 @@ public class Question extends Auditable<Long> implements Serializable {
     @ManyToOne()
     @JoinColumn(name = "part_id")
     private Part part;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "exam")
+    private Set<ExamQuestion> exams;
 
 }

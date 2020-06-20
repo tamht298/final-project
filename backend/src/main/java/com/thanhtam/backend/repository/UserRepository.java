@@ -2,6 +2,7 @@ package com.thanhtam.backend.repository;
 
 import com.sun.org.apache.xpath.internal.objects.XBoolean;
 import com.thanhtam.backend.dto.UserExport;
+import com.thanhtam.backend.entity.Intake;
 import com.thanhtam.backend.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,4 +32,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     //    public Page<User> findUsersByDeletedAndUsernameIsContainingOrEmailIsContaining(boolean deleted, String username, String email, Pageable pageable);
     List<User> findAllByDeleted(boolean statusDeleted);
+
+    List<User> findAllByIntake(Intake intake);
 }

@@ -2,6 +2,7 @@ package com.thanhtam.backend.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -11,10 +12,20 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 public class ExamQuestion {
-    @Column(name = "id")
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
+    @EmbeddedId
+    ExamQuestionId id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("examId")
+    private Exam exam;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("questionId")
+    private Question question;
+
+    @Column(name = "point")
+    private int point;
+
 }

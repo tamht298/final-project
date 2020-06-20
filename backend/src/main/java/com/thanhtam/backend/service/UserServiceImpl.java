@@ -1,6 +1,7 @@
 package com.thanhtam.backend.service;
 
 import com.thanhtam.backend.dto.UserExport;
+import com.thanhtam.backend.entity.Intake;
 import com.thanhtam.backend.entity.Role;
 import com.thanhtam.backend.entity.User;
 import com.thanhtam.backend.repository.UserRepository;
@@ -111,6 +112,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(User user) {
         userRepository.save(user);
+    }
+
+    @Override
+    public List<User> findAllByIntake(Intake intake) {
+        return userRepository.findAllByIntake(intake);
     }
 
     public void addRoles(ERole roleName, Set<Role> roles) {

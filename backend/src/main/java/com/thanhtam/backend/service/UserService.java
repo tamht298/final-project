@@ -1,6 +1,7 @@
 package com.thanhtam.backend.service;
 
 import com.thanhtam.backend.dto.UserExport;
+import com.thanhtam.backend.entity.Intake;
 import com.thanhtam.backend.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,4 +33,7 @@ public interface UserService {
     List<UserExport> findAllByDeletedToExport(boolean statusDelete);
 
     void updateUser(User user);
+
+    List<User> findAllByIntake(Intake intake);
+
 }

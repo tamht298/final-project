@@ -4,7 +4,7 @@
 </div>
 
 <div class=" mx-auto w-full -m-24">
-  <form novalidate (ngSubmit)="OnSubmit()" [formGroup]="rfAdd">
+  <form novalidate (ngSubmit)="onSubmit()" [formGroup]="rfAdd">
     <div class="flex flex-wrap mt-4 justify-center">
       <div class="w-full mb-12 xl:mb-0 px-4 max-w-5xl">
         <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
@@ -220,7 +220,7 @@
                               class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 truncate text-left"
 
                             >
-                              <div [innerHTML]="ques.questionText"></div>
+                              <div [innerHTML]="ques.questionText" class="truncate"></div>
                             </th>
 
                             <td
@@ -283,90 +283,59 @@
                     <span class="mx-1 text-blue-700">{{getTotalPoint()}}/100</span>
                   </div>
                 </div>
-                <div class="block w-full overflow-x-scroll">
-                  <!-- Projects table -->
-                  <table
-                    class="items-center w-full bg-transparent border-collapse whitespace-no-wrap user-list block lg:table overflow-x-auto overflow-y-auto">
-                    <thead>
-                    <tr>
 
-                      <th
-                        class="row-question px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
-                        Câu hỏi
-                      </th>
+                <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+                  <div class="example-box" *ngFor="let ques of questionListSelected; let i = index" cdkDrag>
+                    <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+                    <div class="border w-full hover:bg-gray-300 flex flex-row items-center">
+                      <div class="px-4">
+                        <span class="text-gray-600 italic font-semibold text-lg">#{{i+1}}</span>
+                      </div>
+                      <div
+                        class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 truncate text-left md:w-3/5">
+                        <div [innerHTML]="ques.questionText"></div>
+                      </div>
 
-                      <th
-                        class="row-difficulty text-center px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
-                        Độ khó
-                      </th>
-                      <th
-                        class="row-type px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
-                        Loại câu
-                      </th>
-
-                      <th
-                        class="row-action px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
-                        Điểm số
-                      </th>
-
-                    </tr>
-                    </thead>
-
-                    <tbody>
-                    <ng-container *ngFor="let ques of questionListSelected; trackBy: trackById">
-                      <tr class="border hover:bg-gray-300">
-
-                        <th
-                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 truncate text-left"
-
-                        >
-                          <div [innerHTML]="ques.questionText"></div>
-                        </th>
-
-                        <td
-                          class="border-t-0 text-center px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
-                          <ng-container [ngSwitch]="ques.difficultyLevel">
-                            <ng-template [ngSwitchCase]="'EASY'">
+                      <div
+                        class="border-t-0 md:w-1/6 text-center px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
+                        <ng-container [ngSwitch]="ques.difficultyLevel">
+                          <ng-template [ngSwitchCase]="'EASY'">
                                   <span
                                     class="px-2 py-1 bg-green-200 cursor-pointer font-medium hover:bg-green-300 transition duration-300 ease-in-out font-light text-green-600 text-xs rounded-md">{{ques.difficultyLevel}}</span>
-                            </ng-template>
-                            <ng-template [ngSwitchCase]="'MEDIUM'">
+                          </ng-template>
+                          <ng-template [ngSwitchCase]="'MEDIUM'">
                                   <span
                                     class="px-2 py-1 bg-gray-200 cursor-pointer font-medium hover:bg-gray-400 transition duration-300 ease-in-out font-light text-gray-600 text-xs rounded-md">{{ques.difficultyLevel}}</span>
-                            </ng-template>
-                            <ng-template [ngSwitchCase]="'HARD'">
+                          </ng-template>
+                          <ng-template [ngSwitchCase]="'HARD'">
                                   <span
                                     class="px-2 py-1 bg-red-200 cursor-pointer font-medium hover:bg-red-300 transition duration-300 ease-in-out font-light text-red-600 text-xs rounded-md">{{ques.difficultyLevel}}</span>
-                            </ng-template>
-                          </ng-container>
-                        </td>
-                        <td
-                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
-                          {{ques.questionType.description}}
-                        </td>
+                          </ng-template>
+                        </ng-container>
+                      </div>
+                      <div
+                        class="border-t-0 px-6 md:w-1/6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
+                        {{ques.questionType.description}}
+                      </div>
 
-                        <td
-                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
-                          <input
-                            class="appearance-none border text-center text-xl rounded-md w-full py-2 px-3 my-1 text-gray-600 bg-gray-200 leading-tight outline-none focus:border-blue-500"
-                            type="number"
-                            (keypress)="$event.charCode >= 48"
-                            min="1"
-                            max="100"
-                            autocomplete="off"
-                            tabindex="1"
-                            required
-                            [(ngModel)]="ques.point"
-                            [ngModelOptions]="{standalone: true}"
-                          >
-                        </td>
+                      <td
+                        class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
+                        <input
+                          class="appearance-none border text-center text-xl rounded-md w-full py-2 px-3 my-1 text-gray-600 bg-gray-200 leading-tight outline-none focus:border-blue-500"
+                          type="number"
+                          (keypress)="$event.charCode >= 48"
+                          min="1"
+                          max="100"
+                          autocomplete="off"
+                          tabindex="1"
+                          required
+                          [(ngModel)]="ques.point"
+                          [ngModelOptions]="{standalone: true}"
+                        >
+                      </td>
 
-                      </tr>
-                    </ng-container>
-                    </tbody>
-
-
-                  </table>
+                    </div>
+                  </div>
                 </div>
 
               </div>

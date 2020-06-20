@@ -9,6 +9,7 @@ import {Question} from '../../../models/question';
 import {QuestionService} from '../../../_services/question.service';
 import {PaginationDetail} from '../../../models/pagination/pagination-detail';
 import {identifierModuleUrl} from '@angular/compiler';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-add-test',
@@ -68,13 +69,14 @@ export class AddTestComponent implements OnInit {
     });
   }
 
-  OnSubmit() {
+  onSubmit() {
     console.log('title: ', this.testTitle.value);
     console.log('course: ', this.selectedCourseId);
     console.log('part: ', this.selectedPartId);
     console.log('timeDuration: ', this.timeDuration.value);
     console.log('timeBegin: ', moment(this.timeBegin.value).format('YYYY-MM-DD hh:mm:ss'));
     console.log('timeEnd: ', moment(this.timeEnd.value).format('YYYY-MM-DD hh:mm:ss'));
+    console.log('questionListSelected', this.questionListSelected);
   }
 
   changeCourse(event) {
@@ -114,10 +116,6 @@ export class AddTestComponent implements OnInit {
 
   }
 
-  onSubmit() {
-
-  }
-
   checkBoxAll(event) {
     if (this.checkedAll === true) {
       if (this.questionListSelected.length === 0) {
@@ -132,6 +130,8 @@ export class AddTestComponent implements OnInit {
           }
         });
       }
+    } else {
+      this.questionListSelected.length = 0;
     }
     this.questionList.forEach(obj => obj.isSelected = this.checkedAll);
 
@@ -151,5 +151,9 @@ export class AddTestComponent implements OnInit {
       this.questionListSelected.splice(index, 1);
     }
 
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.questionListSelected, event.previousIndex, event.currentIndex);
   }
 }

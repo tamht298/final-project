@@ -34,9 +34,14 @@ public class User implements Serializable {
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
+    @JsonIgnore
+    @ManyToOne()
+    @JoinColumn(name = "intake_id")
+    private Intake instake;
+
     @Column(name = "enabled")
     private boolean enabled = true;
-    @Column(name="deleted", nullable = false)
+    @Column(name = "deleted", nullable = false)
     private boolean deleted = false;
 
     @CreationTimestamp

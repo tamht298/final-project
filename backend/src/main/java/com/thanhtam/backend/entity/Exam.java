@@ -46,20 +46,22 @@ public class Exam extends Auditable<Long> implements Serializable {
             inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")})
     private List<User> users;
 
-    @ManyToMany(
-            cascade = {CascadeType.DETACH, CascadeType.REFRESH},
-            fetch = FetchType.EAGER
-    )
-    @JoinTable(
-            name = "exam_question",
-            joinColumns = {@JoinColumn(name = "test_id")},
-            inverseJoinColumns = {@JoinColumn(name = "question_id")}
-    )
-    private List<Question> questionList;
+//    @ManyToMany(
+//            cascade = {CascadeType.DETACH, CascadeType.REFRESH},
+//            fetch = FetchType.EAGER
+//    )
+//    @JoinTable(
+//            name = "exam_question",
+//            joinColumns = {@JoinColumn(name = "test_id")},
+//            inverseJoinColumns = {@JoinColumn(name = "question_id")}
+//    )
+//    private List<Question> questionList;
 
+    @OneToMany(mappedBy = "question")
+    private Set<ExamQuestion> questions;
 
     @ManyToOne()
-    @JoinColumn(name = "course_id")
-    private Course course;
+    @JoinColumn(name = "part_id")
+    private Part part;
 
 }

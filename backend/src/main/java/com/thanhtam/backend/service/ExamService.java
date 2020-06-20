@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface ExamService {
 
-    Exam createExam(Exam exam);
+    Exam saveExam(Exam exam);
 
     List<Exam> getAll();
 
