@@ -34,6 +34,6 @@ public interface UserService {
 
     void updateUser(User user);
 
-    List<User> findAllByIntake(Intake intake);
+    List<User> findAllByIntakeId(Long id);
 
 }

@@ -10,6 +10,10 @@ import {QuestionService} from '../../../_services/question.service';
 import {PaginationDetail} from '../../../models/pagination/pagination-detail';
 import {identifierModuleUrl} from '@angular/compiler';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {Exam} from '../../../models/exam';
+import {Intake} from '../../../models/intake';
+import {IntakeService} from '../../../_services/intake.service';
+import {ExamService} from '../../../_services/exam.service';
 
 @Component({
   selector: 'app-add-test',
@@ -31,12 +35,17 @@ export class AddTestComponent implements OnInit {
   totalPointQuestionSelected = 0;
   checkedAll = false;
   questionListSelected: Question[] = [];
+  questionDataJson: any[] = [];
+  intakeList: Intake[] = [];
+  selectedIntake = -1;
 
   constructor(
     private courseService: CourseService,
     private fb: FormBuilder,
     private partService: PartService,
-    private questionService: QuestionService) {
+    private questionService: QuestionService,
+    private intakeService: IntakeService,
+    private examService: ExamService) {
   }
 
   get testTitle() {
@@ -55,28 +64,57 @@ export class AddTestComponent implements OnInit {
     return this.rfAdd.get('timeDuration');
   }
 
+  get locked() {
+    return this.rfAdd.get('locked');
+  }
+
+  get shuffle() {
+    return this.rfAdd.get('shuffle');
+  }
+
+  get intake() {
+    return this.rfAdd.get('intake');
+  }
+
   ngOnInit(): void {
     this.rfAdd = this.fb.group({
         testTitle: [''],
         timeBegin: [''],
         timeEnd: [''],
-        timeDuration: [0]
+        timeDuration: [0],
+        locked: [false],
+        shuffle: [false],
+        intake: [-1]
       }
     );
     this.courseService.getCourseList().subscribe(res => {
       this.courseList = res;
       this.selectedPartId = -1;
     });
+
+    this.intakeService.getIntakeList().subscribe(res => {
+      this.intakeList = res;
+    });
   }
 
   onSubmit() {
-    console.log('title: ', this.testTitle.value);
-    console.log('course: ', this.selectedCourseId);
-    console.log('part: ', this.selectedPartId);
-    console.log('timeDuration: ', this.timeDuration.value);
-    console.log('timeBegin: ', moment(this.timeBegin.value).format('YYYY-MM-DD hh:mm:ss'));
-    console.log('timeEnd: ', moment(this.timeEnd.value).format('YYYY-MM-DD hh:mm:ss'));
-    console.log('questionListSelected', this.questionListSelected);
+    this.questionDataJson.length = 0;
+    this.questionListSelected.forEach(item => {
+      this.questionDataJson.push({questionId: item.id, point: item.point});
+    });
+    console.log(this.questionDataJson);
+    const newExam = new Exam(
+      this.testTitle.value,
+      this.shuffle.value,
+      this.timeDuration.value,
+      moment(this.timeBegin.value).format('YYYY-MM-DD hh:mm:ss'),
+      moment(this.timeEnd.value).format('YYYY-MM-DD hh:mm:ss'),
+      this.locked.value,
+      JSON.stringify(this.questionDataJson));
+    console.log('shuffle:', this.selectedIntake);
+    this.examService.createExam(this.intake.value, this.selectedPartId, newExam).subscribe(res => {
+      console.log(res);
+    });
   }
 
   changeCourse(event) {

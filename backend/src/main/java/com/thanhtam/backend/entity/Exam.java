@@ -1,7 +1,9 @@
 package com.thanhtam.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thanhtam.backend.audit.Auditable;
 import lombok.*;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -23,7 +25,8 @@ public class Exam extends Auditable<Long> implements Serializable {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "shuffle")
+    @Column(name = "shuffle", columnDefinition = "TINYINT")
+    @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean isShuffle;
 
     @Column(name = "duration_exam")
@@ -35,10 +38,12 @@ public class Exam extends Auditable<Long> implements Serializable {
     @Column(name = "finish_exam")
     private Date finishExam;
 
-    @Column(name = "locked")
+
+    @Column(name = "locked", columnDefinition = "TINYINT")
+    @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean locked;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @JoinTable(name = "exam_user",
@@ -57,8 +62,8 @@ public class Exam extends Auditable<Long> implements Serializable {
 //    )
 //    private List<Question> questionList;
 
-    @OneToMany(mappedBy = "question")
-    private Set<ExamQuestion> questions;
+    @Column(name="question_data", columnDefinition = "text")
+    private String questionData;
 
     @ManyToOne()
     @JoinColumn(name = "part_id")

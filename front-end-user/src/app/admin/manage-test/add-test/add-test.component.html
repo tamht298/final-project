@@ -87,6 +87,31 @@
                   <hr class="border w-full my-3">
                   <div class="relative w-full px-4 max-w-full flex-flow flex-basis">
 
+                    <p class="mx-3 my-3 text-gray-600 text-md text-blue-700 text-xl font-semibold">Đối tượng tham gia</p>
+
+                    <div class="-mx-3 md:flex mb-2 w-full">
+                      <div class="md:w-full px-3">
+                        <label class="block uppercase tracking-wide text-gray-600 text-xs font-bold mb-2"
+                        >
+                          Khoá thực tập
+                        </label>
+                        <select
+                          formControlName="intake"
+                          name="intake"
+                          class="block appearance-none w-full bg-gray-200 py-2 px-3 my-1 mt-3 pr-4 rounded shadow leading-tight focus:outline-none">
+                          <option value="-1">-- please choose intake --</option>
+                          <option *ngFor="let intake of intakeList" [value]="intake.id"
+                                  [selected]="intake.id === selectedIntake">{{intake.name}}</option>
+
+                        </select>
+                      </div>
+                    </div>
+
+                  </div>
+                  <hr class="border w-full my-3">
+
+                  <div class="relative w-full px-4 max-w-full flex-flow flex-basis">
+
                     <p class="mx-3 my-3 text-gray-600 text-md text-blue-700 text-xl font-semibold">Thiết lập thời
                       gian</p>
                     <div class="-mx-3 md:flex mb-2 w-full">
@@ -150,7 +175,8 @@
                         <div class="radio-type flex-1">
                           <div class="radio-btn">
                             <input type="checkbox" id="shuffle"
-                                   name="shuffle" value="True"
+                                   name="shuffle"
+                                   formControlName="shuffle"
                             />
                             <label for="shuffle">Trộn câu hỏi</label>
                           </div>
@@ -160,7 +186,8 @@
                         <div class="radio-type flex-1">
                           <div class="radio-btn">
                             <input type="checkbox" id="locked"
-                                   name="locked" value="True"
+                                   formControlName="locked"
+                                   name="locked"
                             />
                             <label for="locked">Khoá đề</label>
                           </div>

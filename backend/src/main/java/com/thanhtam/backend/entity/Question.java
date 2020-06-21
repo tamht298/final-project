@@ -44,8 +44,8 @@ public class Question extends Auditable<Long> implements Serializable {
     @JoinColumn(name = "part_id")
     private Part part;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "exam")
-    private Set<ExamQuestion> exams;
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "exam")
+//    private Set<ExamQuestion> exams;
 
 }

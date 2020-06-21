@@ -33,5 +33,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     //    public Page<User> findUsersByDeletedAndUsernameIsContainingOrEmailIsContaining(boolean deleted, String username, String email, Pageable pageable);
     List<User> findAllByDeleted(boolean statusDeleted);
 
-    List<User> findAllByIntake(Intake intake);
+    List<User> findAllByIntakeId(Long id);
 }

@@ -1,14 +1,11 @@
 package com.thanhtam.backend.controller;
 
-import com.thanhtam.backend.dto.ExamDto;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thanhtam.backend.dto.ExamQuestionPoint;
-import com.thanhtam.backend.dto.ServiceResult;
+import com.thanhtam.backend.dto.ExamQuestionPointDto;
 import com.thanhtam.backend.entity.*;
-import com.thanhtam.backend.service.ExamService;
-import com.thanhtam.backend.service.IntakeService;
-import com.thanhtam.backend.service.QuestionService;
-import com.thanhtam.backend.service.UserService;
-import io.swagger.models.auth.In;
+import com.thanhtam.backend.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +26,16 @@ public class ExamController {
     private QuestionService questionService;
     private UserService userService;
     private IntakeService intakeService;
+    private PartService partService;
 
     @Autowired
-    public ExamController(ExamService examService, QuestionService questionService, UserService userService, IntakeService intakeService) {
+    public ExamController(ExamService examService, QuestionService questionService, UserService userService, IntakeService intakeService, PartService partService) {
 
         this.examService = examService;
         this.questionService = questionService;
         this.userService = userService;
         this.intakeService = intakeService;
+        this.partService = partService;
     }
 
     @GetMapping(value = "/exams")
@@ -48,40 +47,61 @@ public class ExamController {
         return new ResponseEntity<>(exams, HttpStatus.OK);
     }
 
+//    @PostMapping(value = "/exams")
+//    public ResponseEntity<?> createExam(@Valid @RequestBody ExamDto examDto, @RequestParam String intakeCode) {
+//        try {
+//            Intake intake = intakeService.findByCode(intakeCode);
+//            List<User> users = userService.findAllByIntake(intake);
+//            Exam exam = new Exam();
+//            exam = examDto.getExam();
+//            exam.setUsers(users);
+//            examService.saveExam(exam);
+//            logger.info(String.valueOf(examDto));
+//            examService.saveExam(exam);
+//            Long examId = exam.getId();
+//            Set<ExamQuestion> examQuestions = new HashSet<>();
+//            //            set examId in exam_question table
+//            List<ExamQuestionPoint> examQuestionPoints = examDto.getExamQuestionPoints();
+//            //            using for in questions
+//            for (ExamQuestionPoint examQuestionPoint : examQuestionPoints) {
+//                ExamQuestion examQuestion = new ExamQuestion();
+//                examQuestion.setExam(exam);
+//                Question question = questionService.getQuestionById(examQuestionPoint.getQuestionId()).get();
+//                //            set questionId in exam_question table
+//                //            add question_id and point
+//                examQuestion.setQuestion(question);
+//                examQuestion.setPoint(examQuestionPoint.getPoint());
+////                add new examQuestion to list
+//                examQuestions.add(examQuestion);
+//                //            end for loop
+//            }
+////            set list to exam entity
+//            exam.setQuestions(examQuestions);
+////            save exam
+//            examService.saveExam(exam);
+//            return ResponseEntity.ok(new ServiceResult(HttpStatus.OK.value(), "created exam successfully!", exam));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
+//        }
+//    }
     @PostMapping(value = "/exams")
-    public ResponseEntity<?> createExam(@Valid @RequestBody ExamDto examDto, @RequestParam String intakeCode) {
+    public ResponseEntity<?> createExam(@Valid @RequestBody Exam exam, @RequestParam Long intakeId, @RequestParam Long partId){
         try {
-            Intake intake = intakeService.findByCode(intakeCode);
-            List<User> users = userService.findAllByIntake(intake);
-            Exam exam = new Exam();
-            exam = examDto.getExam();
-            exam.setUsers(users);
-            examService.saveExam(exam);
-            logger.info(String.valueOf(examDto));
-            examService.saveExam(exam);
-            Long examId = exam.getId();
-            Set<ExamQuestion> examQuestions = new HashSet<>();
-            //            set examId in exam_question table
-            List<ExamQuestionPoint> examQuestionPoints = examDto.getExamQuestionPoints();
-            //            using for in questions
-            for (ExamQuestionPoint examQuestionPoint : examQuestionPoints) {
-                ExamQuestion examQuestion = new ExamQuestion();
-                examQuestion.setExam(exam);
-                Question question = questionService.getQuestionById(examQuestionPoint.getQuestionId()).get();
-                //            set questionId in exam_question table
-                //            add question_id and point
-                examQuestion.setQuestion(question);
-                examQuestion.setPoint(examQuestionPoint.getPoint());
-//                add new examQuestion to list
-                examQuestions.add(examQuestion);
-                //            end for loop
+            List<User> userList = userService.findAllByIntakeId(intakeId);
+            exam.setUsers(userList);
+            Optional<Part> part = partService.findPartById(partId);
+            if(part.isPresent()){
+                exam.setPart(part.get());
             }
-//            set list to exam entity
-            exam.setQuestions(examQuestions);
-//            save exam
-            examService.saveExam(exam);
-            return ResponseEntity.ok(new ServiceResult(HttpStatus.OK.value(), "created exam successfully!", exam));
-        } catch (Exception e) {
+            this.examService.saveExam(exam);
+
+            ObjectMapper mapper = new ObjectMapper();
+            String questionJson = exam.getQuestionData();
+            List<ExamQuestionPoint> examQuestionPoints = mapper.readValue(questionJson, new TypeReference<List<ExamQuestionPoint>>() {});
+            examQuestionPoints.forEach(System.out::println);
+            return ResponseEntity.ok(exam);
+        }
+        catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
         }
     }

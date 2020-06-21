@@ -115,8 +115,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAllByIntake(Intake intake) {
-        return userRepository.findAllByIntake(intake);
+    public List<User> findAllByIntakeId(Long id) {
+        return userRepository.findAllByIntakeId(id);
     }
 
     public void addRoles(ERole roleName, Set<Role> roles) {

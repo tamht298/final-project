@@ -1,6 +1,6 @@
 export class Intake {
-  private id: number;
-  private name: string;
-  private intakeCode: string;
+  id: number;
+  name: string;
+  intakeCode: string;
 
 }

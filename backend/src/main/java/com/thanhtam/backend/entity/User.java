@@ -35,9 +35,9 @@ public class User implements Serializable {
     private String email;
 
     @JsonIgnore
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "intake_id")
-    private Intake instake;
+    private Intake intake;
 
     @Column(name = "enabled")
     private boolean enabled = true;
