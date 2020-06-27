@@ -19,4 +19,6 @@ export class ExamService {
 
     return this.http.post<Exam>(`${this.baseUrl}/exams`, exam, {params: intakeParam});
   }
+
+
 }

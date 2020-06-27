@@ -1,5 +1,6 @@
 package com.thanhtam.backend.service;
 
+import com.thanhtam.backend.dto.ExamQuestionPoint;
 import com.thanhtam.backend.entity.Course;
 import com.thanhtam.backend.entity.Part;
 import com.thanhtam.backend.entity.Question;
@@ -16,7 +17,7 @@ public interface QuestionService {
     List<Question> getQuestionByPart(Part part);
 
     List<Question> getQuestionByQuestionType(QuestionType questionType);
-
+    List<Question> getQuestionPointList(List<ExamQuestionPoint> examQuestionPoints);
     List<Question> getQuestionList();
     Page<Question> findQuestionsByPart(Pageable pageable, Part part);
     Page<Question> findAllQuestions(Pageable pageable);

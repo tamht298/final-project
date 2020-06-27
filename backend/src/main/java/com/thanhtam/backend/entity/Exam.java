@@ -7,9 +7,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "exam")
@@ -43,25 +41,14 @@ public class Exam extends Auditable<Long> implements Serializable {
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean locked;
 
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @JoinTable(name = "exam_user",
-            joinColumns = {@JoinColumn(name = "exam_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")})
-    private List<User> users;
+    @ManyToOne()
+    @JoinColumn(name = "intake_id")
+    private Intake intake;
 
-//    @ManyToMany(
-//            cascade = {CascadeType.DETACH, CascadeType.REFRESH},
-//            fetch = FetchType.EAGER
-//    )
-//    @JoinTable(
-//            name = "exam_question",
-//            joinColumns = {@JoinColumn(name = "test_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "question_id")}
-//    )
-//    private List<Question> questionList;
+//    @OneToMany(mappedBy="exam", fetch = FetchType.EAGER)
+//    private List<ExamUser> examUsers = new ArrayList<>();
 
+    @JsonIgnore
     @Column(name="question_data", columnDefinition = "text")
     private String questionData;
 

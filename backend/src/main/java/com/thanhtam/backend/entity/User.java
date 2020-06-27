@@ -10,8 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Data
@@ -35,9 +34,12 @@ public class User implements Serializable {
     private String email;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER )
     @JoinColumn(name = "intake_id")
     private Intake intake;
+//
+//    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+//    private Set<ExamUser> examUsers = new HashSet<>();
 
     @Column(name = "enabled")
     private boolean enabled = true;

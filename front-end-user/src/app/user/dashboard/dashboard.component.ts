@@ -8,18 +8,13 @@ import {ListExam} from '../../models/list-exam';
 })
 export class DashboardComponent implements OnInit {
 
-  listCurrent: ListExam = {
-    listIcon: 'fa fa-bookmark text-green-600',
-    listTitle: 'Bài thi đang diễn ra',
-
-  };
   listComing: ListExam = {
-    listIcon: 'fa fa-bookmark text-yellow-600',
-    listTitle: 'Bài thi sắp tới'
+    listIcon: 'fa fa-bookmark text-green-600',
+    listTitle: 'Bài thi mới'
   };
   listComplete: ListExam = {
     listIcon: 'fa fa-bookmark text-gray-600',
-    listTitle: 'Bài thi hoàn thành'
+    listTitle: 'Bài thi đã kết thúc'
   };
   constructor() { }
 

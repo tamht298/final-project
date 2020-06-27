@@ -2,8 +2,8 @@ package com.thanhtam.backend.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.thanhtam.backend.dto.ExamQuestionList;
 import com.thanhtam.backend.dto.ExamQuestionPoint;
-import com.thanhtam.backend.dto.ExamQuestionPointDto;
 import com.thanhtam.backend.entity.*;
 import com.thanhtam.backend.service.*;
 import org.slf4j.Logger;
@@ -11,9 +11,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.*;
 
 @RestController
@@ -27,15 +30,16 @@ public class ExamController {
     private UserService userService;
     private IntakeService intakeService;
     private PartService partService;
+    private ExamUserService examUserService;
 
     @Autowired
-    public ExamController(ExamService examService, QuestionService questionService, UserService userService, IntakeService intakeService, PartService partService) {
-
+    public ExamController(ExamService examService, QuestionService questionService, UserService userService, IntakeService intakeService, PartService partService, ExamUserService examUserService) {
         this.examService = examService;
         this.questionService = questionService;
         this.userService = userService;
         this.intakeService = intakeService;
         this.partService = partService;
+        this.examUserService = examUserService;
     }
 
     @GetMapping(value = "/exams")
@@ -47,7 +51,40 @@ public class ExamController {
         return new ResponseEntity<>(exams, HttpStatus.OK);
     }
 
-//    @PostMapping(value = "/exams")
+    @GetMapping(value = "/exams/list-all-by-user")
+    public ResponseEntity<List<ExamUser>> getAllByUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        logger.error(username);
+
+        List<ExamUser> examUserList = examUserService.getExamListByUsername(username);
+        return new ResponseEntity(examUserList, HttpStatus.OK);
+
+    }
+
+    @GetMapping(value = "/exams/{examId}/questions")
+    public ExamQuestionList getAllQuestions(@PathVariable Long examId) throws IOException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        ExamQuestionList examQuestionList = new ExamQuestionList();
+        Optional<Exam> exam = examService.getExamById(examId);
+        List<Question> questions = new ArrayList<Question>();
+        if (exam.isPresent()) {
+            examQuestionList.setExam(exam.get());
+            //            Convert question data json to array object
+            ObjectMapper mapper = new ObjectMapper();
+            String questionJson = exam.get().getQuestionData();
+            List<ExamQuestionPoint> examQuestionPoints = mapper.readValue(questionJson, new TypeReference<List<ExamQuestionPoint>>() {
+            });
+            questions = questionService.getQuestionPointList(examQuestionPoints);
+            examQuestionList.setQuestions(questions);
+        }
+        return examQuestionList;
+
+    }
+
+
+    //    @PostMapping(value = "/exams")
 //    public ResponseEntity<?> createExam(@Valid @RequestBody ExamDto examDto, @RequestParam String intakeCode) {
 //        try {
 //            Intake intake = intakeService.findByCode(intakeCode);
@@ -85,23 +122,29 @@ public class ExamController {
 //        }
 //    }
     @PostMapping(value = "/exams")
-    public ResponseEntity<?> createExam(@Valid @RequestBody Exam exam, @RequestParam Long intakeId, @RequestParam Long partId){
+    public ResponseEntity<?> createExam(@Valid @RequestBody Exam exam, @RequestParam Long intakeId, @RequestParam Long partId) {
         try {
-            List<User> userList = userService.findAllByIntakeId(intakeId);
-            exam.setUsers(userList);
+            Optional<Intake> intake = intakeService.findById(intakeId);
+            if (intake.isPresent()) {
+                exam.setIntake(intake.get());
+            }
             Optional<Part> part = partService.findPartById(partId);
-            if(part.isPresent()){
+            if (part.isPresent()) {
                 exam.setPart(part.get());
             }
-            this.examService.saveExam(exam);
 
+            this.examService.saveExam(exam);
+            List<User> users = userService.findAllByIntakeId(intakeId);
+            examUserService.create(exam, users);
+
+//            Convert question data json to array object
             ObjectMapper mapper = new ObjectMapper();
             String questionJson = exam.getQuestionData();
-            List<ExamQuestionPoint> examQuestionPoints = mapper.readValue(questionJson, new TypeReference<List<ExamQuestionPoint>>() {});
+            List<ExamQuestionPoint> examQuestionPoints = mapper.readValue(questionJson, new TypeReference<List<ExamQuestionPoint>>() {
+            });
             examQuestionPoints.forEach(System.out::println);
             return ResponseEntity.ok(exam);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
         }
     }

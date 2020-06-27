@@ -111,7 +111,6 @@ export class AddTestComponent implements OnInit {
       moment(this.timeEnd.value).format('YYYY-MM-DD hh:mm:ss'),
       this.locked.value,
       JSON.stringify(this.questionDataJson));
-    console.log('shuffle:', this.selectedIntake);
     this.examService.createExam(this.intake.value, this.selectedPartId, newExam).subscribe(res => {
       console.log(res);
     });

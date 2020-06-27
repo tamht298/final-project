@@ -16,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
@@ -42,6 +43,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signin")
+    @Transactional
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginUser loginUser) {
 
         Authentication authentication = authenticationManager.authenticate(

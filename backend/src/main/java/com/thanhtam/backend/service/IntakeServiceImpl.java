@@ -24,6 +24,11 @@ public class IntakeServiceImpl implements IntakeService {
     }
 
     @Override
+    public Optional<Intake> findById(Long id) {
+        return intakeRepository.findById(id);
+    }
+
+    @Override
     public List<Intake> findAll() {
         return intakeRepository.findAll();
     }
