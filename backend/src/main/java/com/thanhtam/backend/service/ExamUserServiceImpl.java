@@ -41,4 +41,14 @@ public class ExamUserServiceImpl implements ExamUserService {
     public List<ExamUser> getExamListByUsername(String username) {
         return examUserRepository.findAllByUser_Username(username);
     }
+
+    @Override
+    public ExamUser findByExamAndUser(Long examId, String username) {
+        return examUserRepository.findByExam_IdAndUser_Username(examId, username);
+    }
+
+    @Override
+    public void update(ExamUser examUser) {
+        examUserRepository.save(examUser);
+    }
 }

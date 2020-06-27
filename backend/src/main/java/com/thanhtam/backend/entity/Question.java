@@ -40,6 +40,7 @@ public class Question extends Auditable<Long> implements Serializable {
     @JoinColumn(name = "question_id")
     private List<Choice> choices;
 
+    @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "part_id")
     private Part part;

@@ -2,6 +2,7 @@ package com.thanhtam.backend.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.thanhtam.backend.dto.AnswerSheet;
 import com.thanhtam.backend.dto.ExamQuestionList;
 import com.thanhtam.backend.dto.ExamQuestionPoint;
 import com.thanhtam.backend.entity.*;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
@@ -68,17 +70,48 @@ public class ExamController {
         String username = auth.getName();
         ExamQuestionList examQuestionList = new ExamQuestionList();
         Optional<Exam> exam = examService.getExamById(examId);
-        List<Question> questions = new ArrayList<Question>();
-        if (exam.isPresent()) {
-            examQuestionList.setExam(exam.get());
+        ExamUser examUser = examUserService.findByExamAndUser(examId, username);
+        if (examUser.getIsStarted() == true) {
+//            Get answersheet
             //            Convert question data json to array object
             ObjectMapper mapper = new ObjectMapper();
-            String questionJson = exam.get().getQuestionData();
-            List<ExamQuestionPoint> examQuestionPoints = mapper.readValue(questionJson, new TypeReference<List<ExamQuestionPoint>>() {
+            String answerSheet = examUser.getAnswerSheet();
+            List<AnswerSheet> choiceUsers = mapper.readValue(answerSheet, new TypeReference<List<AnswerSheet>>() {
             });
-            questions = questionService.getQuestionPointList(examQuestionPoints);
-            examQuestionList.setQuestions(questions);
+        } else if (exam.get().isShuffle() == true) {
+            List<Question> questions = new ArrayList<Question>();
+            Collections.shuffle(questions);
+//            save to answer sheet
+
+            examUser.setIsStarted(true);
+            examUser.setTimeStart(LocalDateTime.now());
+        } else {
+            //            save to answer sheet
+//            convert question json to object list
+            ObjectMapper mapper = new ObjectMapper();
+            String answerSheet = exam.get().getQuestionData();
+            List<ExamQuestionPoint> examQuestionPoints = mapper.readValue(answerSheet, new TypeReference<List<ExamQuestionPoint>>() {
+            });
+
+            List<Question> questions = questionService.getQuestionPointList(examQuestionPoints);
+            List<AnswerSheet> answerSheets = questionService.convertFromQuestionList(questions);
+//            Convert answer sheet to json
+            String answerSheetConvertToJson = mapper.writeValueAsString(answerSheets);
+            examUser.setAnswerSheet(answerSheetConvertToJson);
+            examUser.setIsStarted(true);
+            examUser.setTimeStart(LocalDateTime.now());
+            examUserService.update(examUser);
+            List<Question> questions1 = new ArrayList<>();
+            answerSheets.forEach(answerSheet1 -> {
+                Question question= questionService.getQuestionById(answerSheet1.getQuestionId()).get();
+                question.setChoices(answerSheet1.getChoices());
+                questions1.add(question);
+            });
+            examQuestionList.setQuestions(questions1);
+            examQuestionList.setExam(exam.get());
         }
+
+
         return examQuestionList;
 
     }

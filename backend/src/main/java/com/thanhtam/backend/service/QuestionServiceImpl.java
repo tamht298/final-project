@@ -1,11 +1,9 @@
 package com.thanhtam.backend.service;
 
 import com.thanhtam.backend.controller.ExamController;
+import com.thanhtam.backend.dto.AnswerSheet;
 import com.thanhtam.backend.dto.ExamQuestionPoint;
-import com.thanhtam.backend.entity.Course;
-import com.thanhtam.backend.entity.Part;
-import com.thanhtam.backend.entity.Question;
-import com.thanhtam.backend.entity.QuestionType;
+import com.thanhtam.backend.entity.*;
 import com.thanhtam.backend.repository.QuestionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestionServiceImpl implements QuestionService {
@@ -50,8 +49,22 @@ public class QuestionServiceImpl implements QuestionService {
             Optional<Question> question = questionRepository.findById(examQuestionPoint.getQuestionId());
             questions.add(question.get());
         });
-        logger.error(questions.toString());
         return questions;
+    }
+
+    @Override
+    public List<AnswerSheet> convertFromQuestionList(List<Question> questionList) {
+        List<AnswerSheet> answerSheets = new ArrayList<>();
+        questionList.forEach(question -> {
+            List<Choice> choices = question.getChoices();
+            choices.stream().map(choice -> {
+                choice.setIsCorrected(0);
+                return choice;
+            }).collect(Collectors.toList());
+            AnswerSheet answerSheet = new AnswerSheet(question.getId(), question.getChoices());
+            answerSheets.add(answerSheet);
+        });
+        return answerSheets;
     }
 
     @Override

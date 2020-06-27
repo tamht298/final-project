@@ -10,5 +10,7 @@ import java.util.Set;
 public interface ExamUserService {
     void create(Exam exam, List<User> userSet);
     List<ExamUser> getExamListByUsername(String username);
+    ExamUser findByExamAndUser(Long examId, String username);
+    void update(ExamUser examUser);
 
 }
