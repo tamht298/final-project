@@ -1,0 +1,127 @@
+<div class="w-full py-5">
+  <div class="flex justify-end px-4">Timer:</div>
+  <ng-container *ngFor="let ques of questions; let i = index">
+    <div class="my-12 mx-4 flex flex-row">
+      <div class="w-48 bg-gray-300 mx-4 px-2 py-2 h-32 rounded-md ml-0 flex flex-col  items-center">
+        <div class="font-bold text-gray-600 text-xl my-2">Question {{i + 1}}</div>
+        <div class="text-gray-600 text-sm">Difficult:
+          <ng-container [ngSwitch]="ques.difficultyLevel">
+            <ng-template [ngSwitchCase]="'EASY'">
+              <span class="px-2 py-1 my-2 rounded-md bg-green-300 text-green-600 text-sm font-semibold">Easy</span>
+            </ng-template>
+            <ng-template [ngSwitchCase]="'MEDIUM'">
+              <span
+                class="px-2 py-1 my-2 rounded-md bg-gray-400 text-gray-600 text-sm font-semibold">Medium</span>
+            </ng-template>
+            <ng-template [ngSwitchCase]="'HARD'">
+              <span
+                class="px-2 py-1 my-2 rounded-md bg-red-300 text-red-600 text-sm font-semibold">Hard</span>
+            </ng-template>
+          </ng-container>
+        </div>
+
+        <div class="my-2">
+          <span>
+            <i class="fa fa-flag text-gray-700 hover:text-gray-900 cursor-pointer mx-1"></i>
+          </span>
+          <span class="mx-1">Make flag</span>
+        </div>
+      </div>
+      <div class="bg-gray-300 rounded-md shadow-lg px-8 py-6 w-full">
+        <div class=""><span class="font-bold">Q {{i+1}}: </span>
+          <p [innerHTML]="ques.questionText"></p>
+        </div>
+        <div class="h-auto">
+          <div class="my-5 font-semibold text-blue-600">Select your answer</div>
+
+          <!--        Answer-->
+          <ng-container *ngFor="let choice of ques.choices">
+            <ng-container [ngSwitch]="ques.questionType.typeCode">
+              <ng-template [ngSwitchCase]="'TF'">
+                <div class="flex">
+                  <div class="radio-type flex-1">
+                    <div class="radio-btn">
+                      <input type="radio" id="true-{{choice.id}}"
+                             name="choicesTF-{{ques.id}}" value="True"
+                      />
+                      <label for="true-{{choice.id}}">True</label>
+                    </div>
+                  </div>
+
+                  <div class="radio-type flex-1">
+                    <div class="radio-btn">
+                      <input type="radio" id="false-{{choice.id}}"
+                             name="choicesTF-{{ques.id}}" value="F"
+                      />
+                      <label for="false-{{choice.id}}">False</label>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+              <ng-template [ngSwitchCase]="'MC'">
+                <div class="flex flex-col">
+                  <div class="w-full my-1">
+                    <div class="flex">
+                      <div class="radio-type w-full">
+                        <div class="radio-btn">
+                          <input type="radio" name="mcChoices-{{ques.id}}" id="mc-{{choice.id}}">
+                          <label for="mc-{{choice.id}}" [innerHTML]="choice.choiceText"></label>
+                        </div>
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+              </ng-template>
+              <ng-template [ngSwitchCase]="'MS'">
+                <div class="flex flex-col">
+                  <div class="w-full my-1">
+                    <div class="flex my-1">
+                      <div class="radio-type w-full">
+                        <div class="check-box-btn">
+                          <input type="checkbox" name="msChoices-{{choice.id}}"
+                                 id="ms-{{choice.id}}"
+                                 >
+                          <label for="ms-{{choice.id}}" class="check-box" [innerHTML]="choice.choiceText"></label>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </ng-template>
+            </ng-container>
+          </ng-container>
+
+
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <div class="my-12 mx-4 flex flex-row">
+    <div class="w-48 bg-gray-300 mx-4 px-2 py-2 h-32 rounded-md ml-0 flex flex-col  items-center">
+      <div class="font-bold text-gray-600 text-xl my-2">Question 123</div>
+      <div class="text-gray-600 text-sm">Difficult: <span
+        class="px-2 py-1 my-2 rounded-md bg-green-200 text-green-500 text-sm font-semibold">Easy</span></div>
+      <div class="my-2">
+        <span class="text-2xl"><i
+          class="fa fa-flag text-red-700 hover:text-red-900 cursor-pointer mx-1"></i>
+        </span>
+        <span
+          class="mx-1 text-red-700 text-sm">Remove flag</span>
+      </div>
+    </div>
+    <div class="bg-gray-300 rounded-md shadow-lg px-8 py-6 w-full">
+      <div class="">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio, quod!</div>
+      <div class="h-32">
+        <div class="my-5 font-semibold text-blue-600">Select your answer</div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+

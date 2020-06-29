@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ListCompleteExamComponent } from './list-complete-exam.component';
+import { SkeletonComponent } from './skeleton.component';
 
-describe('ListCompleteExamComponent', () => {
-  let component: ListCompleteExamComponent;
-  let fixture: ComponentFixture<ListCompleteExamComponent>;
+describe('SkeletonComponent', () => {
+  let component: SkeletonComponent;
+  let fixture: ComponentFixture<SkeletonComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ListCompleteExamComponent ]
+      declarations: [ SkeletonComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ListCompleteExamComponent);
+    fixture = TestBed.createComponent(SkeletonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

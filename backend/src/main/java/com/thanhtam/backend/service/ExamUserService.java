@@ -5,6 +5,7 @@ import com.thanhtam.backend.entity.ExamUser;
 import com.thanhtam.backend.entity.User;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public interface ExamUserService {
@@ -12,5 +13,6 @@ public interface ExamUserService {
     List<ExamUser> getExamListByUsername(String username);
     ExamUser findByExamAndUser(Long examId, String username);
     void update(ExamUser examUser);
+    Optional<ExamUser> findExamUserById(Long id);
 
 }

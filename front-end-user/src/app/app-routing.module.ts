@@ -17,6 +17,8 @@ import {ManagePartComponent} from './admin/manage-part/manage-part.component';
 import {AddQuestionComponent} from './admin/manage-question/add-question/add-question.component';
 import {ManageTestComponent} from './admin/manage-test/manage-test.component';
 import {AddTestComponent} from './admin/manage-test/add-test/add-test.component';
+import {ExamDetailComponent} from './user/exam-detail/exam-detail.component';
+import {ExamQuestionComponent} from './user/exam-question/exam-question.component';
 
 
 const routes: Routes = [
@@ -45,7 +47,9 @@ const routes: Routes = [
         children: [
           {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
           {path: 'dashboard', component: DashboardComponent},
-          {path: 'profile', component: ProfileComponent}
+          {path: 'profile', component: ProfileComponent},
+          {path: 'exams/:examUserId', component: ExamDetailComponent},
+          {path: 'exams/:examUserId/start/:examId', component: ExamQuestionComponent},
         ]
       }
 

@@ -8,10 +8,7 @@ import jdk.nashorn.internal.runtime.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ExamUserServiceImpl implements ExamUserService {
@@ -50,5 +47,10 @@ public class ExamUserServiceImpl implements ExamUserService {
     @Override
     public void update(ExamUser examUser) {
         examUserRepository.save(examUser);
+    }
+
+    @Override
+    public Optional<ExamUser> findExamUserById(Long id) {
+        return examUserRepository.findById(id);
     }
 }

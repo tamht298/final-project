@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {ListExam} from '../models/list-exam';
 import {TokenStorageService} from '../_services/token-storage.service';
 import {UserService} from '../_services/user.service';
 import {UserProfile} from '../models/user-profile';

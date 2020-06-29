@@ -204,31 +204,27 @@
                     <div class="block w-full overflow-scroll" style="height: 500px" *ngIf="selectedPartId>0">
                       <!-- Projects table -->
                       <table
-                        class="items-center w-full bg-transparent border-collapse whitespace-no-wrap user-list block lg:table overflow-x-auto overflow-y-auto">
+                        class="items-center w-full bg-transparent border-collapse table-fixed user-list block lg:table overflow-x-auto overflow-y-auto">
                         <thead>
                         <tr>
                           <th
-                            class="row-header row-question px-6 bg-gray-100 text-gray-600 align-middle  border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
+                            class="row-header row-checkbox px-6 bg-gray-100 text-gray-600 align-middle  border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0  font-semibold text-left">
                             <input type="checkbox" name="allCheck" [value]="checkedAll" [(ngModel)]="checkedAll"
                                    [ngModelOptions]="{standalone: true}"
                                    (change)="checkBoxAll($event)">
                           </th>
                           <th
-                            class="row-header row-question px-6 bg-gray-100 text-gray-600 align-middle  border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
+                            class="row-header row-question px-6 bg-gray-100 text-gray-600 align-middle  border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0  font-semibold text-left">
                             Câu hỏi
                           </th>
 
                           <th
-                            class="row-header row-difficulty text-center px-6 bg-gray-100 text-gray-600 align-middle  border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
+                            class="row-header row-difficulty text-center px-6 bg-gray-100 text-gray-600 align-middle  border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0  font-semibold text-left">
                             Độ khó
                           </th>
                           <th
-                            class="row-header row-type px-6 bg-gray-100 text-gray-600 align-middle  border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
+                            class="row-header row-type px-6 bg-gray-100 text-gray-600 align-middle  border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0  font-semibold text-left">
                             Loại câu
-                          </th>
-
-                          <th
-                            class="row-header row-action px-6 bg-gray-100 text-gray-600 align-middle  border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
                           </th>
                         </tr>
                         </thead>
@@ -238,21 +234,21 @@
                           <tr class="border hover:bg-gray-300">
 
                             <td
-                              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-md text-gray-500 whitespace-no-wrap p-4">
+                              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-md text-gray-500  p-4">
                               <input type="checkbox" name="noneCheck" [(ngModel)]="ques.isSelected"
                                      [ngModelOptions]="{standalone: true}"
                                      (change)="changeChecked(ques)">
                             </td>
 
                             <th
-                              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 truncate text-left"
+                              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs p-4 text-left"
 
                             >
-                              <div [innerHTML]="ques.questionText" class="truncate"></div>
+                              <div [innerHTML]="ques.questionText"></div>
                             </th>
 
                             <td
-                              class="border-t-0 text-center px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
+                              class="border-t-0 text-center px-6 align-middle border-l-0 border-r-0 text-xs  p-4">
                               <ng-container [ngSwitch]="ques.difficultyLevel">
                                 <ng-template [ngSwitchCase]="'EASY'">
                                   <span
@@ -269,12 +265,8 @@
                               </ng-container>
                             </td>
                             <td
-                              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
+                              class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs  p-4">
                               {{ques.questionType.description}}
-                            </td>
-
-                            <td
-                              class="border-t-0 px-6 align-middle flex justify-between border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 w-full">
                             </td>
 
                           </tr>
@@ -320,12 +312,12 @@
                         <span class="text-gray-600 italic font-semibold text-lg">#{{i+1}}</span>
                       </div>
                       <div
-                        class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 truncate text-left md:w-3/5">
+                        class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs p-4 text-left md:w-3/5">
                         <div [innerHTML]="ques.questionText"></div>
                       </div>
 
                       <div
-                        class="border-t-0 md:w-1/6 text-center px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
+                        class="border-t-0 md:w-1/6 text-center px-6 align-middle border-l-0 border-r-0 text-xs  p-4">
                         <ng-container [ngSwitch]="ques.difficultyLevel">
                           <ng-template [ngSwitchCase]="'EASY'">
                                   <span
@@ -342,12 +334,12 @@
                         </ng-container>
                       </div>
                       <div
-                        class="border-t-0 px-6 md:w-1/6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
+                        class="border-t-0 px-6 md:w-1/6 align-middle border-l-0 border-r-0 text-xs  p-4">
                         {{ques.questionType.description}}
                       </div>
 
                       <td
-                        class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
+                        class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs  p-4">
                         <input
                           class="appearance-none border text-center text-xl rounded-md w-full py-2 px-3 my-1 text-gray-600 bg-gray-200 leading-tight outline-none focus:border-blue-500"
                           type="number"

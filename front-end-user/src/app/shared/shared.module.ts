@@ -9,6 +9,7 @@ import {TooltipModule} from 'ng2-tooltip-directive';
 import { RichEditorComponent } from './rich-editor/rich-editor.component';
 import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
 import {FormsModule} from '@angular/forms';
+import { SkeletonComponent } from './skeleton/skeleton.component';
 
 
 @NgModule({
@@ -19,15 +20,17 @@ import {FormsModule} from '@angular/forms';
     SpinnerComponent,
     TabComponent,
     RichEditorComponent,
+    SkeletonComponent,
   ],
-  exports: [
-    PreLoadingComponent,
-    BreadcrumbsComponent,
-    SpinnerComponent,
-    TabComponent,
-    TooltipModule,
-    RichEditorComponent,
-  ],
+    exports: [
+        PreLoadingComponent,
+        BreadcrumbsComponent,
+        SpinnerComponent,
+        TabComponent,
+        TooltipModule,
+        RichEditorComponent,
+        SkeletonComponent,
+    ],
   imports: [
     CommonModule,
     FormsModule,

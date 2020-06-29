@@ -48,7 +48,6 @@ public class Exam extends Auditable<Long> implements Serializable {
 //    @OneToMany(mappedBy="exam", fetch = FetchType.EAGER)
 //    private List<ExamUser> examUsers = new ArrayList<>();
 
-    @JsonIgnore
     @Column(name="question_data", columnDefinition = "text")
     private String questionData;
 

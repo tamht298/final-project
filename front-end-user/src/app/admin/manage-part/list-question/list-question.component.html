@@ -81,27 +81,24 @@
         <div class="block w-full">
           <!-- Projects table -->
           <table
-            class="items-center w-full bg-transparent border-collapse whitespace-no-wrap user-list block lg:table overflow-x-auto overflow-y-auto">
+            class="items-center table-fixed w-full bg-transparent border-collapse user-list block lg:table overflow-x-auto overflow-y-auto">
             <thead>
             <tr>
 
               <th
-                class="row-question px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
+                class="row-question px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 font-semibold text-left">
                 Câu hỏi
               </th>
 
               <th
-                class="row-difficulty text-center px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
+                class="row-difficulty text-center px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 font-semibold text-left">
                 Độ khó
               </th>
               <th
-                class="row-type px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
+                class="row-type px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 font-semibold text-left">
                 Loại câu
               </th>
 
-              <th
-                class="row-action px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
-              </th>
             </tr>
             </thead>
 
@@ -110,13 +107,13 @@
               <tr class="border hover:bg-gray-300">
 
                 <th
-                  class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 text-left"
+                  class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs  p-4 text-left"
 
                 >
                   <div [innerHTML]="ques.questionText"></div>
                 </th>
 
-                <td class="border-t-0 text-center px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
+                <td class="border-t-0 text-center px-6 align-middle border-l-0 border-r-0 text-xs p-4">
                   <ng-container [ngSwitch]="ques.difficultyLevel">
                     <ng-template [ngSwitchCase]="'EASY'">
                       <span class="px-2 py-1 bg-green-200 cursor-pointer font-medium hover:bg-green-300 transition duration-300 ease-in-out font-light text-green-600 text-xs rounded-md">{{ques.difficultyLevel}}</span>
@@ -129,12 +126,8 @@
                     </ng-template>
                   </ng-container>
                 </td>
-                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
+                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs p-4">
                   {{ques.questionType.description}}
-                </td>
-
-                <td
-                  class="border-t-0 px-6 align-middle flex justify-between border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 w-full">
                 </td>
 
               </tr>

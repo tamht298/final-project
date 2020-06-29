@@ -7,6 +7,7 @@ import com.thanhtam.backend.dto.ExamQuestionList;
 import com.thanhtam.backend.dto.ExamQuestionPoint;
 import com.thanhtam.backend.entity.*;
 import com.thanhtam.backend.service.*;
+import javassist.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -64,12 +66,24 @@ public class ExamController {
 
     }
 
+    @GetMapping(value = "/exams/exam-user/{id}")
+    public ResponseEntity<ExamUser> getExamUserById(@PathVariable Long id){
+        Optional<ExamUser> examUser = examUserService.findExamUserById(id);
+        if(!examUser.isPresent()){
+            return new ResponseEntity("Không tìm thấy exam user này", HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(examUser.get());
+    }
+
     @GetMapping(value = "/exams/{examId}/questions")
-    public ExamQuestionList getAllQuestions(@PathVariable Long examId) throws IOException {
+    public ResponseEntity<ExamQuestionList> getAllQuestions(@PathVariable Long examId) throws IOException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         ExamQuestionList examQuestionList = new ExamQuestionList();
         Optional<Exam> exam = examService.getExamById(examId);
+        if(!exam.isPresent()){
+            return new ResponseEntity("Không tìm thấy exam này",HttpStatus.NOT_FOUND);
+        }
         ExamUser examUser = examUserService.findByExamAndUser(examId, username);
         if (examUser.getIsStarted() == true) {
 //            Get answersheet
@@ -78,13 +92,43 @@ public class ExamController {
             String answerSheet = examUser.getAnswerSheet();
             List<AnswerSheet> choiceUsers = mapper.readValue(answerSheet, new TypeReference<List<AnswerSheet>>() {
             });
-        } else if (exam.get().isShuffle() == true) {
-            List<Question> questions = new ArrayList<Question>();
-            Collections.shuffle(questions);
-//            save to answer sheet
 
+            List<Question> questions1 = new ArrayList<>();
+            choiceUsers.forEach(answerSheet1 -> {
+                Question question = questionService.getQuestionById(answerSheet1.getQuestionId()).get();
+                question.setChoices(answerSheet1.getChoices());
+                questions1.add(question);
+            });
+
+            examQuestionList.setQuestions(questions1);
+            examQuestionList.setExam(exam.get());
+            logger.error("case 1");
+        } else if (exam.get().isShuffle() == true) {
+            ObjectMapper mapper = new ObjectMapper();
+            String answerSheet = exam.get().getQuestionData();
+            List<ExamQuestionPoint> examQuestionPoints = mapper.readValue(answerSheet, new TypeReference<List<ExamQuestionPoint>>() {
+            });
+            Collections.shuffle(examQuestionPoints);
+//            save to answer sheet
+            List<Question> questions = questionService.getQuestionPointList(examQuestionPoints);
+            List<AnswerSheet> answerSheets = questionService.convertFromQuestionList(questions);
+            //            Convert answer sheet to json
+            String answerSheetConvertToJson = mapper.writeValueAsString(answerSheets);
+            examUser.setAnswerSheet(answerSheetConvertToJson);
+            examQuestionList.setExam(exam.get());
             examUser.setIsStarted(true);
-            examUser.setTimeStart(LocalDateTime.now());
+            examUserService.update(examUser);
+
+            List<Question> questions1 = new ArrayList<>();
+            answerSheets.forEach(answerSheet1 -> {
+                Question question = questionService.getQuestionById(answerSheet1.getQuestionId()).get();
+                question.setChoices(answerSheet1.getChoices());
+                questions1.add(question);
+            });
+            examQuestionList.setQuestions(questions1);
+            examUser.setTimeStart(new Date());
+            logger.error("case 2");
+
         } else {
             //            save to answer sheet
 //            convert question json to object list
@@ -99,20 +143,20 @@ public class ExamController {
             String answerSheetConvertToJson = mapper.writeValueAsString(answerSheets);
             examUser.setAnswerSheet(answerSheetConvertToJson);
             examUser.setIsStarted(true);
-            examUser.setTimeStart(LocalDateTime.now());
+            examUser.setTimeStart(new Date());
             examUserService.update(examUser);
             List<Question> questions1 = new ArrayList<>();
             answerSheets.forEach(answerSheet1 -> {
-                Question question= questionService.getQuestionById(answerSheet1.getQuestionId()).get();
+                Question question = questionService.getQuestionById(answerSheet1.getQuestionId()).get();
                 question.setChoices(answerSheet1.getChoices());
                 questions1.add(question);
             });
             examQuestionList.setQuestions(questions1);
             examQuestionList.setExam(exam.get());
+            logger.error("case 3");
+
         }
-
-
-        return examQuestionList;
+        return new ResponseEntity(examQuestionList, HttpStatus.OK);
 
     }
 

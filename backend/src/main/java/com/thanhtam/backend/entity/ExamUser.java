@@ -1,13 +1,17 @@
 package com.thanhtam.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
+import org.hibernate.exception.DataException;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -25,6 +29,7 @@ public class ExamUser{
     @JoinColumn(name = "exam_id")
     private Exam exam;
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
     private User user;
@@ -34,11 +39,14 @@ public class ExamUser{
     private Boolean isStarted = false;
 
     @Column(name = "time_start")
-    LocalDateTime timeStart;
+    @Temporal(TemporalType.TIMESTAMP)
+    Date timeStart;
 
     @Column(name = "time_finish")
-    LocalDateTime timeFinish;
+    @Temporal(TemporalType.TIMESTAMP)
+    Date timeFinish;
 
+    @JsonIgnore
     @Column(name="answer_sheet", columnDefinition = "text")
     private String answerSheet;
 
