@@ -1,13 +1,11 @@
 package com.thanhtam.backend.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.thanhtam.backend.dto.AnswerSheet;
-import com.thanhtam.backend.dto.ExamQuestionList;
-import com.thanhtam.backend.dto.ExamQuestionPoint;
+import com.thanhtam.backend.dto.*;
 import com.thanhtam.backend.entity.*;
 import com.thanhtam.backend.service.*;
-import javassist.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
@@ -35,15 +31,17 @@ public class ExamController {
     private IntakeService intakeService;
     private PartService partService;
     private ExamUserService examUserService;
+    private ObjectMapper mapper;
 
     @Autowired
-    public ExamController(ExamService examService, QuestionService questionService, UserService userService, IntakeService intakeService, PartService partService, ExamUserService examUserService) {
+    public ExamController(ExamService examService, QuestionService questionService, UserService userService, IntakeService intakeService, PartService partService, ExamUserService examUserService, ObjectMapper mapper) {
         this.examService = examService;
         this.questionService = questionService;
         this.userService = userService;
         this.intakeService = intakeService;
         this.partService = partService;
         this.examUserService = examUserService;
+        this.mapper = mapper;
     }
 
     @GetMapping(value = "/exams")
@@ -67,9 +65,9 @@ public class ExamController {
     }
 
     @GetMapping(value = "/exams/exam-user/{id}")
-    public ResponseEntity<ExamUser> getExamUserById(@PathVariable Long id){
+    public ResponseEntity<ExamUser> getExamUserById(@PathVariable Long id) {
         Optional<ExamUser> examUser = examUserService.findExamUserById(id);
-        if(!examUser.isPresent()){
+        if (!examUser.isPresent()) {
             return new ResponseEntity("Không tìm thấy exam user này", HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(examUser.get());
@@ -77,21 +75,18 @@ public class ExamController {
 
     @GetMapping(value = "/exams/{examId}/questions")
     public ResponseEntity<ExamQuestionList> getAllQuestions(@PathVariable Long examId) throws IOException {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
+        String username = userService.getUserName();
         ExamQuestionList examQuestionList = new ExamQuestionList();
         Optional<Exam> exam = examService.getExamById(examId);
-        if(!exam.isPresent()){
-            return new ResponseEntity("Không tìm thấy exam này",HttpStatus.NOT_FOUND);
+        if (!exam.isPresent()) {
+            return new ResponseEntity("Không tìm thấy exam này", HttpStatus.NOT_FOUND);
         }
         ExamUser examUser = examUserService.findByExamAndUser(examId, username);
         if (examUser.getIsStarted() == true) {
 //            Get answersheet
             //            Convert question data json to array object
-            ObjectMapper mapper = new ObjectMapper();
-            String answerSheet = examUser.getAnswerSheet();
-            List<AnswerSheet> choiceUsers = mapper.readValue(answerSheet, new TypeReference<List<AnswerSheet>>() {
-            });
+
+            List<AnswerSheet> choiceUsers = convertAnswerJsonToObject(examUser);
 
             List<Question> questions1 = new ArrayList<>();
             choiceUsers.forEach(answerSheet1 -> {
@@ -244,4 +239,65 @@ public class ExamController {
         }
         return new ResponseEntity<>(exam.get(), HttpStatus.OK);
     }
+
+    @PutMapping(value = "/exams/{examUserId}/questions-by-user")
+    public ResponseEntity saveUserExamAnswer(List<AnswerSheet> answerSheets, @PathVariable Long examUserId, @RequestParam boolean isFinish) throws JsonProcessingException {
+        Optional<ExamUser> examUser = examUserService.findExamUserById(examUserId);
+        if (!examUser.isPresent()) {
+            return new ResponseEntity("không tìm thấy đối tượng", HttpStatus.NOT_FOUND);
+        } else {
+            if (examUser.get().getIsFinished()) {
+                return new ResponseEntity("Bài làm đã kết thúc", HttpStatus.BAD_REQUEST);
+            }
+            ObjectMapper mapper = new ObjectMapper();
+            String answerSheetConvertToJson = mapper.writeValueAsString(answerSheets);
+            examUser.get().setAnswerSheet(answerSheetConvertToJson);
+            examUser.get().setIsFinished(isFinish);
+            if (isFinish == true) {
+                examUser.get().setTimeFinish(new Date());
+            }
+            examUserService.update(examUser.get());
+        }
+        return new ResponseEntity("Cập nhật bài làm thành công", HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/exams/{examId}/questions-by-user/result")
+    public ResponseEntity getResultExam(@PathVariable Long examId) throws IOException {
+        ExamResult examResult = new ExamResult();
+        String username = userService.getUserName();
+        Optional<Exam> exam = examService.getExamById(examId);
+        if (!exam.isPresent()) {
+            return new ResponseEntity("Không tìm thấy exam", HttpStatus.NOT_FOUND);
+        }
+//        Set exam for examResult
+        examResult.setExam(exam.get());
+        List<ExamQuestionPoint> examQuestionPoints = convertQuestionJsonToObject(exam);
+        ExamUser examUser = examUserService.findByExamAndUser(examId, username);
+        List<AnswerSheet> userChoices = convertAnswerJsonToObject(examUser);
+        List<ChoiceList> choiceLists = examService.getChoiceList(userChoices, examQuestionPoints);
+        examResult.setChoiceList(choiceLists);
+
+//        Set list question user's choice for examResult
+        return new ResponseEntity(examResult, HttpStatus.OK);
+    }
+
+    public List<AnswerSheet> convertAnswerJsonToObject(ExamUser examUser) throws IOException {
+
+//        ObjectMapper mapper = new ObjectMapper();
+        String answerSheet = examUser.getAnswerSheet();
+        List<AnswerSheet> choiceUsers = mapper.readValue(answerSheet, new TypeReference<List<AnswerSheet>>() {
+        });
+        return choiceUsers;
+    }
+
+    public List<ExamQuestionPoint> convertQuestionJsonToObject(Optional<Exam> exam) throws IOException {
+//        ObjectMapper mapper = new ObjectMapper();
+        String answerSheet = exam.get().getQuestionData();
+        List<ExamQuestionPoint> examQuestionPoints = mapper.readValue(answerSheet, new TypeReference<List<ExamQuestionPoint>>() {
+        });
+        return examQuestionPoints;
+    }
+
 }
+
+

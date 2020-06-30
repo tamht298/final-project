@@ -12,16 +12,18 @@ import {ProfileComponent} from './profile/profile.component';
 import {ProfileCardComponent} from './profile-card/profile-card.component';
 import { ExamDetailComponent } from './exam-detail/exam-detail.component';
 import { ExamQuestionComponent } from './exam-question/exam-question.component';
+import {FormsModule} from '@angular/forms';
 
 
 @NgModule({
   declarations: [
     UserComponent, DashboardComponent, ExamCardComponent,FooterComponent, LeftSideComponent, ProfileComponent, ProfileCardComponent, ExamDetailComponent, ExamQuestionComponent],
-  imports: [
-    CommonModule,
-    SharedModule,
-    RouterModule
-  ]
+    imports: [
+        CommonModule,
+        SharedModule,
+        RouterModule,
+        FormsModule
+    ]
 })
 export class UserModule {
 }

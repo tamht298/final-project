@@ -15,6 +15,8 @@ public interface UserService {
 //    List<User> findAllUsersByPage(Integer pageNumber, Integer pageSize, String sortBy);
     Optional<User> getUserByUsername(String username);
 
+    String getUserName();
+
     Boolean existsByUsername(String username);
 
     Boolean existsByEmail(String email);
