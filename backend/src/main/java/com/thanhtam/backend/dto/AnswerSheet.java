@@ -15,4 +15,5 @@ import java.util.List;
 public class AnswerSheet {
     private Long questionId;
     private List<Choice> choices;
+    private Integer point;
 }

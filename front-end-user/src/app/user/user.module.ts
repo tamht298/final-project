@@ -13,11 +13,12 @@ import {ProfileCardComponent} from './profile-card/profile-card.component';
 import { ExamDetailComponent } from './exam-detail/exam-detail.component';
 import { ExamQuestionComponent } from './exam-question/exam-question.component';
 import {FormsModule} from '@angular/forms';
+import { ExamResultComponent } from './exam-result/exam-result.component';
 
 
 @NgModule({
   declarations: [
-    UserComponent, DashboardComponent, ExamCardComponent,FooterComponent, LeftSideComponent, ProfileComponent, ProfileCardComponent, ExamDetailComponent, ExamQuestionComponent],
+    UserComponent, DashboardComponent, ExamCardComponent,FooterComponent, LeftSideComponent, ProfileComponent, ProfileCardComponent, ExamDetailComponent, ExamQuestionComponent, ExamResultComponent],
     imports: [
         CommonModule,
         SharedModule,

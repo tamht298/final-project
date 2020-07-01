@@ -1,5 +1,5 @@
 <div class="w-full py-5">
-  <div class="flex justify-between px-4 py-4 bg-white shadow-lg rounded-md sticky" [ngClass]="toggleModal == false ? 'z-50':'z-0'" style="top: -8px">
+  <div class="flex justify-between px-4 py-4 bg-white shadow-lg rounded-md sticky z-30" style="top: -8px">
     <div>Timer</div>
     <div class="">
       <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" (click)="showModal()">
@@ -27,13 +27,15 @@
             </ng-template>
           </ng-container>
         </div>
+        <div class="py-2 text-gray-600">{{ques.point}} pts</div>
       </div>
       <div class="bg-gray-300 rounded-md shadow-lg px-8 py-6 w-full">
         <div class=""><span class="font-bold">Q {{i + 1}}: </span>
-          <p [innerHTML]="ques.questionText"></p>
+          <p class="select-none" [innerHTML]="ques.questionText"></p>
         </div>
         <div class="h-auto">
-          <div class="my-5 font-semibold text-blue-600">Select your answer<span *ngIf="ques.questionType.typeCode==='MS'">s</span>
+          <div class="my-5 font-semibold text-blue-600">Select your answer<span
+            *ngIf="ques.questionType.typeCode==='MS'">s</span>
           </div>
 
           <!--        Answer-->
@@ -46,8 +48,8 @@
                       <input type="radio" id="true-{{choice.id}}"
                              name="choicesTF-{{ques.id}}" value="True"
                              (change)="selectAnswerTF($event, ques.id)"
-                      />
-                      <label for="true-{{choice.id}}">True</label>
+                             [checked]="choice.choiceText=='True' && choice.isCorrected==1"/>
+                      <label class="select-none" for="true-{{choice.id}}">True</label>
                     </div>
                   </div>
 
@@ -56,8 +58,9 @@
                       <input type="radio" id="false-{{choice.id}}"
                              name="choicesTF-{{ques.id}}" value="False"
                              (click)="selectAnswerTF($event, ques.id)"
+                             [checked]="choice.choiceText=='False' && choice.isCorrected==1"
                       />
-                      <label for="false-{{choice.id}}">False</label>
+                      <label class="select-none" for="false-{{choice.id}}">False</label>
                     </div>
                   </div>
                 </div>
@@ -69,8 +72,9 @@
                       <div class="radio-type w-full">
                         <div class="radio-btn">
                           <input type="radio" name="mcChoices-{{ques.id}}"
-                                 (change)="selectedAnswerMC($event, ques.id, choice.id)" id="mc-{{choice.id}}">
-                          <label for="mc-{{choice.id}}" [innerHTML]="choice.choiceText"></label>
+                                 (change)="selectedAnswerMC($event, ques.id, choice.id)" id="mc-{{choice.id}}"
+                                 [checked]="choice.isCorrected==1">
+                          <label class="select-none" for="mc-{{choice.id}}" [innerHTML]="choice.choiceText"></label>
                         </div>
                       </div>
 
@@ -89,8 +93,10 @@
                           <input type="checkbox" name="msChoices-{{choice.id}}"
                                  id="ms-{{choice.id}}"
                                  (change)="selectedAnswerMS($event, ques.id, choice.id)"
+                                 [checked]="choice.isCorrected==1"
                           >
-                          <label for="ms-{{choice.id}}" class="check-box" [innerHTML]="choice.choiceText"></label>
+                          <label for="ms-{{choice.id}}" class="check-box select-none"
+                                 [innerHTML]="choice.choiceText"></label>
                         </div>
                       </div>
                     </div>
@@ -132,17 +138,26 @@
       </div>
       <!--body-->
       <div class="relative">
+
         <div
-          class="my-4 px-8 text-gray-600 text-base leading-relaxed text-left flex-row flex flex-wrap justify-center lg:justify-start items-center">
-            
+          class="my-4 px-8 text-gray-600 text-base leading-relaxed text-left flex-row flex flex-wrap lg:justify-start items-center">
+          <ng-container *ngFor="let c of choicesSelected; let i =index">
+            <div class="w-12 h-12 rounded-full  mx-2 my-2 relative flex justify-center items-center"
+                 [ngClass]="c.selected === true? 'bg-blue-500 text-white': 'bg-blue-200'">
+              <label class="absolute">{{i + 1}}</label>
+            </div>
+
+          </ng-container>
+
         </div>
       </div>
       <!--footer-->
       <div class="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">
-        <button class="mx-1 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" (click)="showModal()">
+        <button class="mx-1 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" (click)="submit()">
           Submit
         </button>
-        <button class=" mx-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" (click)="showModal()">
+        <button class=" mx-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                (click)="closeModal()">
           Cancel
         </button>
       </div>

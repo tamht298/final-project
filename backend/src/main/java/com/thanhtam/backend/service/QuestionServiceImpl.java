@@ -61,7 +61,7 @@ public class QuestionServiceImpl implements QuestionService {
                 choice.setIsCorrected(0);
                 return choice;
             }).collect(Collectors.toList());
-            AnswerSheet answerSheet = new AnswerSheet(question.getId(), question.getChoices());
+            AnswerSheet answerSheet = new AnswerSheet(question.getId(), question.getChoices(), question.getPoint());
             answerSheets.add(answerSheet);
         });
         return answerSheets;
@@ -80,6 +80,11 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public Page<Question> findAllQuestions(Pageable pageable) {
         return questionRepository.findAll(pageable);
+    }
+
+    @Override
+    public String findQuestionTextById(Long questionId) {
+        return questionRepository.findQuestionTextById(questionId);
     }
 
     @Override

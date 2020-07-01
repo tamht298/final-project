@@ -8,14 +8,16 @@
   <div class="my-2">This exam will close at {{examUser?.exam?.finishExam}}</div>
   <div class="my-2">Duration time: {{examUser?.exam?.durationExam}} min</div>
   <div class="flex justify-center my-5">
-    <a *ngIf="examUser?.isStarted === false" [routerLink]="['./start', examUser?.exam?.id]"
+    <a *ngIf="examUser?.isStarted === false" [routerLink]="['./start']"
        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
       Start now
     </a>
-    <a *ngIf="examUser?.isStarted=== true && examUser?.isFinished===false" [routerLink]="['./start', examUser?.exam?.id]"
+    <a *ngIf="examUser?.isStarted=== true && examUser?.isFinished===false" [routerLink]="['./start']"
        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
       Resume
     </a>
 
   </div>
+
+  <div class="my-10 bg-red-600 px-3 py-2 uppercase text-white font-semibold" *ngIf="examUser?.isFinished==true">This exam was end!</div>
 </div>

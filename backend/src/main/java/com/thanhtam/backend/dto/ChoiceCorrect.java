@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ChoiceCorrect {
     private Choice choice;
-    private Boolean isRealCorrect;
+    private Integer isRealCorrect;
 }

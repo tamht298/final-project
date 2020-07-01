@@ -22,6 +22,7 @@ public interface QuestionService {
     List<Question> getQuestionList();
     Page<Question> findQuestionsByPart(Pageable pageable, Part part);
     Page<Question> findAllQuestions(Pageable pageable);
+    String findQuestionTextById(Long questionId);
 
     void save(Question question);
 

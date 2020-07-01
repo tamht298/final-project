@@ -10,19 +10,19 @@ import {ExamUser} from '../../models/exam-user';
 })
 export class ExamDetailComponent implements OnInit {
 
-  examUserId: string;
+  examId: number;
   examUser: ExamUser;
 
   constructor(private activatedRoute: ActivatedRoute, private examService: ExamService) {
   }
 
   ngOnInit(): void {
-    this.examUserId = this.activatedRoute.snapshot.paramMap.get('examUserId');
+    this.examId = Number(this.activatedRoute.snapshot.paramMap.get('examId'));
     this.getUserExam();
   }
 
   getUserExam() {
-    this.examService.getExamUserById(Number(this.examUserId)).subscribe(res => {
+    this.examService.getExamUserById(Number(this.examId)).subscribe(res => {
       this.examUser = res;
     });
   }

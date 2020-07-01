@@ -19,6 +19,7 @@ import {ManageTestComponent} from './admin/manage-test/manage-test.component';
 import {AddTestComponent} from './admin/manage-test/add-test/add-test.component';
 import {ExamDetailComponent} from './user/exam-detail/exam-detail.component';
 import {ExamQuestionComponent} from './user/exam-question/exam-question.component';
+import {ExamResultComponent} from './user/exam-result/exam-result.component';
 
 
 const routes: Routes = [
@@ -48,8 +49,9 @@ const routes: Routes = [
           {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
           {path: 'dashboard', component: DashboardComponent},
           {path: 'profile', component: ProfileComponent},
-          {path: 'exams/:examUserId', component: ExamDetailComponent},
-          {path: 'exams/:examUserId/start/:examId', component: ExamQuestionComponent},
+          {path: 'exams/:examId', component: ExamDetailComponent},
+          {path: 'exams/:examId/start', component: ExamQuestionComponent},
+          {path: 'exams/:examId/result', component: ExamResultComponent},
         ]
       }
 

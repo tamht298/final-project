@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.*;
@@ -64,9 +65,10 @@ public class ExamController {
 
     }
 
-    @GetMapping(value = "/exams/exam-user/{id}")
-    public ResponseEntity<ExamUser> getExamUserById(@PathVariable Long id) {
-        Optional<ExamUser> examUser = examUserService.findExamUserById(id);
+    @GetMapping(value = "/exams/exam-user/{examId}")
+    public ResponseEntity<ExamUser> getExamUserById(@PathVariable Long examId) {
+        String username = userService.getUserName();
+        Optional<ExamUser> examUser = Optional.ofNullable(examUserService.findByExamAndUser(examId, username));
         if (!examUser.isPresent()) {
             return new ResponseEntity("Không tìm thấy exam user này", HttpStatus.NOT_FOUND);
         }
@@ -92,6 +94,7 @@ public class ExamController {
             choiceUsers.forEach(answerSheet1 -> {
                 Question question = questionService.getQuestionById(answerSheet1.getQuestionId()).get();
                 question.setChoices(answerSheet1.getChoices());
+                question.setPoint(answerSheet1.getPoint());
                 questions1.add(question);
             });
 
@@ -118,6 +121,7 @@ public class ExamController {
             answerSheets.forEach(answerSheet1 -> {
                 Question question = questionService.getQuestionById(answerSheet1.getQuestionId()).get();
                 question.setChoices(answerSheet1.getChoices());
+                question.setPoint(answerSheet1.getPoint());
                 questions1.add(question);
             });
             examQuestionList.setQuestions(questions1);
@@ -144,6 +148,7 @@ public class ExamController {
             answerSheets.forEach(answerSheet1 -> {
                 Question question = questionService.getQuestionById(answerSheet1.getQuestionId()).get();
                 question.setChoices(answerSheet1.getChoices());
+                question.setPoint(answerSheet1.getPoint());
                 questions1.add(question);
             });
             examQuestionList.setQuestions(questions1);
@@ -155,44 +160,6 @@ public class ExamController {
 
     }
 
-
-    //    @PostMapping(value = "/exams")
-//    public ResponseEntity<?> createExam(@Valid @RequestBody ExamDto examDto, @RequestParam String intakeCode) {
-//        try {
-//            Intake intake = intakeService.findByCode(intakeCode);
-//            List<User> users = userService.findAllByIntake(intake);
-//            Exam exam = new Exam();
-//            exam = examDto.getExam();
-//            exam.setUsers(users);
-//            examService.saveExam(exam);
-//            logger.info(String.valueOf(examDto));
-//            examService.saveExam(exam);
-//            Long examId = exam.getId();
-//            Set<ExamQuestion> examQuestions = new HashSet<>();
-//            //            set examId in exam_question table
-//            List<ExamQuestionPoint> examQuestionPoints = examDto.getExamQuestionPoints();
-//            //            using for in questions
-//            for (ExamQuestionPoint examQuestionPoint : examQuestionPoints) {
-//                ExamQuestion examQuestion = new ExamQuestion();
-//                examQuestion.setExam(exam);
-//                Question question = questionService.getQuestionById(examQuestionPoint.getQuestionId()).get();
-//                //            set questionId in exam_question table
-//                //            add question_id and point
-//                examQuestion.setQuestion(question);
-//                examQuestion.setPoint(examQuestionPoint.getPoint());
-////                add new examQuestion to list
-//                examQuestions.add(examQuestion);
-//                //            end for loop
-//            }
-////            set list to exam entity
-//            exam.setQuestions(examQuestions);
-////            save exam
-//            examService.saveExam(exam);
-//            return ResponseEntity.ok(new ServiceResult(HttpStatus.OK.value(), "created exam successfully!", exam));
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
-//        }
-//    }
     @PostMapping(value = "/exams")
     public ResponseEntity<?> createExam(@Valid @RequestBody Exam exam, @RequestParam Long intakeId, @RequestParam Long partId) {
         try {
@@ -214,7 +181,6 @@ public class ExamController {
             String questionJson = exam.getQuestionData();
             List<ExamQuestionPoint> examQuestionPoints = mapper.readValue(questionJson, new TypeReference<List<ExamQuestionPoint>>() {
             });
-            examQuestionPoints.forEach(System.out::println);
             return ResponseEntity.ok(exam);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
@@ -240,14 +206,17 @@ public class ExamController {
         return new ResponseEntity<>(exam.get(), HttpStatus.OK);
     }
 
-    @PutMapping(value = "/exams/{examUserId}/questions-by-user")
-    public ResponseEntity saveUserExamAnswer(List<AnswerSheet> answerSheets, @PathVariable Long examUserId, @RequestParam boolean isFinish) throws JsonProcessingException {
-        Optional<ExamUser> examUser = examUserService.findExamUserById(examUserId);
+    @PutMapping(value = "/exams/{examId}/questions-by-user")
+    public void saveUserExamAnswer(@RequestBody List<AnswerSheet> answerSheets, @PathVariable Long examId, @RequestParam boolean isFinish) throws JsonProcessingException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        Optional<ExamUser> examUser = Optional.ofNullable(examUserService.findByExamAndUser(examId, username));
         if (!examUser.isPresent()) {
-            return new ResponseEntity("không tìm thấy đối tượng", HttpStatus.NOT_FOUND);
+            throw new EntityNotFoundException("Not found this exam");
         } else {
             if (examUser.get().getIsFinished()) {
-                return new ResponseEntity("Bài làm đã kết thúc", HttpStatus.BAD_REQUEST);
+
+                throw new ExceptionInInitializerError("This exam was end");
             }
             ObjectMapper mapper = new ObjectMapper();
             String answerSheetConvertToJson = mapper.writeValueAsString(answerSheets);
@@ -258,10 +227,10 @@ public class ExamController {
             }
             examUserService.update(examUser.get());
         }
-        return new ResponseEntity("Cập nhật bài làm thành công", HttpStatus.OK);
+
     }
 
-    @GetMapping(value = "/exams/{examId}/questions-by-user/result")
+    @GetMapping(value = "/exams/{examId}/result")
     public ResponseEntity getResultExam(@PathVariable Long examId) throws IOException {
         ExamResult examResult = new ExamResult();
         String username = userService.getUserName();
@@ -271,13 +240,14 @@ public class ExamController {
         }
 //        Set exam for examResult
         examResult.setExam(exam.get());
+
+//        Set list question user's choice for examResult
         List<ExamQuestionPoint> examQuestionPoints = convertQuestionJsonToObject(exam);
         ExamUser examUser = examUserService.findByExamAndUser(examId, username);
         List<AnswerSheet> userChoices = convertAnswerJsonToObject(examUser);
         List<ChoiceList> choiceLists = examService.getChoiceList(userChoices, examQuestionPoints);
         examResult.setChoiceList(choiceLists);
-
-//        Set list question user's choice for examResult
+        logger.error(examResult.toString());
         return new ResponseEntity(examResult, HttpStatus.OK);
     }
 
