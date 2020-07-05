@@ -12,7 +12,7 @@ export class FileUploadComponent implements OnInit {
   currentFileUpload: File;
   @Input() fileUrl: any;
 
-  @Output() fileUrlOutput = new EventEmitter<string>();
+  @Output() fileUrlOutput = new EventEmitter<any>();
 
   constructor(private uploadService: UploadFileService) {
   }
@@ -22,26 +22,32 @@ export class FileUploadComponent implements OnInit {
 
   selectFile(event) {
     this.selectedFiles = event.target.files;
-  }
-
-  upload() {
     this.currentFileUpload = this.selectedFiles.item(0);
-    this.uploadService.pushFileToStorage(this.currentFileUpload, 'avatar').subscribe(event => {
-      this.fileUrl = event.body;
-      this.updateAvatarUrl();
-      this.selectedFiles = undefined;
-    });
+    this.selectedFiles = undefined;
+    this.fileUrlOutput.emit(this.currentFileUpload);
 
   }
+
+  // upload() {
+  //   this.currentFileUpload = this.selectedFiles.item(0);
+  //   this.uploadService.pushFileToStorage(this.currentFileUpload, 'avatar').subscribe(event => {
+  //     this.fileUrl = event.body;
+  //     this.updateAvatarUrl();
+  //     this.selectedFiles = undefined;
+  //   });
+  //
+  // }
 
   pushAvatarToServer() {
     this.currentFileUpload = this.selectedFiles.item(0);
-    this.uploadService.uploadAvatar(this.currentFileUpload).subscribe(event => {
-      this.fileUrl = event.body;
-      console.log(event.body);
-      this.updateAvatarUrl();
-      this.selectedFiles = undefined;
-    });
+    this.fileUrlOutput.emit(this.currentFileUpload);
+    this.selectedFiles = undefined;
+    // this.uploadService.uploadAvatar(this.currentFileUpload).subscribe(event => {
+    //   this.fileUrl = event.body;
+    //   console.log(event.body);
+    //   this.updateAvatarUrl();
+    //   this.selectedFiles = undefined;
+    // });
   }
 
   updateAvatarUrl() {

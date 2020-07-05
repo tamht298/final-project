@@ -3,7 +3,7 @@
   <div class="my-2 flex w-full">
     <div class="rounded-lg shadow-lg w-64 mx-2 px-3 py-2 bg-white text-gray-700 text-center">
       <div class="my-3 my-1">
-        <img [src]="!!imgUpload? imgUpload: 'https://www.w3schools.com/howto/img_avatar.png'"
+        <img [src]="imgUpload"
              class="avatar mx-auto shadow-md">
       </div>
       <div class="px-3 my-4"><label
@@ -43,22 +43,7 @@
         <app-update-email [userProfile]="userProfile" (emailUpdate)="updateEmail($event)"></app-update-email>
       </ng-template>
       <ng-template [ngIf]="toggleAvatar">
-        <form (ngSubmit)="submitAvatar()">
-          <div class="-mx-3 md:flex flex-col mb-2 w-full">
-            <div class="md:w-full px-3">
-              <label class="block uppercase tracking-wide text-gray-600 text-xs font-bold mb-2"
-              >
-                Choose an image
-              </label>
-              <app-file-upload [fileUrl]="imgUpload" (fileUrlOutput)="updateAvatar($event)"></app-file-upload>
-            </div>
-          </div>
-          <div class="my-5 flex justify-end px-6">
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
-                    type="submit">Upload
-            </button>
-          </div>
-        </form>
+        <app-update-avatar (avatarUploadUrl)="getAvatarUpload($event)"></app-update-avatar>
       </ng-template>
     </div>
   </div>

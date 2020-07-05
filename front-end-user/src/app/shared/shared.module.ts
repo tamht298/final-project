@@ -36,21 +36,22 @@ import { UpdateAvatarComponent } from './update-profile/update-avatar/update-ava
     UpdateAvatarComponent
 
   ],
-  exports: [
-    PreLoadingComponent,
-    BreadcrumbsComponent,
-    SpinnerComponent,
-    TabComponent,
-    TooltipModule,
-    RichEditorComponent,
-    SkeletonComponent,
-    RoundProgressModule,
-    ResultCircleComponent,
-    FormatTimePipe,
-    FileUploadComponent,
-    UpdatePasswordComponent,
-    UpdateEmailComponent
-  ],
+    exports: [
+        PreLoadingComponent,
+        BreadcrumbsComponent,
+        SpinnerComponent,
+        TabComponent,
+        TooltipModule,
+        RichEditorComponent,
+        SkeletonComponent,
+        RoundProgressModule,
+        ResultCircleComponent,
+        FormatTimePipe,
+        FileUploadComponent,
+        UpdatePasswordComponent,
+        UpdateEmailComponent,
+        UpdateAvatarComponent
+    ],
   imports: [
     CommonModule,
     FormsModule,

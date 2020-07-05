@@ -27,11 +27,10 @@ export class UploadFileService {
   uploadAvatar(file: File): Observable<any> {
     const formData: FormData = new FormData();
     formData.append('file', file);
-    const req = new HttpRequest('POST', `${this.baseUrl}/aws/file/upload/avatar`, formData, {
+    return this.http.post(`${this.baseUrl}/aws/file/upload/avatar`, formData, {
       reportProgress: true,
-      responseType: 'text',
+      responseType: 'text'
     });
-    return this.http.request(req);
   }
 
   getFiles(): Observable<any> {

@@ -21,6 +21,7 @@ export class ProfileComponent implements OnInit {
   imgUpload = '';
   userProfile: UserAccount;
   @ViewChild(FileUploadComponent) fileUploadViewChild: FileUploadComponent;
+  private imgFile: any;
 
   constructor(private uploadService: UploadFileService,
               private userService: UserService,
@@ -38,7 +39,7 @@ export class ProfileComponent implements OnInit {
   getUserInfo() {
     this.userService.getUserInfo('').subscribe(res => {
       this.userProfile = res.data;
-      this.imgUpload = this.userProfile.profile.image;
+      this.imgUpload = this.userProfile.profile.image || 'https://isc-quiz.s3-ap-southeast-1.amazonaws.com/default.png';
     });
   }
 
@@ -60,15 +61,6 @@ export class ProfileComponent implements OnInit {
     this.toggleEmail = false;
     this.toggleAvatar = true;
 
-  }
-
-  submitAvatar() {
-    this.fileUploadViewChild.pushAvatarToServer();
-  }
-
-  updateAvatar(event) {
-    this.imgUpload = event;
-    console.log(this.imgUpload);
   }
 
 
@@ -109,5 +101,18 @@ export class ProfileComponent implements OnInit {
         }
       }
     });
+  }
+
+  getAvatarUpload(urlUpload) {
+    this.imgFile = urlUpload;
+    this.uploadService.uploadAvatar(this.imgFile).subscribe(res => {
+      this.imgUpload = res;
+      this.toast.success('Updated new avatar', 'Done');
+      return;
+    }, error => {
+      this.toast.error('Some problems. Report it to the administrator', 'Error');
+    });
+
+
   }
 }
