@@ -1,0 +1,18 @@
+<div class="relative flex justify-center items-center" *ngIf="current">
+  <round-progress
+    [current]="current"
+    [max]="max"
+    [color]="colors.color"
+    [background]="colors.background"
+    [radius]="100"
+    [stroke]="10"
+    [semicircle]="false"
+    [rounded]="true"
+    [clockwise]="true"
+    [responsive]="false"
+    [duration]="800"
+    [animation]="'easeInOutQuart'"
+    [animationDelay]="0"
+  ></round-progress>
+  <div class="absolute text-4xl font-medium" [style.color]="colors.color">{{current}}/{{max}}</div>
+</div>

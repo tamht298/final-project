@@ -18,4 +18,9 @@ public class ChoiceServiceImpl implements ChoiceService {
     public Integer findIsCorrectedById(Long id) {
         return choiceRepository.findIsCorrectedById(id);
     }
+
+    @Override
+    public String findChoiceTextById(Long id) {
+        return choiceRepository.findChoiceTextById(id);
+    }
 }

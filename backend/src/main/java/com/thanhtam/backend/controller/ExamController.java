@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RestController
@@ -61,16 +63,38 @@ public class ExamController {
         logger.error(username);
 
         List<ExamUser> examUserList = examUserService.getExamListByUsername(username);
+        Date currentDate = new Date();
+        examUserList.forEach(examUser -> {
+            if(currentDate.compareTo(examUser.getExam().getBeginExam())<0){
+                examUser.getExam().setLocked(false);
+            }
+            else
+            {
+                examUser.getExam().setLocked(true);
+
+            }
+        });
         return new ResponseEntity(examUserList, HttpStatus.OK);
 
     }
 
     @GetMapping(value = "/exams/exam-user/{examId}")
-    public ResponseEntity<ExamUser> getExamUserById(@PathVariable Long examId) {
+    public ResponseEntity<ExamUser> getExamUserById(@PathVariable Long examId) throws ParseException {
+
         String username = userService.getUserName();
         Optional<ExamUser> examUser = Optional.ofNullable(examUserService.findByExamAndUser(examId, username));
         if (!examUser.isPresent()) {
             return new ResponseEntity("Không tìm thấy exam user này", HttpStatus.NOT_FOUND);
+        }
+        Date timeExam = examUser.get().getExam().getBeginExam();
+        Date now = new Date();
+
+        logger.error("timeExam"+timeExam.toString());
+        logger.error("now"+now.toString());
+        logger.error("equal="+now.compareTo(timeExam));
+        if(now.compareTo(timeExam)<0){
+
+            return new ResponseEntity("Bài thi chưa bắt đầu", HttpStatus.BAD_REQUEST);
         }
         return ResponseEntity.ok(examUser.get());
     }
@@ -83,7 +107,12 @@ public class ExamController {
         if (!exam.isPresent()) {
             return new ResponseEntity("Không tìm thấy exam này", HttpStatus.NOT_FOUND);
         }
+        Date currentTime = new Date();
+        if(exam.get().isLocked() == true || exam.get().getBeginExam().compareTo(currentTime)>0){
+            return new ResponseEntity("Bài thi đang bị khoá hoặc chưa tới thời gian phù hợp", HttpStatus.BAD_REQUEST);
+        }
         ExamUser examUser = examUserService.findByExamAndUser(examId, username);
+        examQuestionList.setRemainingTime(examUser.getRemainingTime());
         if (examUser.getIsStarted() == true) {
 //            Get answersheet
             //            Convert question data json to array object
@@ -161,7 +190,7 @@ public class ExamController {
     }
 
     @PostMapping(value = "/exams")
-    public ResponseEntity<?> createExam(@Valid @RequestBody Exam exam, @RequestParam Long intakeId, @RequestParam Long partId) {
+    public ResponseEntity<?> createExam(@Valid @RequestBody Exam exam, @RequestParam Long intakeId, @RequestParam Long partId, @RequestParam boolean isShuffle, boolean locked) {
         try {
             Optional<Intake> intake = intakeService.findById(intakeId);
             if (intake.isPresent()) {
@@ -171,6 +200,12 @@ public class ExamController {
             if (part.isPresent()) {
                 exam.setPart(part.get());
             }
+            exam.setShuffle(isShuffle);
+//            Date beginTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(exam.getBeginExam().toString());
+//            Date finishTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(exam.getFinishExam().toString());
+//
+//            exam.setBeginExam(beginTime);
+//            exam.setFinishExam(finishTime);
 
             this.examService.saveExam(exam);
             List<User> users = userService.findAllByIntakeId(intakeId);
@@ -181,6 +216,7 @@ public class ExamController {
             String questionJson = exam.getQuestionData();
             List<ExamQuestionPoint> examQuestionPoints = mapper.readValue(questionJson, new TypeReference<List<ExamQuestionPoint>>() {
             });
+
             return ResponseEntity.ok(exam);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
@@ -207,7 +243,7 @@ public class ExamController {
     }
 
     @PutMapping(value = "/exams/{examId}/questions-by-user")
-    public void saveUserExamAnswer(@RequestBody List<AnswerSheet> answerSheets, @PathVariable Long examId, @RequestParam boolean isFinish) throws JsonProcessingException {
+    public void saveUserExamAnswer(@RequestBody List<AnswerSheet> answerSheets, @PathVariable Long examId, @RequestParam boolean isFinish, @RequestParam int remainingTime) throws JsonProcessingException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         Optional<ExamUser> examUser = Optional.ofNullable(examUserService.findByExamAndUser(examId, username));
@@ -225,6 +261,7 @@ public class ExamController {
             if (isFinish == true) {
                 examUser.get().setTimeFinish(new Date());
             }
+            examUser.get().setRemainingTime(remainingTime);
             examUserService.update(examUser.get());
         }
 
@@ -247,7 +284,13 @@ public class ExamController {
         List<AnswerSheet> userChoices = convertAnswerJsonToObject(examUser);
         List<ChoiceList> choiceLists = examService.getChoiceList(userChoices, examQuestionPoints);
         examResult.setChoiceList(choiceLists);
-        logger.error(examResult.toString());
+        Double totalPoint = 0.0;
+        for (ChoiceList choice : choiceLists) {
+            if (choice.getIsSelectedCorrected().equals(true)) {
+                totalPoint += choice.getPoint();
+            }
+        }
+        examResult.setTotalPoint(totalPoint);
         return new ResponseEntity(examResult, HttpStatus.OK);
     }
 

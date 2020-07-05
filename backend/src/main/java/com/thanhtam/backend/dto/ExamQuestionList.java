@@ -14,4 +14,5 @@ import java.util.List;
 public class ExamQuestionList {
     private Exam exam;
     private List<Question> questions;
+    private int remainingTime;
 }

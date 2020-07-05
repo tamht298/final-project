@@ -14,4 +14,5 @@ public class ChoiceList{
     private Question question;
     private List<ChoiceCorrect> choices;
     private Integer point;
+    private Boolean isSelectedCorrected;
 }

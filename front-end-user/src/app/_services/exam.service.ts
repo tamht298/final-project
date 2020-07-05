@@ -17,8 +17,12 @@ export class ExamService {
   constructor(private http: HttpClient) {
   }
 
-  public createExam(intakeId: number, partId: number, exam: Exam): Observable<Exam> {
-    const intakeParam = new HttpParams().set('intakeId', intakeId.toString()).set('partId', partId.toString());
+  public createExam(intakeId: number, partId: number, isShuffle: boolean, locked: boolean, exam: Exam): Observable<Exam> {
+    const intakeParam = new HttpParams()
+      .set('intakeId', intakeId.toString())
+      .set('partId', partId.toString())
+      .set('isShuffle', String(isShuffle))
+      .set('locked', String(locked));
     return this.http.post<Exam>(`${this.baseUrl}/exams`, exam, {params: intakeParam});
   }
 
@@ -34,13 +38,13 @@ export class ExamService {
     return this.http.get(`${this.baseUrl}/exams/${examId}/questions`);
   }
 
-  public submitExamUser(examId: number, isFinish: boolean, answers: AnswerSheet[]): Observable<any> {
-    const statusExamParam = new HttpParams().set('isFinish', isFinish.toString());
+  public submitExamUser(examId: number, isFinish: boolean, remainingTime: number, answers: AnswerSheet[]): Observable<any> {
+    const statusExamParam = new HttpParams().set('isFinish', isFinish.toString()).set('remainingTime', remainingTime.toString());
     return this.http.put(`${this.baseUrl}/exams/${examId}/questions-by-user`, answers, {params: statusExamParam});
   }
 
   public getExamUserResult(examId: number): Observable<any> {
-      return this.http.get(`${this.baseUrl}/exams/${examId}/result`);
+    return this.http.get(`${this.baseUrl}/exams/${examId}/result`);
   }
 
 

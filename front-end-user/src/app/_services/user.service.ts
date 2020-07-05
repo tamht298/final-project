@@ -13,50 +13,50 @@ import {UserUpdate} from '../models/user-update';
 })
 export class UserService {
 
-  private baseUrl = 'http://localhost:8080/api/users';
+  private baseUrl: string = environment.apiEndPoint;
 
   constructor(private http: HttpClient) {
   }
 
   getUserDeletedList(status: boolean): Observable<PageResult<UserAccount>> {
-    return this.http.get<PageResult<UserAccount>>(`${this.baseUrl}/deleted/${status}`);
+    return this.http.get<PageResult<UserAccount>>(`${this.baseUrl}/users/deleted/${status}`);
   }
 
   // @ts-ignore
   getUserListDeletedByPage(page: number, size: number, status: boolean): Observable<PageResult<UserAccount>> {
     const pageParams = new HttpParams().set('page', page.toString()).set('size', size.toString());
-    return this.http.get<PageResult<UserAccount>>(`${this.baseUrl}/deleted/${status}`, {params: pageParams});
+    return this.http.get<PageResult<UserAccount>>(`${this.baseUrl}/users/deleted/${status}`, {params: pageParams});
   }
 
   searchUserListDeletedByPage(page: number, size: number, searchKey: string, status: boolean): Observable<PageResult<UserAccount>> {
     const pageParams = new HttpParams().set('page', page.toString()).set('size', size.toString()).set('search-keyword', searchKey.toString());
-    return this.http.get<PageResult<UserAccount>>(`${this.baseUrl}/deleted/${status}/search`, {params: pageParams});
+    return this.http.get<PageResult<UserAccount>>(`${this.baseUrl}/users/deleted/${status}/search`, {params: pageParams});
   }
 
   exportExcel(status: boolean): Observable<any> {
     let headers = new HttpHeaders();
     headers = headers.set('Accept', 'application/csv');
-    return this.http.get(`${this.baseUrl}/deleted/${status}/export/users.csv`, {
+    return this.http.get(`${this.baseUrl}/users/deleted/${status}/export/users.csv`, {
       headers,
       responseType: 'text'
     });
   }
 
   addUser(user: UserAccount): Observable<UserAccount> {
-    return this.http.post<UserAccount>(this.baseUrl, user);
+    return this.http.post<UserAccount>(`${this.baseUrl}/users`, user);
   }
 
   deleteTempUser(id: number): Observable<any> {
-    return this.http.patch<any>(`${this.baseUrl}/${id}`, {deleted: true});
+    return this.http.patch<any>(`${this.baseUrl}/users/${id}`, {deleted: true});
   }
 
   updateUser(id: number, user: UserUpdate): Observable<any> {
-    return this.http.put<any>(`${this.baseUrl}/${id}`, user);
+    return this.http.put<any>(`${this.baseUrl}/users/${id}`, user);
   }
 
   validateUsername(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      return this.http.get<boolean>(`${environment.apiEndPoint}/users/check-username?value=${control.value}`).pipe(
+      return this.http.get<boolean>(`${this.baseUrl}/users/check-username?value=${control.value}`).pipe(
         map(res => {
           // if res is true, username exists, return true
           return res ? {usernameExists: true} : null;
@@ -68,7 +68,7 @@ export class UserService {
 
   validateEmail(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      return this.http.get<boolean>(`${environment.apiEndPoint}/users/check-email?value=${control.value}`).pipe(
+      return this.http.get<boolean>(`${this.baseUrl}/users/check-email?value=${control.value}`).pipe(
         map(res => {
           // if res is true, username exists, return true
           return res ? {emailExists: true} : null;
@@ -80,7 +80,7 @@ export class UserService {
 
   validateEmailUpdate(id: number): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      return this.http.get<boolean>(`${environment.apiEndPoint}/users/${id}/check-email?value=${control.value}`).pipe(
+      return this.http.get<boolean>(`${this.baseUrl}/users/${id}/check-email?value=${control.value}`).pipe(
         map(res => {
           // if res is true, username exists, return true
           return res ? {emailExists: true} : null;
@@ -95,7 +95,16 @@ export class UserService {
    *not yet delete
    * @param username
    */
-  getUserInfo(username: string): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/username/${username}`);
+  getUserInfo(username?: string): Observable<any> {
+    const userParams = new HttpParams().set('username', username);
+    return this.http.get<any>(`${this.baseUrl}/users/profile`, {params: userParams});
+  }
+
+  updateEmail(id: number, data: any): Observable<any> {
+    return this.http.patch<any>(`${this.baseUrl}/users/${id}/email/updating`, data);
+  }
+
+  updatePassword(id: number, data: any): Observable<any> {
+    return this.http.patch<any>(`${this.baseUrl}/users/${id}/password/updating`, data);
   }
 }

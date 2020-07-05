@@ -1,5 +1,6 @@
 import {UserRole} from './user-role';
 import {UserProfile} from './user-profile';
+import {Intake} from './intake';
 
 export class UserAccount {
   id: number;
@@ -10,6 +11,7 @@ export class UserAccount {
   createdDate: Date;
   roles: UserRole[];
   profile: UserProfile;
+  intake: Intake;
 
 
   constructor(username: string, email: string, profile: UserProfile) {

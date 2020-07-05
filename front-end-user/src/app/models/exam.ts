@@ -13,13 +13,11 @@ export class Exam {
   part: Part;
   id: number;
 
-  constructor(title: string, isShuffle: boolean, durationExam: number, beginExam: string, finishExam: string, locked: boolean, questionData: any) {
+  constructor(title: string, durationExam: number, beginExam: string, finishExam: string, questionData: any) {
     this.title = title;
-    this.isShuffle = isShuffle;
     this.durationExam = durationExam;
     this.beginExam = beginExam;
     this.finishExam = finishExam;
-    this.locked = locked;
     this.questionData = questionData;
 
   }

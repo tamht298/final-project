@@ -14,5 +14,6 @@ import java.util.List;
 public class ExamResult {
     private Exam exam;
     private List<ChoiceList> choiceList;
+    private Double totalPoint;
 
 }

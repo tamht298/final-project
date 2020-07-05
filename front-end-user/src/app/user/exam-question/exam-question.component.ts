@@ -4,7 +4,7 @@ import {Exam} from '../../models/exam';
 import {Question} from '../../models/question';
 import {ExamService} from '../../_services/exam.service';
 import {AnswerSheet} from '../../models/answer-sheet';
-import {interval} from 'rxjs';
+import {interval, Subscription, timer} from 'rxjs';
 
 @Component({
   selector: 'app-exam-question',
@@ -17,6 +17,9 @@ export class ExamQuestionComponent implements OnInit, OnDestroy {
   toggleModal = false;
   answerSheets: AnswerSheet[] = [];
   choicesSelected: any[] = [];
+  countDown: Subscription;
+  counter: number;
+  tick = 1000;
   private subscription: any;
 
   constructor(
@@ -27,16 +30,31 @@ export class ExamQuestionComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+    this.countDown.unsubscribe();
   }
 
   ngOnInit(): void {
     this.getQuestion();
   }
 
+  startTimer() {
+    this.countDown = timer(0, this.tick).subscribe(() => {
+      if (this.counter > 0) {
+        --this.counter;
+      } else {
+        this.counter = 0;
+        this.submit();
+      }
+    });
+  }
+
   getQuestion() {
     this.examId = Number(this.activatedRoute.snapshot.paramMap.get('examId'));
     this.examService.getExamQuestion(this.examId).subscribe(res => {
       this.questions = res.questions;
+      this.counter = res.remainingTime;
+      console.log('counter: ', this.counter);
+      this.startTimer();
       this.subscription = interval(10000).subscribe(x => {
         this.saveToServer(false);
       });
@@ -92,7 +110,7 @@ export class ExamQuestionComponent implements OnInit, OnDestroy {
     this.questions.forEach(value => {
       answerSheets.push(new AnswerSheet(value.id, value.choices, value.point));
     });
-    this.examService.submitExamUser(this.examId, true, answerSheets).subscribe(res => {
+    this.examService.submitExamUser(this.examId, true, this.counter, answerSheets).subscribe(res => {
       console.log('ok');
       this.router.navigate(['../result'], {relativeTo: this.activatedRoute});
     }, error => {
@@ -100,12 +118,13 @@ export class ExamQuestionComponent implements OnInit, OnDestroy {
     });
   }
 
+
   saveToServer(isFinished: boolean) {
     const answerSheets: AnswerSheet[] = [];
     this.questions.forEach(value => {
       answerSheets.push(new AnswerSheet(value.id, value.choices, value.point));
     });
-    this.examService.submitExamUser(this.examId, isFinished, answerSheets).subscribe(res => {
+    this.examService.submitExamUser(this.examId, isFinished, this.counter, answerSheets).subscribe(res => {
       console.log('ok');
     }, error => {
       console.log('error');

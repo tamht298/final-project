@@ -27,6 +27,7 @@ export class ExamResultComponent implements OnInit {
   getResult(examId: number) {
     this.examService.getExamUserResult(examId).subscribe(value => {
       this.result = value;
+      console.log(this.result);
     });
   }
 

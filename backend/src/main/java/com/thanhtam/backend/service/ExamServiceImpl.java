@@ -8,12 +8,14 @@ import com.thanhtam.backend.entity.Exam;
 import com.thanhtam.backend.entity.Question;
 import com.thanhtam.backend.repository.ExamRepository;
 import com.thanhtam.backend.repository.IntakeRepository;
+import com.thanhtam.backend.ultilities.EQTypeCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 
@@ -61,16 +63,58 @@ public class ExamServiceImpl implements ExamService {
             choiceList.setPoint(userChoice.getPoint());
 
             List<ChoiceCorrect> choiceCorrects = new ArrayList<>();
-            userChoice.getChoices().forEach(choice -> {
-                ChoiceCorrect choiceCorrect = new ChoiceCorrect();
+            switch (question.getQuestionType().getTypeCode()){
+                case TF:{
+                    userChoice.getChoices().forEach(choice -> {
+                        ChoiceCorrect choiceCorrect = new ChoiceCorrect();
 
-                choiceCorrect.setChoice(choice);
-                Integer isRealCorrect = choiceService.findIsCorrectedById(choice.getId());
-                choiceCorrect.setIsRealCorrect(isRealCorrect);
+                        choiceCorrect.setChoice(choice);
+                        String choiceText = choiceService.findChoiceTextById(choice.getId());
+                        Integer isRealCorrect;
+                        if (choice.getChoiceText().equals(choiceText)) {
+                            isRealCorrect = 1;
+                            choiceList.setIsSelectedCorrected(true);
+                        } else {
+                            isRealCorrect = 0;
+                            choiceList.setIsSelectedCorrected(false);
+                        }
+                        choiceCorrect.setIsRealCorrect(isRealCorrect);
+                        choiceCorrects.add(choiceCorrect);
+                    });
+                    break;
+                }
+                case MC:{
 
-                choiceCorrects.add(choiceCorrect);
-            });
-//            set choices
+                    choiceList.setIsSelectedCorrected(false);
+                    userChoice.getChoices().forEach(choice -> {
+                        ChoiceCorrect choiceCorrect = new ChoiceCorrect();
+                        choiceCorrect.setChoice(choice);
+                        Integer isRealCorrect = choiceService.findIsCorrectedById(choice.getId());
+                        choiceCorrect.setIsRealCorrect(isRealCorrect);
+                        if(choice.getIsCorrected()==isRealCorrect && isRealCorrect==1){
+                            choiceList.setIsSelectedCorrected(true);
+                        }
+                        choiceCorrects.add(choiceCorrect);
+                    });
+                    break;
+                }
+                case MS:{
+                    choiceList.setIsSelectedCorrected(true);
+                    userChoice.getChoices().forEach(choice -> {
+                        ChoiceCorrect choiceCorrect = new ChoiceCorrect();
+                        choiceCorrect.setChoice(choice);
+                        Integer isRealCorrect = choiceService.findIsCorrectedById(choice.getId());
+                        choiceCorrect.setIsRealCorrect(isRealCorrect);
+                        if(choice.getIsCorrected()==0 && isRealCorrect==1){
+                            choiceList.setIsSelectedCorrected(false);
+                        }
+                        choiceCorrects.add(choiceCorrect);
+                    });
+                    break;
+                }
+            }
+
+            //set choices
             choiceList.setChoices(choiceCorrects);
 
             choiceLists.add(choiceList);

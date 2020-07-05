@@ -1,4 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterContentInit, AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {Observable, timer} from 'rxjs';
+import {UploadFileService} from '../../_services/upload-file.service';
+import {FileUploadComponent} from '../../shared/file-upload/file-upload.component';
+import {UserService} from '../../_services/user.service';
+import {UserAccount} from '../../models/user-account';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ToastrService} from 'ngx-toastr';
+import {TokenStorageService} from '../../_services/token-storage.service';
 
 @Component({
   selector: 'app-profile',
@@ -7,9 +15,99 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor() { }
+  togglePwd = false;
+  toggleEmail = false;
+  toggleAvatar = true;
+  imgUpload = '';
+  userProfile: UserAccount;
+  @ViewChild(FileUploadComponent) fileUploadViewChild: FileUploadComponent;
 
-  ngOnInit(): void {
+  constructor(private uploadService: UploadFileService,
+              private userService: UserService,
+              private fb: FormBuilder,
+              private toast: ToastrService,
+              private tokenStorageService: TokenStorageService) {
   }
 
+
+  ngOnInit(): void {
+    this.getUserInfo();
+  }
+
+
+  getUserInfo() {
+    this.userService.getUserInfo('').subscribe(res => {
+      this.userProfile = res.data;
+      this.imgUpload = this.userProfile.profile.image;
+    });
+  }
+
+  toggleChangePwd() {
+    this.toggleEmail = false;
+    this.toggleAvatar = false;
+    this.togglePwd = true;
+  }
+
+  toggleUpdateEmail() {
+    this.togglePwd = false;
+    this.toggleAvatar = false;
+    this.toggleEmail = true;
+
+  }
+
+  toggleChangeAvatar() {
+    this.togglePwd = false;
+    this.toggleEmail = false;
+    this.toggleAvatar = true;
+
+  }
+
+  submitAvatar() {
+    this.fileUploadViewChild.pushAvatarToServer();
+  }
+
+  updateAvatar(event) {
+    this.imgUpload = event;
+    console.log(this.imgUpload);
+  }
+
+
+  updatePassword(data) {
+    this.userService.updatePassword(this.userProfile.id, data).subscribe(res => {
+      if (res.statusCode === 200) {
+        this.toast.success(res.message, 'Done');
+        this.toast.warning(`You have to sign in again`, 'Warning');
+        // @ts-ignore
+        setTimeout(() => {
+          this.tokenStorageService.signOut();
+          window.location.replace('/login');
+
+        }, 3000);
+        // this.toast.warning(`You have to sign in again`, 'Warning');
+      } else {
+        this.toast.error(res.message, 'Error');
+      }
+    }, error => {
+      this.toast.error(error.message, `Server error: ${error.statusCode}`);
+    });
+  }
+
+  updateEmail(data) {
+    this.userService.updateEmail(this.userProfile.id, data).subscribe(res => {
+      switch (res.statusCode) {
+        case 417: {
+          this.toast.error('Error', res.message);
+          break;
+        }
+        case 200: {
+          this.toast.success('Done', res.message);
+          this.userProfile.email = res.data;
+          break;
+        }
+        default: {
+          this.toast.error('Error', 'Server error');
+        }
+      }
+    });
+  }
 }

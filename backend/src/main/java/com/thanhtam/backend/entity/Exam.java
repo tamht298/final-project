@@ -31,14 +31,14 @@ public class Exam extends Auditable<Long> implements Serializable {
     private int durationExam;
 
     @Column(name = "begin_exam")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date beginExam;
 
     @Column(name = "finish_exam")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date finishExam;
 
-
-    @Column(name = "locked", columnDefinition = "TINYINT")
-    @Type(type = "org.hibernate.type.NumericBooleanType")
+    @Transient
     private boolean locked;
 
     @ManyToOne()

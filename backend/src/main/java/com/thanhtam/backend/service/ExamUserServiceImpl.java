@@ -27,6 +27,7 @@ public class ExamUserServiceImpl implements ExamUserService {
             ExamUser examUser = new ExamUser();
             examUser.setUser(user);
             examUser.setExam(exam);
+            examUser.setRemainingTime(exam.getDurationExam()*60);
             examUserList.add(examUser);
 
         });

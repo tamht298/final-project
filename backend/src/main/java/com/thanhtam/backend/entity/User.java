@@ -33,7 +33,6 @@ public class User implements Serializable {
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER )
     @JoinColumn(name = "intake_id")
     private Intake intake;

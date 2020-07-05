@@ -54,6 +54,8 @@ public class ExamUser{
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean isFinished = false;
 
+    @Column(name = "remaining_time")
+    private int remainingTime;
 
 }
 

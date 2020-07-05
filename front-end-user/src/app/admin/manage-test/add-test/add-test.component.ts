@@ -8,7 +8,6 @@ import * as moment from 'moment';
 import {Question} from '../../../models/question';
 import {QuestionService} from '../../../_services/question.service';
 import {PaginationDetail} from '../../../models/pagination/pagination-detail';
-import {identifierModuleUrl} from '@angular/compiler';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {Exam} from '../../../models/exam';
 import {Intake} from '../../../models/intake';
@@ -68,8 +67,8 @@ export class AddTestComponent implements OnInit {
     return this.rfAdd.get('locked');
   }
 
-  get shuffle() {
-    return this.rfAdd.get('shuffle');
+  get isShuffle() {
+    return this.rfAdd.get('isShuffle');
   }
 
   get intake() {
@@ -83,7 +82,7 @@ export class AddTestComponent implements OnInit {
         timeEnd: [''],
         timeDuration: [0],
         locked: [false],
-        shuffle: [false],
+        isShuffle: [false],
         intake: [-1]
       }
     );
@@ -102,16 +101,14 @@ export class AddTestComponent implements OnInit {
     this.questionListSelected.forEach(item => {
       this.questionDataJson.push({questionId: item.id, point: item.point});
     });
-    console.log(this.questionDataJson);
+    console.log('timeBegin: ', this.timeBegin.value);
     const newExam = new Exam(
       this.testTitle.value,
-      this.shuffle.value,
       this.timeDuration.value,
       moment(this.timeBegin.value).format('YYYY-MM-DD hh:mm:ss'),
       moment(this.timeEnd.value).format('YYYY-MM-DD hh:mm:ss'),
-      this.locked.value,
       JSON.stringify(this.questionDataJson));
-    this.examService.createExam(this.intake.value, this.selectedPartId, newExam).subscribe(res => {
+    this.examService.createExam(this.intake.value, this.selectedPartId, this.isShuffle.value, this.locked.value, newExam).subscribe(res => {
       console.log(res);
     });
   }

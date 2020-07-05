@@ -33,7 +33,8 @@ import {ToastrModule} from 'ngx-toastr';
     ToastrModule.forRoot({
       timeOut: 3000,
       positionClass: 'toast-top-right',
-      tapToDismiss: true
+      tapToDismiss: true,
+      closeButton: true
     }),
     FormsModule,
     ReactiveFormsModule,
@@ -49,7 +50,8 @@ import {ToastrModule} from 'ngx-toastr';
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
   ],
-  exports: [],
+    exports: [
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
