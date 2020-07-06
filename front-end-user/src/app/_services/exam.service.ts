@@ -6,6 +6,7 @@ import {Exam} from '../models/exam';
 import {ExamUser} from '../models/exam-user';
 import {timeout} from 'rxjs/operators';
 import {AnswerSheet} from '../models/answer-sheet';
+import {ExamCalendar} from '../models/exam-calendar';
 
 @Injectable({
   providedIn: 'root'
@@ -47,5 +48,8 @@ export class ExamService {
     return this.http.get(`${this.baseUrl}/exams/${examId}/result`);
   }
 
+  public getExamCalendar(): Observable<ExamCalendar[]> {
+    return this.http.get<ExamCalendar[]>(`${this.baseUrl}/exams/schedule`);
+  }
 
 }

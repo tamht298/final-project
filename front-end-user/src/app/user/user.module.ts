@@ -10,23 +10,32 @@ import {LeftSideComponent} from './left-side/left-side.component';
 import {RouterModule} from '@angular/router';
 import {ProfileComponent} from './profile/profile.component';
 import {ProfileCardComponent} from './profile-card/profile-card.component';
-import { ExamDetailComponent } from './exam-detail/exam-detail.component';
-import { ExamQuestionComponent } from './exam-question/exam-question.component';
+import {ExamDetailComponent} from './exam-detail/exam-detail.component';
+import {ExamQuestionComponent} from './exam-question/exam-question.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { ExamResultComponent } from './exam-result/exam-result.component';
-import { ScheduleComponent } from './schedule/schedule.component';
+import {ExamResultComponent} from './exam-result/exam-result.component';
+import {ScheduleComponent} from './schedule/schedule.component';
+import {FullCalendarModule} from '@fullcalendar/angular';
+import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin
+import timeGridPlugin from '@fullcalendar/timegrid'; // a plugin
+import interactionPlugin from '@fullcalendar/interaction'; // a plugin
 
+FullCalendarModule.registerPlugins([
+  dayGridPlugin,
+  interactionPlugin
+]);
 
 @NgModule({
   declarations: [
     UserComponent, DashboardComponent, ExamCardComponent, FooterComponent, LeftSideComponent, ProfileComponent, ProfileCardComponent, ExamDetailComponent, ExamQuestionComponent, ExamResultComponent, ScheduleComponent],
-    imports: [
-        CommonModule,
-        SharedModule,
-        RouterModule,
-        FormsModule,
-        ReactiveFormsModule,
-    ]
+  imports: [
+    CommonModule,
+    SharedModule,
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
+    FullCalendarModule
+  ]
 })
 export class UserModule {
 }

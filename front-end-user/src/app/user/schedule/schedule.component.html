@@ -1,1 +1,27 @@
-<p>schedule works!</p>
+<div class="py-3 px-4" *ngIf="examCalendars">
+  <div class="flex justify-between items-center">
+    <button
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mx-2 rounded cursor-pointer focus:outline-none"
+      (click)="goToday()"><span class="mr-2"><i class="fa fa-dot-circle-o"></i></span>Today
+    </button>
+    <div class="text-2xl font-bold">{{nowDate}}</div>
+    <div>
+      <button
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mx-2 rounded cursor-pointer focus:outline-none"
+        (click)="goPrevMonth()"><span class="mr-2"><i class="fa fa-arrow-left"></i></span>Previous
+      </button>
+      <button
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mx-2 rounded cursor-pointer focus:outline-none"
+        (click)="goNextMonth()"><span class="mr-2"><i class="fa fa-arrow-right"></i></span>Next
+      </button>
+
+    </div>
+
+  </div>
+
+  <div *ngIf="calendarOptions">
+    <full-calendar #calendar deepChangeDetection="true" [options]="calendarOptions"></full-calendar>
+
+  </div>
+
+</div>

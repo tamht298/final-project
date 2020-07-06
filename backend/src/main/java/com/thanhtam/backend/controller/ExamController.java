@@ -306,6 +306,33 @@ public class ExamController {
         return examQuestionPoints;
     }
 
+    @GetMapping(value = "/exams/schedule")
+    public List<ExamCalendar> getExamCalendar(){
+        String username = userService.getUserName();
+        List<ExamUser> examUsers = examUserService.getExamListByUsername(username);
+        List<ExamCalendar> examCalendars = new ArrayList<ExamCalendar>();
+        examUsers.forEach(examUser -> {
+            ExamCalendar examCalendar = new ExamCalendar();
+            examCalendar.setCourseName(examUser.getExam().getPart().getCourse().getName());
+            examCalendar.setExamTitle(examUser.getExam().getTitle());
+            examCalendar.setPartName(examUser.getExam().getPart().getName());
+            examCalendar.setExamId(examUser.getExam().getId());
+            examCalendar.setDurationExam(examUser.getExam().getDurationExam());
+            examCalendar.setBeginDate(examUser.getExam().getBeginExam());
+            examCalendar.setFinishDate(examUser.getExam().getFinishExam());
+            if(examUser.getIsFinished().equals(true)){
+                examCalendar.setCompleteString("Completed");
+                examCalendar.setCompleted(true);
+            }
+            else{
+                examCalendar.setCompleteString("Coming");
+                examCalendar.setCompleted(false);
+            }
+            examCalendars.add(examCalendar);
+
+        });
+        return examCalendars;
+    }
 }
 
 
