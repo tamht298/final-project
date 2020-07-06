@@ -14,11 +14,12 @@ import { ExamDetailComponent } from './exam-detail/exam-detail.component';
 import { ExamQuestionComponent } from './exam-question/exam-question.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ExamResultComponent } from './exam-result/exam-result.component';
+import { ScheduleComponent } from './schedule/schedule.component';
 
 
 @NgModule({
   declarations: [
-    UserComponent, DashboardComponent, ExamCardComponent, FooterComponent, LeftSideComponent, ProfileComponent, ProfileCardComponent, ExamDetailComponent, ExamQuestionComponent, ExamResultComponent],
+    UserComponent, DashboardComponent, ExamCardComponent, FooterComponent, LeftSideComponent, ProfileComponent, ProfileCardComponent, ExamDetailComponent, ExamQuestionComponent, ExamResultComponent, ScheduleComponent],
     imports: [
         CommonModule,
         SharedModule,

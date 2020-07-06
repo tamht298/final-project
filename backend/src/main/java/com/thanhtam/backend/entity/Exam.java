@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thanhtam.backend.audit.Auditable;
 import lombok.*;
 import org.hibernate.annotations.Type;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -31,11 +32,13 @@ public class Exam extends Auditable<Long> implements Serializable {
     private int durationExam;
 
     @Column(name = "begin_exam")
-    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy/MM/dd hh:mm:ss a")
+//    @Temporal(TemporalType.TIMESTAMP)
     private Date beginExam;
 
     @Column(name = "finish_exam")
-    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy/MM/dd hh:mm:ss a")
+//    @Temporal(TemporalType.TIMESTAMP)
     private Date finishExam;
 
     @Transient

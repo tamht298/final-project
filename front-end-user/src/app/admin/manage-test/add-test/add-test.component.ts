@@ -101,13 +101,14 @@ export class AddTestComponent implements OnInit {
     this.questionListSelected.forEach(item => {
       this.questionDataJson.push({questionId: item.id, point: item.point});
     });
-    console.log('timeBegin: ', this.timeBegin.value);
+
     const newExam = new Exam(
       this.testTitle.value,
       this.timeDuration.value,
-      moment(this.timeBegin.value).format('YYYY-MM-DD hh:mm:ss'),
-      moment(this.timeEnd.value).format('YYYY-MM-DD hh:mm:ss'),
+      moment(this.timeBegin.value).format('YYYY-MM-DD HH:mm:ss'),
+      moment(this.timeEnd.value).format('YYYY-MM-DD HH:mm:ss'),
       JSON.stringify(this.questionDataJson));
+
     this.examService.createExam(this.intake.value, this.selectedPartId, this.isShuffle.value, this.locked.value, newExam).subscribe(res => {
       console.log(res);
     });
@@ -127,7 +128,7 @@ export class AddTestComponent implements OnInit {
 
   getBeginTime(event) {
 
-    const date = moment(event.target.value).format('YYYY-MM-DD HH:mm:ss');
+    const date = moment(event.target.value).format('YYYY-MM-DD HH:mm:ss A');
     console.log(date);
   }
 

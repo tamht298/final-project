@@ -5,7 +5,7 @@
         <img class="h-6 lg:h-8 xl:h-9" src="../../assets/images/logo.svg" alt="Tailwind UI"/>
       </div>
       <div *ngIf="currentProfile" class="mb-3">
-        Chào, {{currentProfile?.firstName}}
+        Hi, {{currentProfile?.firstName}}
       </div>
     </div>
     <div class="h-auto">
@@ -18,6 +18,11 @@
       <a [routerLink]="['profile']" routerLinkActive="border-l-4 border-gray-400 bg-blue-700 text-white"
          class="flex py-3 px-6 cursor-pointer hover:bg-blue-500 transition text-gray-300"><span class="mr-3"><i
         class="fa fa-user"></i></span>Profile</a>
+      <a [routerLink]="['schedule']"
+         routerLinkActive="border-l-4 border-gray-400 bg-blue-700 text-white"
+         class="flex py-3 px-6 cursor-pointer hover:bg-blue-500 transition text-gray-300"><span
+        class="mr-3"><i
+        class="fa fa-calendar"></i></span>Schedule</a>
     </div>
 
   </div>

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -65,11 +66,9 @@ public class ExamController {
         List<ExamUser> examUserList = examUserService.getExamListByUsername(username);
         Date currentDate = new Date();
         examUserList.forEach(examUser -> {
-            if(currentDate.compareTo(examUser.getExam().getBeginExam())<0){
+            if (currentDate.compareTo(examUser.getExam().getBeginExam()) < 0) {
                 examUser.getExam().setLocked(false);
-            }
-            else
-            {
+            } else {
                 examUser.getExam().setLocked(true);
 
             }
@@ -89,10 +88,10 @@ public class ExamController {
         Date timeExam = examUser.get().getExam().getBeginExam();
         Date now = new Date();
 
-        logger.error("timeExam"+timeExam.toString());
-        logger.error("now"+now.toString());
-        logger.error("equal="+now.compareTo(timeExam));
-        if(now.compareTo(timeExam)<0){
+        logger.error("timeExam" + timeExam.toString());
+        logger.error("now" + now.toString());
+        logger.error("equal=" + now.compareTo(timeExam));
+        if (now.compareTo(timeExam) < 0) {
 
             return new ResponseEntity("Bài thi chưa bắt đầu", HttpStatus.BAD_REQUEST);
         }
@@ -108,7 +107,7 @@ public class ExamController {
             return new ResponseEntity("Không tìm thấy exam này", HttpStatus.NOT_FOUND);
         }
         Date currentTime = new Date();
-        if(exam.get().isLocked() == true || exam.get().getBeginExam().compareTo(currentTime)>0){
+        if (exam.get().isLocked() == true || exam.get().getBeginExam().compareTo(currentTime) > 0) {
             return new ResponseEntity("Bài thi đang bị khoá hoặc chưa tới thời gian phù hợp", HttpStatus.BAD_REQUEST);
         }
         ExamUser examUser = examUserService.findByExamAndUser(examId, username);
@@ -201,11 +200,7 @@ public class ExamController {
                 exam.setPart(part.get());
             }
             exam.setShuffle(isShuffle);
-//            Date beginTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(exam.getBeginExam().toString());
-//            Date finishTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(exam.getFinishExam().toString());
-//
-//            exam.setBeginExam(beginTime);
-//            exam.setFinishExam(finishTime);
+            logger.error("begin: "+ exam.getBeginExam());
 
             this.examService.saveExam(exam);
             List<User> users = userService.findAllByIntakeId(intakeId);
