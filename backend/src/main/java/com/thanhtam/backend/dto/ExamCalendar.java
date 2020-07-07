@@ -15,6 +15,7 @@ import java.util.Date;
 public class ExamCalendar {
     private String courseName;
     private String partName;
+    private String courseCode;
     private String examTitle;
     private Long examId;
     private int durationExam;

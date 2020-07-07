@@ -315,6 +315,7 @@ public class ExamController {
             ExamCalendar examCalendar = new ExamCalendar();
             examCalendar.setCourseName(examUser.getExam().getPart().getCourse().getName());
             examCalendar.setExamTitle(examUser.getExam().getTitle());
+            examCalendar.setCourseCode(examUser.getExam().getPart().getCourse().getCourseCode());
             examCalendar.setPartName(examUser.getExam().getPart().getName());
             examCalendar.setExamId(examUser.getExam().getId());
             examCalendar.setDurationExam(examUser.getExam().getDurationExam());

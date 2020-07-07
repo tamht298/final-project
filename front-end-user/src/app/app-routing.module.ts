@@ -21,6 +21,7 @@ import {ExamDetailComponent} from './user/exam-detail/exam-detail.component';
 import {ExamQuestionComponent} from './user/exam-question/exam-question.component';
 import {ExamResultComponent} from './user/exam-result/exam-result.component';
 import {ScheduleComponent} from './user/schedule/schedule.component';
+import {StatisticsComponent} from './user/statistics/statistics.component';
 
 
 const routes: Routes = [
@@ -51,6 +52,7 @@ const routes: Routes = [
           {path: 'dashboard', component: DashboardComponent},
           {path: 'profile', component: ProfileComponent},
           {path: 'schedule', component: ScheduleComponent},
+          {path: 'statistics', component: StatisticsComponent},
           {path: 'exams/:examId', component: ExamDetailComponent},
           {path: 'exams/:examId/start', component: ExamQuestionComponent},
           {path: 'exams/:examId/result', component: ExamResultComponent},

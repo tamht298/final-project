@@ -40,6 +40,7 @@
     "ngx-skeleton-loader": "^2.2.0",
     "ngx-toastr": "^11.3.3",
     "rxjs": "~6.5.4",
+    "tether": "^1.4.5",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
   },

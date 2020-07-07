@@ -6,3 +6,22 @@
 :host ::ng-deep .fc .fc-scrollgrid-liquid {
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
+
+:host ::ng-deep .fc .fc-daygrid-event-harness:hover{
+  cursor: pointer;
+}
+
+:host ::ng-deep tbody tr > th{
+  background-color: #02B0EC;
+  color: white;
+}
+:host ::ng-deep tbody tr{
+  background-color: #F3F4F6;
+}
+
+:host ::ng-deep .fc .fc-daygrid-day.fc-day-today{
+  background-color: dodgerblue;
+  color: white;
+  opacity: 60%;
+
+}

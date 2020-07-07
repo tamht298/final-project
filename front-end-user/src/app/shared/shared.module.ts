@@ -11,12 +11,12 @@ import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {SkeletonComponent} from './skeleton/skeleton.component';
 import {RoundProgressModule} from 'angular-svg-round-progressbar';
-import { ResultCircleComponent } from './result-circle/result-circle.component';
+import {ResultCircleComponent} from './result-circle/result-circle.component';
 import {FormatTimePipe} from '../pipes/format-time.pipe';
-import { FileUploadComponent } from './file-upload/file-upload.component';
-import { UpdateEmailComponent } from './update-profile/update-email/update-email.component';
-import { UpdatePasswordComponent } from './update-profile/update-password/update-password.component';
-import { UpdateAvatarComponent } from './update-profile/update-avatar/update-avatar.component';
+import {FileUploadComponent} from './file-upload/file-upload.component';
+import {UpdateEmailComponent} from './update-profile/update-email/update-email.component';
+import {UpdatePasswordComponent} from './update-profile/update-password/update-password.component';
+import {UpdateAvatarComponent} from './update-profile/update-avatar/update-avatar.component';
 
 
 @NgModule({
@@ -33,25 +33,25 @@ import { UpdateAvatarComponent } from './update-profile/update-avatar/update-ava
     FileUploadComponent,
     UpdateEmailComponent,
     UpdatePasswordComponent,
-    UpdateAvatarComponent
+    UpdateAvatarComponent,
 
   ],
-    exports: [
-        PreLoadingComponent,
-        BreadcrumbsComponent,
-        SpinnerComponent,
-        TabComponent,
-        TooltipModule,
-        RichEditorComponent,
-        SkeletonComponent,
-        RoundProgressModule,
-        ResultCircleComponent,
-        FormatTimePipe,
-        FileUploadComponent,
-        UpdatePasswordComponent,
-        UpdateEmailComponent,
-        UpdateAvatarComponent
-    ],
+  exports: [
+    PreLoadingComponent,
+    BreadcrumbsComponent,
+    SpinnerComponent,
+    TabComponent,
+    TooltipModule,
+    RichEditorComponent,
+    SkeletonComponent,
+    RoundProgressModule,
+    ResultCircleComponent,
+    FormatTimePipe,
+    FileUploadComponent,
+    UpdatePasswordComponent,
+    UpdateEmailComponent,
+    UpdateAvatarComponent,
+  ],
   imports: [
     CommonModule,
     FormsModule,

@@ -18,8 +18,8 @@ import {ScheduleComponent} from './schedule/schedule.component';
 import {FullCalendarModule} from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin
 import timeGridPlugin from '@fullcalendar/timegrid'; // a plugin
-import interactionPlugin from '@fullcalendar/interaction'; // a plugin
-
+import interactionPlugin from '@fullcalendar/interaction';
+import { StatisticsComponent } from './statistics/statistics.component';
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
   interactionPlugin
@@ -27,7 +27,7 @@ FullCalendarModule.registerPlugins([
 
 @NgModule({
   declarations: [
-    UserComponent, DashboardComponent, ExamCardComponent, FooterComponent, LeftSideComponent, ProfileComponent, ProfileCardComponent, ExamDetailComponent, ExamQuestionComponent, ExamResultComponent, ScheduleComponent],
+    UserComponent, DashboardComponent, ExamCardComponent, FooterComponent, LeftSideComponent, ProfileComponent, ProfileCardComponent, ExamDetailComponent, ExamQuestionComponent, ExamResultComponent, ScheduleComponent, StatisticsComponent],
   imports: [
     CommonModule,
     SharedModule,
