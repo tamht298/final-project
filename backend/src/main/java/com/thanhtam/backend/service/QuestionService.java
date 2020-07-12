@@ -31,7 +31,9 @@ public interface QuestionService {
 
     String findQuestionTextById(Long questionId);
 
-    Page<Question> findAllByDeleted(Pageable pageable, Boolean deleted);
+    Page<Question> findQuestionsByPart_IdAndCreatedBy_Username(Pageable pageable, Long partId, String username);
+
+    Page<Question> findQuestionsByCreatedBy_Username(Pageable pageable, String username);
 
     void save(Question question);
 

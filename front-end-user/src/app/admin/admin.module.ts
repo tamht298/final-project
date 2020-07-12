@@ -33,21 +33,26 @@ import {NgxSkeletonLoaderModule} from 'ngx-skeleton-loader';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { QuestionDetailComponent } from './manage-question/question-detail/question-detail.component';
 import { UserTestComponent } from './manage-test/user-test/user-test.component';
+import { AdminProfileComponent } from './admin-profile/admin-profile.component';
+import { DetailTestComponent } from './manage-test/detail-test/detail-test.component';
+import {NgApexchartsModule} from 'ng-apexcharts';
+import { UserTestResultComponent } from './manage-test/user-test-result/user-test-result.component';
 
 @NgModule({
-  declarations: [AdminComponent, NavSidebarComponent, AdminNavbarComponent, UserDropdownComponent, LineChartComponent, BarChartComponent, AdminDashboardComponent, ManageUserComponent, AdminFooterComponent, CardStatsComponent, AddUserComponent, DetailUserComponent, DeleteUserComponent, UpdateUserComponent, QuestionBankComponent, TabsComponent, ManageCourseComponent, CourseUpdateComponent, CourseCreateComponent, ListQuestionComponent, ManagePartComponent, AddQuestionComponent, ManageTestComponent, AddTestComponent, QuestionDetailComponent, UserTestComponent],
-  imports: [
-    CommonModule,
-    RouterModule,
-    ScrollingModule,
-    SharedModule,
-    FormsModule,
-    ReactiveFormsModule,
-    CKEditorModule,
-    NgxSkeletonLoaderModule,
-    DragDropModule,
+  declarations: [AdminComponent, NavSidebarComponent, AdminNavbarComponent, UserDropdownComponent, LineChartComponent, BarChartComponent, AdminDashboardComponent, ManageUserComponent, AdminFooterComponent, CardStatsComponent, AddUserComponent, DetailUserComponent, DeleteUserComponent, UpdateUserComponent, QuestionBankComponent, TabsComponent, ManageCourseComponent, CourseUpdateComponent, CourseCreateComponent, ListQuestionComponent, ManagePartComponent, AddQuestionComponent, ManageTestComponent, AddTestComponent, QuestionDetailComponent, UserTestComponent, AdminProfileComponent, DetailTestComponent, UserTestResultComponent],
+    imports: [
+        CommonModule,
+        RouterModule,
+        ScrollingModule,
+        SharedModule,
+        FormsModule,
+        ReactiveFormsModule,
+        CKEditorModule,
+        NgxSkeletonLoaderModule,
+        DragDropModule,
+        NgApexchartsModule,
 
-  ]
+    ]
 })
 export class AdminModule {
 }

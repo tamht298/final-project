@@ -120,4 +120,9 @@ public class CourseController {
     public Course getCourseByPart(@PathVariable Long partId){
         return courseService.findCourseByPartId(partId);
     }
+
+    @GetMapping(value="/intakes/{intakeId}/courses")
+    public List<Course> findAllByIntakeId(@PathVariable Long intakeId){
+        return courseService.findAllByIntakeId(intakeId);
+    }
 }

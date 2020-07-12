@@ -112,7 +112,7 @@
               <tr class="border hover:bg-gray-300">
                 <td
                   class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-md font-semibold text-gray-800 whitespace-no-wrap p-4">
-                  {{exam.title}}
+                  <a [routerLink]="[exam.id, 'preview']" class="hover:text-blue-700">{{exam.title}}</a>
                 </td>
                 <td
                   class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-no-wrap p-4 text-left"
@@ -123,23 +123,20 @@
 
                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
                   <ng-container [ngSwitch]="getStatusExam(exam)">
-                    <ng-template [ngSwitchCase]="0"><span class="text-gray-700 bg-gray-300 rounded px-2 py-1">Chưa bắt đầu</span>
+                    <ng-template [ngSwitchCase]="0"><span class="text-gray-700 bg-gray-200 rounded px-2 py-1">Chưa bắt đầu</span>
                     </ng-template>
                     <ng-template [ngSwitchCase]="-1"><span
-                      class="text-red-700 bg-red-300 rounded px-2 py-1">Kết thúc</span></ng-template>
-                    <ng-template [ngSwitchCase]="1"><span class="text-green-700 bg-green-300 rounded px-2 py-1">Đang diễn ra</span>
+                      class="text-red-700 bg-red-200 rounded px-2 py-1">Kết thúc</span></ng-template>
+                    <ng-template [ngSwitchCase]="1"><span class="text-green-700 bg-green-200 rounded px-2 py-1">Đang diễn ra</span>
                     </ng-template>
                   </ng-container>
                 </td>
                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
                   {{exam.intake.name}}
                 </td>
-
-
                 <td
                   class="border-t-0 px-6 align-middle flex justify-between border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 w-full">
-                  <!--                  <app-course-update [courseInfo]="course"-->
-                  <!--                                     (courseOutput)="fetchCourseAfterCRUD($event)"></app-course-update>-->
+
 
                   <a [routerLink]="[exam.id, 'users']"
                     class="bg-white shadow-md hover:bg-blue-500 hover:text-gray-200 cursor-pointer transition duration-200 ease-in-out text-xs font-bold uppercase rounded outline-none focus:outline-none px-2 py-1">
@@ -160,33 +157,33 @@
           </ng-container>
         </div>
 
-        <!--        <div *ngIf="userList.length!==0"-->
-        <!--             class="px-4 py-3 bg-white border-t flex flex-row justify-between xs:flex-row items-center xs:justify-between">-->
-        <!--                        <span class="text-xs xs:text-sm text-gray-700 px-4">-->
-        <!--                            Hiển thị {{paginationDetail?.isLastPage ? paginationDetail?.totalCount - paginationDetail.pageCount + 1 : paginationDetail?.pageNumber * paginationDetail?.pageCount + 1}}-->
-        <!--                          đến {{paginationDetail?.isLastPage ? paginationDetail.totalCount : (paginationDetail?.pageNumber + 1) * paginationDetail?.pageCount}}-->
-        <!--                          trong số {{paginationDetail?.totalCount}} kết quả-->
-        <!--                        </span>-->
-        <!--          <div class="inline-flex mt-2 px-4 xs:mt-0">-->
-        <!--            <button-->
-        <!--              class="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l focus:outline-none"-->
-        <!--              (click)="goPreviousPage()"-->
-        <!--            >-->
-        <!--              <span><i class="fa fa-arrow-left"></i></span><span class="hidden md:inline ml-1 ">Trang trước</span>-->
-        <!--            </button>-->
-        <!--            <button-->
-        <!--              class="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r focus:outline-none"-->
-        <!--              (click)="goNextPage()"-->
-        <!--            >-->
-        <!--              <span class="hidden md:inline mr-1">Trang kế</span><span><i class="fa fa-arrow-right"></i></span>-->
-        <!--            </button>-->
-        <!--          </div>-->
-        <!--        </div>-->
-        <!--        <ng-container *ngIf="userList.length==0">-->
-        <!--          <div class="px-4 py-3 bg-white border-t flex flex-row justify-between xs:flex-row items-center xs:justify-between">-->
-        <!--            <p class="mx-auto text-gray-700 text-sm">Nội dung không có để hiển thị</p>-->
-        <!--          </div>-->
-        <!--        </ng-container>-->
+                <div *ngIf="examList.length!==0"
+                     class="px-4 py-3 bg-white border-t flex flex-row justify-between xs:flex-row items-center xs:justify-between">
+                                <span class="text-xs xs:text-sm text-gray-700 px-4">
+                                    Hiển thị {{paginationDetail?.isLastPage ? paginationDetail?.totalCount - paginationDetail.pageCount + 1 : paginationDetail?.pageNumber * paginationDetail?.pageCount + 1}}
+                                  đến {{paginationDetail?.isLastPage ? paginationDetail.totalCount : (paginationDetail?.pageNumber + 1) * paginationDetail?.pageCount}}
+                                  trong số {{paginationDetail?.totalCount}} kết quả
+                                </span>
+                  <div class="inline-flex mt-2 px-4 xs:mt-0">
+                    <button
+                      class="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l focus:outline-none"
+                      (click)="goPreviousPage()"
+                    >
+                      <span><i class="fa fa-arrow-left"></i></span><span class="hidden md:inline ml-1 ">Trang trước</span>
+                    </button>
+                    <button
+                      class="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r focus:outline-none"
+                      (click)="goNextPage()"
+                    >
+                      <span class="hidden md:inline mr-1">Trang kế</span><span><i class="fa fa-arrow-right"></i></span>
+                    </button>
+                  </div>
+                </div>
+                <ng-container *ngIf="examList.length==0 && !skeleton">
+                  <div class="px-4 py-3 bg-white border-t flex flex-row justify-between xs:flex-row items-center xs:justify-between">
+                    <p class="mx-auto text-gray-700 text-sm">Nội dung chưa được tạo</p>
+                  </div>
+                </ng-container>
 
       </div>
     </div>

@@ -7,6 +7,7 @@ import com.google.common.base.Strings;
 import com.thanhtam.backend.dto.*;
 import com.thanhtam.backend.entity.*;
 import com.thanhtam.backend.service.*;
+import com.thanhtam.backend.ultilities.ERole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,8 +68,17 @@ public class ExamController {
     @GetMapping(value = "/exams")
     @PreAuthorize("hasRole('ADMIN') or hasRole('LECTURER')")
     public PageResult getExamsByPage(@PageableDefault(page = 0, size = 10, sort = "id") Pageable pageable) {
-        Page<Exam> examPage = examService.findAll(pageable);
+        String username = userService.getUserName();
+        User user = userService.getUserByUsername(username).get();
+        boolean isAdmin = user.getRoles().contains(ERole.ROLE_ADMIN);
+        Page<Exam> examPage;
+        if (isAdmin) {
+            examPage = examService.findAll(pageable);
+            return new PageResult(examPage);
+        }
+        examPage = examService.findAllByCreatedBy_Username(pageable, username);
         return new PageResult(examPage);
+
     }
 
     @GetMapping(value = "/exams/list-all-by-user")
@@ -284,7 +294,7 @@ public class ExamController {
             List<AnswerSheet> userChoices = convertAnswerJsonToObject(examUser);
             if (userChoices.isEmpty()) {
                 examResult.setTotalPoint(null);
-                examResult.setFullName(examUser.getUser().getProfile().getLastName().concat(" ").concat(examUser.getUser().getProfile().getFirstName()));
+                examResult.setUser(examUser.getUser());
                 examResult.setExamStatus(0);
 
             } else {
@@ -303,7 +313,7 @@ public class ExamController {
                 }
             }
 
-            examResult.setFullName(examUser.getUser().getProfile().getLastName().concat(" ").concat(examUser.getUser().getProfile().getFirstName()));
+            examResult.setUser(examUser.getUser());
             examResult.setUserTimeBegin(examUser.getTimeStart());
             examResult.setUserTimeFinish(examUser.getTimeFinish());
             if (exam.get().getFinishExam().compareTo(now) < 0 && examUser.getIsStarted().equals(false)) {
@@ -352,6 +362,38 @@ public class ExamController {
         return new ResponseEntity(examResult, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/exams/{examId}/users/{username}/result")
+    public ResponseEntity getResultExamByUser(@PathVariable Long examId, @PathVariable String username) throws IOException {
+        ExamResult examResult = new ExamResult();
+        Optional<Exam> exam = examService.getExamById(examId);
+
+        if (!exam.isPresent()) {
+            return new ResponseEntity("Không tìm thấy exam", HttpStatus.NOT_FOUND);
+        }
+//        Set exam for examResult
+        examResult.setExam(exam.get());
+
+//        Set list question user's choice for examResult
+        List<ExamQuestionPoint> examQuestionPoints = convertQuestionJsonToObject(exam);
+        ExamUser examUser = examUserService.findByExamAndUser(examId, username);
+        List<AnswerSheet> userChoices = convertAnswerJsonToObject(examUser);
+        List<ChoiceList> choiceLists = examService.getChoiceList(userChoices, examQuestionPoints);
+        examResult.setChoiceList(choiceLists);
+        Double totalPoint = 0.0;
+        for (ChoiceList choice : choiceLists) {
+            if (choice.getIsSelectedCorrected().equals(true)) {
+                totalPoint += choice.getPoint();
+            }
+        }
+        examResult.setTotalPoint(totalPoint);
+        if (examUser.getTotalPoint() == -1) {
+            examUser.setTotalPoint(totalPoint);
+            examUserService.update(examUser);
+        }
+        examResult.setRemainingTime(exam.get().getDurationExam() * 60 - examUser.getRemainingTime());
+        return new ResponseEntity(examResult, HttpStatus.OK);
+    }
+
     public List<AnswerSheet> convertAnswerJsonToObject(ExamUser examUser) throws IOException {
 
 //        ObjectMapper mapper = new ObjectMapper();
@@ -363,6 +405,23 @@ public class ExamController {
         List<AnswerSheet> choiceUsers = mapper.readValue(answerSheet, new TypeReference<List<AnswerSheet>>() {
         });
         return choiceUsers;
+    }
+
+    @GetMapping(value = "/exam/{id}/question-text")
+    public List<ExamDetail> getQuestionTextByExamId(@PathVariable Long id) throws IOException {
+        Optional<Exam> exam = examService.getExamById(id);
+        List<ExamQuestionPoint> examQuestionPoints = convertQuestionJsonToObject(exam);
+        List<ExamDetail> questions = new ArrayList<>();
+        examQuestionPoints.forEach(examQuestionPoint -> {
+            ExamDetail examDetail = new ExamDetail();
+            Question question = questionService.getQuestionById(examQuestionPoint.getQuestionId()).get();
+            examDetail.setQuestionText(question.getQuestionText());
+            examDetail.setPoint(examQuestionPoint.getPoint());
+            examDetail.setDifficultyLevel(question.getDifficultyLevel().toString());
+            examDetail.setQuestionType(question.getQuestionType().getDescription());
+            questions.add(examDetail);
+        });
+        return questions;
     }
 
     public List<ExamQuestionPoint> convertQuestionJsonToObject(Optional<Exam> exam) throws IOException {
@@ -397,10 +456,11 @@ public class ExamController {
 //                examCalendar.setCompleted(false);
 //            }
 
+
             if (examUser.getExam().getFinishExam().compareTo(now) < 0 && examUser.getIsStarted().equals(false)) {
                 examCalendar.setCompleteString("Missed");
                 examCalendar.setIsCompleted(-2);
-            } else if (examUser.getIsStarted().equals(false) && examUser.getExam().getBeginExam().compareTo(now) == -1) {
+            } else if (examUser.getIsStarted().equals(false) && examUser.getExam().getBeginExam().compareTo(now) == 1) {
                 examCalendar.setCompleteString("Not yet started");
                 examCalendar.setIsCompleted(0);
             } else if (examUser.getIsFinished().equals(true)) {

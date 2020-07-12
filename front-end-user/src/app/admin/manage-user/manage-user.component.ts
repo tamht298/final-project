@@ -70,7 +70,6 @@ export class ManageUserComponent implements OnInit, AfterContentInit {
           this.paginationDetail = res.paginationDetails;
           console.table(this.userList);
         });
-      ;
     }
 
   }

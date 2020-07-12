@@ -60,9 +60,11 @@ public class CourseServiceImpl implements CourseService {
         return courseRepository.findAllByIntakeId(intakeId);
     }
 
+
     @Override
     public Course findCourseByPartId(Long partId) {
         return courseRepository.findCourseByPartId(partId);
     }
+
 
 }

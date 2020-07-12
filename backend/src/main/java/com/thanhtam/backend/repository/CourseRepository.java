@@ -23,5 +23,6 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 
     @Query(value="select * from course c join part p on c.id = p.course_id where p.id=:partId", nativeQuery=true)
     Course findCourseByPartId(Long partId);
+
 }
 

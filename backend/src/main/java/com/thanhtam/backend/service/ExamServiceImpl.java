@@ -61,6 +61,11 @@ public class ExamServiceImpl implements ExamService {
     }
 
     @Override
+    public Page<Exam> findAllByCreatedBy_Username(Pageable pageable, String username) {
+        return examRepository.findAllByCreatedBy_Username(pageable, username);
+    }
+
+    @Override
     public List<ChoiceList> getChoiceList(List<AnswerSheet> userChoices, List<ExamQuestionPoint> examQuestionPoints) {
         List<ChoiceList> choiceLists = new ArrayList<>();
         userChoices.forEach(userChoice -> {

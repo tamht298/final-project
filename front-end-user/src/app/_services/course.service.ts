@@ -45,6 +45,10 @@ export class CourseService {
     return this.http.get<Course>(`${this.baseUrl}/courses/part/${partId}`);
   }
 
+  getCourseListByIntakeId(intakeId: number): Observable<Course[]> {
+    return this.http.get<Course[]>(`${this.baseUrl}/intakes/${intakeId}/courses`);
+  }
+
   validateCourseCode(id?: number): AsyncValidatorFn {
     // tslint:disable-next-line:max-line-length
     const checkUrl = id == null ? `${environment.apiEndPoint}/courses/check-course-code` : `${environment.apiEndPoint}/courses/${id}/check-course-code`;

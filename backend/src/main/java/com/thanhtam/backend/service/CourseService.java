@@ -24,4 +24,5 @@ public interface CourseService {
 
     List<Course> findAllByIntakeId(Long intakeId);
     Course findCourseByPartId(Long partId);
+
 }

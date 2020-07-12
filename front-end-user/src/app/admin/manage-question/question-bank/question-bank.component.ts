@@ -145,6 +145,7 @@ export class QuestionBankComponent implements OnInit {
 
   changeDeleted(ques: Question) {
     ques.deleted = !ques.deleted;
+
     this.questionService.deleteQuestion(ques.id, ques.deleted)
       .pipe(switchMap(res => this.questionService.getQuestionListByPart(0, 20, this.selectedPartId)))
       .subscribe(res => {

@@ -32,4 +32,5 @@ public class IntakeServiceImpl implements IntakeService {
     public List<Intake> findAll() {
         return intakeRepository.findAll();
     }
+
 }

@@ -10,6 +10,7 @@ import {ExamCalendar} from '../models/exam-calendar';
 import * as moment from 'moment';
 import {PageResult} from '../models/page-result';
 import {ExamResult} from '../models/exam-result';
+import {ExamDetail} from '../models/exam-detail';
 
 @Injectable({
   providedIn: 'root'
@@ -67,6 +68,18 @@ export class ExamService {
 
   public getExamResultListByExamId(examId: number): Observable<ExamResult[]> {
     return this.http.get<ExamResult[]>(`${this.baseUrl}/exams/${examId}/result/all`);
+  }
+
+  public getResultExamByUser(examId: number, username: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/exams/${examId}/users/${username}/result`);
+  }
+
+  public getExamById(id: number): Observable<Exam> {
+    return this.http.get<Exam>(`${this.baseUrl}/exams/${id}`);
+  }
+
+  public getExamQuestionDetail(id: number): Observable<ExamDetail[]> {
+    return this.http.get<ExamDetail[]>(`${this.baseUrl}/exam/${id}/question-text`);
   }
 
 }

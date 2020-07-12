@@ -88,9 +88,15 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Page<Question> findAllByDeleted(Pageable pageable, Boolean deleted) {
-        return questionRepository.findAllByDeleted(pageable, deleted);
+    public Page<Question> findQuestionsByPart_IdAndCreatedBy_Username(Pageable pageable, Long partId, String username) {
+        return questionRepository.findQuestionsByPart_IdAndCreatedBy_Username(pageable, partId, username);
     }
+
+    @Override
+    public Page<Question> findQuestionsByCreatedBy_Username(Pageable pageable, String username) {
+        return questionRepository.findQuestionsByCreatedBy_Username(pageable, username);
+    }
+
 
     @Override
     public void save(Question question) {

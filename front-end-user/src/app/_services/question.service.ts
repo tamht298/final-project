@@ -28,8 +28,8 @@ export class QuestionService {
     return this.http.get<Question>(`${this.baseUrl}/questions/${id}`);
   }
 
-  deleteQuestion(questionId: number, deleted: boolean): Observable<any> {
-    return this.http.get(`${this.baseUrl}/questions/${questionId}/deleted/${deleted}`);
+  deleteQuestion(id: number, deleted: boolean): Observable<any> {
+    return this.http.get(`${this.baseUrl}/questions/${id}/deleted/${deleted}`);
   }
 
 }

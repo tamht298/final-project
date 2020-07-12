@@ -33,6 +33,10 @@ export class UserService {
     return this.http.get<PageResult<UserAccount>>(`${this.baseUrl}/users/deleted/${status}`, {params: pageParams});
   }
 
+  getDefaultAvatar() {
+    return '../../assets/images/avatar-default.png';
+  }
+
   searchUserListDeletedByPage(page: number, size: number, searchKey: string, status: boolean): Observable<PageResult<UserAccount>> {
     const pageParams = new HttpParams().set('page', page.toString()).set('size', size.toString()).set('search-keyword', searchKey.toString());
     return this.http.get<PageResult<UserAccount>>(`${this.baseUrl}/users/deleted/${status}/search`, {params: pageParams});
@@ -50,6 +54,7 @@ export class UserService {
   addUser(user: UserAccount): Observable<UserAccount> {
     return this.http.post<UserAccount>(`${this.baseUrl}/users`, user);
   }
+
   deleteUser(id: number, deleted: boolean): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/users/${id}/deleted/${deleted}`);
   }

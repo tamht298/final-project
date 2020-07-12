@@ -14,11 +14,14 @@ import java.util.Optional;
 public interface ExamService {
 
     Exam saveExam(Exam exam);
+
     Page<Exam> findAll(Pageable pageable);
 
     List<Exam> getAll();
 
     Optional<Exam> getExamById(Long id);
+
+     Page<Exam> findAllByCreatedBy_Username(Pageable pageable, String username);
 
     List<ChoiceList> getChoiceList(List<AnswerSheet> userChoices, List<ExamQuestionPoint> examQuestionPoints);
 }

@@ -1,0 +1,80 @@
+<div class="bg-blue-600 md:pt-32 pb-32 pt-12">
+  <div class="px-4 md:px-10 mx-auto w-full">
+  </div>
+</div>
+<div class=" mx-auto w-full -m-24">
+
+  <div class="flex flex-wrap mt-4 justify-center">
+    <div class="w-full mb-12 xl:mb-0 px-4 max-w-5xl">
+      <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+        <div class="rounded-t mb-0 px-4 py-3 border-0">
+          <div class="flex flex-wrap items-center">
+            <div class="relative w-full px-4 max-w-full flex-grow leading-8 mb-3">
+              <h3 class="font-semibold text-2xl text-gray-800">
+                Thông tin người dùng
+              </h3>
+            </div>
+
+          </div>
+        </div>
+        <div class="block w-full">
+          <!-- Projects table -->
+          <div class="py-3 pb-8" *ngIf="userProfile">
+            <div class="my-2 px-5 flex w-full">
+              <div class="rounded-lg shadow-2xl w-64 mx-2 px-3 py-2 bg-white border-2 border-blue-700 text-gray-700 text-center">
+                <div class="my-3 my-1">
+                  <img [src]="imgUpload"
+                       class="avatar mx-auto shadow-md">
+                </div>
+                <div class="px-3 my-4"><label
+                  class="text-blue-700 text-xl font-semibold uppercase">{{userProfile.profile.lastName}} {{userProfile.profile.firstName}}</label>
+                </div>
+                <div class="px-3 my-1"><label class="font-medium">@{{userProfile.username}}</label></div>
+                <div class="px-3 my-2"><label class="underline text-blue-500">{{userProfile.email}}</label></div>
+                <div class="mx-3 my-3 flex justify-center">
+                  <div
+                    class="mx-2 w-8 h-8 flex justify-center items-center rounded-full bg-blue-500 hover:bg-blue-700 text-white text-lg cursor-pointer"
+                    [tooltip]="'Change password'" show-delay="100" hide-delay="100"
+                    [ngClass]="{'bg-blue-700 shadow-lg': togglePwd}"
+                    (click)="toggleChangePwd()"
+                  ><i class="fa fa-lock"></i></div>
+                  <div
+                    class="mx-2 w-8 h-8 flex justify-center items-center rounded-full bg-blue-500 hover:bg-blue-700 text-white text-lg cursor-pointer"
+                    [tooltip]="'Update email'" show-delay="100" hide-delay="100"
+                    [ngClass]="{'bg-blue-700 shadow-lg': toggleEmail}"
+                    (click)="toggleUpdateEmail()"
+                  ><i class="fa fa-envelope"></i></div>
+                  <div
+                    class="mx-2 w-8 h-8 flex justify-center items-center rounded-full bg-blue-500 hover:bg-blue-700 text-white text-lg cursor-pointer"
+                    [tooltip]="'Change avatar'" show-delay="100" hide-delay="100"
+                    (click)="toggleChangeAvatar()"
+                    [ngClass]="{'bg-blue-700 shadow-lg': toggleAvatar}"
+                  ><i class="fa fa-image"></i></div>
+                </div>
+              </div>
+              <div class="mx-8 md:w-1/2">
+
+                <ng-template [ngIf]="togglePwd">
+                  <app-update-password (passwordUpdate)="updatePassword($event)"></app-update-password>
+                </ng-template>
+
+                <ng-template [ngIf]="toggleEmail">
+                  <app-update-email [userProfile]="userProfile" (emailUpdate)="updateEmail($event)"></app-update-email>
+                </ng-template>
+                <ng-template [ngIf]="toggleAvatar">
+                  <app-update-avatar (avatarUploadUrl)="getAvatarUpload($event)"></app-update-avatar>
+                </ng-template>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <app-admin-footer></app-admin-footer>
+</div>
+

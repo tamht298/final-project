@@ -9,4 +9,5 @@ public interface IntakeService {
     public Intake findByCode(String code);
     public Optional<Intake> findById(Long id);
     public List<Intake> findAll();
+
 }

@@ -19,10 +19,10 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     List<Question> findByQuestionType(QuestionType questionType);
 
     Page<Question> findQuestionsByPart(Pageable pageable, Part part);
+    Page<Question> findQuestionsByPart_IdAndCreatedBy_Username(Pageable pageable, Long partId, String username);
     Page<Question> findAll(Pageable pageable);
 
-    Page<Question> findAllByDeleted(Pageable pageable, Boolean deleted);
-
+    Page<Question> findQuestionsByCreatedBy_Username(Pageable pageable, String username);
     @Query(value="select q.id from question q where q.id =:questionId", nativeQuery=true)
     String findQuestionTextById(Long questionId);
 }

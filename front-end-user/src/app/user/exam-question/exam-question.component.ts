@@ -53,7 +53,6 @@ export class ExamQuestionComponent implements OnInit, OnDestroy {
     this.examService.getExamQuestion(this.examId).subscribe(res => {
       this.questions = res.questions;
       this.counter = res.remainingTime;
-      console.log('counter: ', this.counter);
       this.startTimer();
       this.subscription = interval(10000).subscribe(x => {
         this.saveToServer(false);

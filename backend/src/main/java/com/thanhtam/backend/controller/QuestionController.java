@@ -3,11 +3,9 @@ package com.thanhtam.backend.controller;
 import com.thanhtam.backend.dto.PageResult;
 import com.thanhtam.backend.dto.ServiceResult;
 import com.thanhtam.backend.entity.*;
-import com.thanhtam.backend.service.CourseService;
-import com.thanhtam.backend.service.PartService;
-import com.thanhtam.backend.service.QuestionService;
-import com.thanhtam.backend.service.QuestionTypeService;
+import com.thanhtam.backend.service.*;
 import com.thanhtam.backend.ultilities.EQTypeCode;
+import com.thanhtam.backend.ultilities.ERole;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,13 +28,14 @@ public class QuestionController {
     private QuestionService questionService;
     private PartService partService;
     private QuestionTypeService questionTypeService;
-
+    private UserService userService;
 
     @Autowired
-    public QuestionController(QuestionService questionService, PartService partService, QuestionTypeService questionTypeService) {
+    public QuestionController(QuestionService questionService, PartService partService, QuestionTypeService questionTypeService, UserService userService) {
         this.questionService = questionService;
         this.partService = partService;
         this.questionTypeService = questionTypeService;
+        this.userService = userService;
     }
 
     @GetMapping(value = "/questions")
@@ -64,12 +63,26 @@ public class QuestionController {
     @PreAuthorize("hasRole('ADMIN') or hasRole('LECTURER')")
 
     public PageResult getQuestionsByPart(@PageableDefault(page = 0, size = 10, sort = "id") Pageable pageable, @PathVariable Long partId) {
+        String username = userService.getUserName();
+        User user = userService.getUserByUsername(username).get();
+        boolean isAdmin = user.getRoles().contains(ERole.ROLE_ADMIN);
+        Page<Question> questions;
         if (partId == 0) {
-            Page<Question> questions = questionService.findAllQuestions(pageable);
+            if(isAdmin){
+                questions = questionService.findAllQuestions(pageable);
+                return new PageResult(questions);
+            }
+            questions = questionService.findQuestionsByCreatedBy_Username(pageable, username);
+            return new PageResult(questions);
+
+        }
+
+        if (isAdmin) {
+            Part part = partService.findPartById(partId).get();
+            questions = questionService.findQuestionsByPart(pageable, part);
             return new PageResult(questions);
         }
-        Part part = partService.findPartById(partId).get();
-        Page<Question> questions = questionService.findQuestionsByPart(pageable, part);
+        questions = questionService.findQuestionsByPart_IdAndCreatedBy_Username(pageable, partId, username);
         return new PageResult(questions);
 
     }
@@ -118,11 +131,10 @@ public class QuestionController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('LECTURER')")
-    @GetMapping("/questions/{questionId}/deleted/{deleted}")
-    public ResponseEntity<?> deleteTempQuestion(@PathVariable Long questionId, @PathVariable boolean deleted) {
-
-        Question question = questionService.getQuestionById(questionId).get();
-        question.setDeleted(deleted);
+    @GetMapping(value = "/questions/{id}/deleted/{deleted}")
+    public ResponseEntity<?> deleteTempQuestion(@PathVariable Long id, @PathVariable boolean deleted) {
+        log.error("Deleted");
+        Question question = questionService.getQuestionById(id).get();
         questionService.update(question);
         return ResponseEntity.noContent().build();
     }

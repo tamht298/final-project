@@ -5,7 +5,7 @@ import {Intake} from './intake';
 
 export class Exam {
   title: string;
-  isShuffle: boolean;
+  shuffle: boolean;
   durationExam: number;
   beginExam: string;
   finishExam: string;
@@ -14,6 +14,7 @@ export class Exam {
   part: Part;
   id: number;
   intake: Intake;
+
 
   constructor(title: string, durationExam: number, beginExam: string, finishExam: string, questionData: any) {
     this.title = title;

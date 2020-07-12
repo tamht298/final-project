@@ -73,4 +73,27 @@ export class ManageTestComponent implements OnInit {
     }
     return 1;
   }
+
+  goPreviousPage() {
+    const isFirstPage: boolean = this.paginationDetail.isFirstPage;
+    if (!isFirstPage) {
+      this.examService.getAllExams(this.paginationDetail.previousPage.pageNumber, this.pageCountShowing)
+        .subscribe(res => {
+          this.examList = res.data;
+          this.paginationDetail = res.paginationDetails;
+        });
+    }
+
+  }
+
+  goNextPage() {
+    const isLastPage = !this.paginationDetail.nextPage.available;
+    if (!isLastPage) {
+      this.examService.getAllExams(this.paginationDetail.nextPage.pageNumber, this.pageCountShowing
+      ).subscribe(res => {
+        this.examList = res.data;
+        this.paginationDetail = res.paginationDetails;
+      });
+    }
+  }
 }

@@ -24,6 +24,9 @@ import {ScheduleComponent} from './user/schedule/schedule.component';
 import {StatisticsComponent} from './user/statistics/statistics.component';
 import {QuestionDetailComponent} from './admin/manage-question/question-detail/question-detail.component';
 import {UserTestComponent} from './admin/manage-test/user-test/user-test.component';
+import {AdminProfileComponent} from './admin/admin-profile/admin-profile.component';
+import {DetailTestComponent} from './admin/manage-test/detail-test/detail-test.component';
+import {UserTestResultComponent} from './admin/manage-test/user-test-result/user-test-result.component';
 
 
 const routes: Routes = [
@@ -75,13 +78,15 @@ const routes: Routes = [
         children: [
           {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
           {path: 'dashboard', component: AdminDashboardComponent},
-          {path: 'profile', component: ProfileComponent},
+          {path: 'profile', component: AdminProfileComponent},
           {path: 'users', component: ManageUserComponent},
           {path: 'question-bank', component: QuestionBankComponent},
           {path: 'question-bank/question/:questionId', component: QuestionDetailComponent},
           {path: 'courses', component: ManageCourseComponent},
           {path: 'tests', component: ManageTestComponent},
+          {path: 'tests/:id/preview', component: DetailTestComponent},
           {path: 'tests/:id/users', component: UserTestComponent},
+          {path: 'tests/:id/users/:username', component: UserTestResultComponent},
           {path: 'tests/add-test', component: AddTestComponent},
           {path: 'courses/:courseId/parts/:partId/view-question', component: ListQuestionComponent},
           {path: 'courses/:courseId/parts', component: ManagePartComponent},

@@ -24,7 +24,30 @@
               <div class="flex flex-wrap flex-col w-full">
 
                 <div class="flex flex-wrap flex-row">
+                  <div class="relative w-full px-4 max-w-full flex-flow flex-basis">
 
+                    <p class="mx-3 my-3 text-gray-600 text-md text-blue-700 text-xl font-semibold">Đối tượng tham gia</p>
+
+                    <div class="-mx-3 md:flex mb-2 w-full">
+                      <div class="md:w-full px-3">
+                        <label class="block uppercase tracking-wide text-gray-600 text-xs font-bold mb-2"
+                        >
+                          Khoá thực tập
+                        </label>
+                        <select (change)="changeIntake($event)"
+                          formControlName="intake"
+                          name="intake"
+                          class="block appearance-none w-full bg-gray-200 py-2 px-3 my-1 mt-3 pr-4 rounded shadow leading-tight focus:outline-none">
+                          <option value="-1">-- please choose intake --</option>
+                          <option *ngFor="let intake of intakeList" [value]="intake.id"
+                                  [selected]="intake.id === selectedIntake">{{intake.name}}</option>
+
+                        </select>
+                      </div>
+                    </div>
+
+                  </div>
+                  <hr class="border w-full my-3">
                   <div class="relative w-full px-4 max-w-full flex-flow flex-basis">
 
                     <p class="mx-3 my-3 text-gray-600 text-md text-blue-700 text-xl font-semibold">Thông tin chung</p>
@@ -85,30 +108,7 @@
 
                   </div>
                   <hr class="border w-full my-3">
-                  <div class="relative w-full px-4 max-w-full flex-flow flex-basis">
 
-                    <p class="mx-3 my-3 text-gray-600 text-md text-blue-700 text-xl font-semibold">Đối tượng tham gia</p>
-
-                    <div class="-mx-3 md:flex mb-2 w-full">
-                      <div class="md:w-full px-3">
-                        <label class="block uppercase tracking-wide text-gray-600 text-xs font-bold mb-2"
-                        >
-                          Khoá thực tập
-                        </label>
-                        <select
-                          formControlName="intake"
-                          name="intake"
-                          class="block appearance-none w-full bg-gray-200 py-2 px-3 my-1 mt-3 pr-4 rounded shadow leading-tight focus:outline-none">
-                          <option value="-1">-- please choose intake --</option>
-                          <option *ngFor="let intake of intakeList" [value]="intake.id"
-                                  [selected]="intake.id === selectedIntake">{{intake.name}}</option>
-
-                        </select>
-                      </div>
-                    </div>
-
-                  </div>
-                  <hr class="border w-full my-3">
 
                   <div class="relative w-full px-4 max-w-full flex-flow flex-basis">
 
@@ -302,7 +302,7 @@
                         <span class="text-gray-600 italic font-semibold text-lg">#{{i+1}}</span>
                       </div>
                       <div
-                        class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs p-4 text-left md:w-3/5">
+                        class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs p-4 text-left md:w-1/2">
                         <div [innerHTML]="ques.questionText"></div>
                       </div>
 
@@ -328,7 +328,7 @@
                         {{ques.questionType.description}}
                       </div>
 
-                      <td
+                      <div
                         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs  p-4">
                         <input
                           class="appearance-none border text-center text-xl rounded-md w-full py-2 px-3 my-1 text-gray-600 bg-gray-200 leading-tight outline-none focus:border-blue-500"
@@ -342,7 +342,8 @@
                           [(ngModel)]="ques.point"
                           [ngModelOptions]="{standalone: true}"
                         >
-                      </td>
+                      </div>
+                      <div class="mx-2 cursor-pointer" (click)="removeSelectedQuestion(ques)"><span class="hover:bg-red-300 text-red-700 px-2 py-1 bg-red-200 rounded"><i class="fa fa-minus"></i></span></div>
 
                     </div>
                   </div>
