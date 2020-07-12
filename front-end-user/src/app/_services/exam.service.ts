@@ -7,6 +7,9 @@ import {ExamUser} from '../models/exam-user';
 import {timeout} from 'rxjs/operators';
 import {AnswerSheet} from '../models/answer-sheet';
 import {ExamCalendar} from '../models/exam-calendar';
+import * as moment from 'moment';
+import {PageResult} from '../models/page-result';
+import {ExamResult} from '../models/exam-result';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +19,11 @@ export class ExamService {
   private baseUrl: string = environment.apiEndPoint;
 
   constructor(private http: HttpClient) {
+  }
+
+  public getAllExams(page: number, size: number): Observable<PageResult<Exam>> {
+    const paramsHttp = new HttpParams().set('page', page.toString()).set('size', size.toString());
+    return this.http.get<PageResult<Exam>>(`${this.baseUrl}/exams`, {params: paramsHttp});
   }
 
   public createExam(intakeId: number, partId: number, isShuffle: boolean, locked: boolean, exam: Exam): Observable<Exam> {
@@ -50,6 +58,15 @@ export class ExamService {
 
   public getExamCalendar(): Observable<ExamCalendar[]> {
     return this.http.get<ExamCalendar[]>(`${this.baseUrl}/exams/schedule`);
+  }
+
+  public isAvailable(finishDate: string): boolean {
+    const now = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
+    return moment(finishDate).isAfter(now);
+  }
+
+  public getExamResultListByExamId(examId: number): Observable<ExamResult[]> {
+    return this.http.get<ExamResult[]>(`${this.baseUrl}/exams/${examId}/result/all`);
   }
 
 }

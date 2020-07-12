@@ -22,14 +22,14 @@
 
                   <span class="mx-3 text-gray-600 text-sm">Hiển thị tối đa</span>
                   <div class="inline-block relative max-w-xs w-20 mr-2">
-                    <!--                    <select-->
-                    <!--                      class="block appearance-none w-full bg-white px-3 py-1 pr-4 rounded shadow leading-tight focus:outline-none text-sm"-->
-                    <!--                      (change)="changePageShow($event.target.value)"-->
-                    <!--                    >-->
-                    <!--                      <option *ngFor="let item of pageOptions" [value]="item.num"-->
-                    <!--                              [selected]="item.num == 20">{{item.display}}</option>-->
+                    <select
+                      class="block appearance-none w-full bg-white px-3 py-1 pr-4 rounded shadow leading-tight focus:outline-none text-sm"
+                      (change)="changePageShow($event.target.value)"
+                    >
+                      <option *ngFor="let item of pageOptions" [value]="item.num"
+                              [selected]="item.num == 20">{{item.display}}</option>
 
-                    <!--                    </select>-->
+                    </select>
                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                       <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                         <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
@@ -49,7 +49,7 @@
                   <a
                     class="bg-white shadow-md hover:bg-blue-500 hover:text-blue-200 transition duration-200 ease-in-out text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mx-1 mb-1"
                     type="button"
-                    [routerLink]="['./add-test']"><span><i class="fa fa-user-plus mr-1"></i>Add new</span>
+                    [routerLink]="['./add-test']"><span><i class="fa fa-book mr-1"></i>Add new</span>
                   </a>
                 </div>
               </div>
@@ -82,18 +82,23 @@
             class="items-center w-full bg-transparent border-collapse whitespace-no-wrap user-list block lg:table overflow-x-auto overflow-y-auto">
             <thead>
             <tr>
-              <th
-                class="row-checkbox px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
 
-              </th>
               <th
-                class="row-username px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
-                Mã môn học
+                class="row-title px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
+                Tiêu đề
               </th>
 
               <th
                 class="row-name px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
-                Tên môn
+                TG bắt đầu
+              </th>
+              <th
+                class="row-name px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
+                Trạng thái
+              </th>
+              <th
+                class="row-name px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
+                Intake
               </th>
 
               <th
@@ -103,30 +108,43 @@
             </thead>
 
             <tbody>
-            <ng-container *ngFor="let course of testList; trackBy: trackById">
+            <ng-container *ngFor="let exam of examList; trackBy: trackById">
               <tr class="border hover:bg-gray-300">
                 <td
-                  class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-md text-gray-500 whitespace-no-wrap p-4">
-
+                  class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-md font-semibold text-gray-800 whitespace-no-wrap p-4">
+                  {{exam.title}}
                 </td>
-                <th
-                  class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm font-semibold whitespace-no-wrap p-4 text-left"
+                <td
+                  class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-no-wrap p-4 text-left"
 
                 >
-                  <a class="hover:text-blue-700" [routerLink]="[course.id,'parts']" tooltip="Xem nội dung" placement="right" show-delay="100" hide-delay="100">{{course.courseCode}}</a>
-                </th>
+                  {{exam.beginExam | date: 'medium'}}
+                </td>
 
                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
-                  <a class="hover:text-blue-700" [routerLink]="[course.id,'parts']" tooltip="Xem nội dung" placement="right" show-delay="100" hide-delay="100">{{course.name}}</a>
+                  <ng-container [ngSwitch]="getStatusExam(exam)">
+                    <ng-template [ngSwitchCase]="0"><span class="text-gray-700 bg-gray-300 rounded px-2 py-1">Chưa bắt đầu</span>
+                    </ng-template>
+                    <ng-template [ngSwitchCase]="-1"><span
+                      class="text-red-700 bg-red-300 rounded px-2 py-1">Kết thúc</span></ng-template>
+                    <ng-template [ngSwitchCase]="1"><span class="text-green-700 bg-green-300 rounded px-2 py-1">Đang diễn ra</span>
+                    </ng-template>
+                  </ng-container>
+                </td>
+                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
+                  {{exam.intake.name}}
                 </td>
 
 
                 <td
                   class="border-t-0 px-6 align-middle flex justify-between border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 w-full">
-<!--                  <app-course-update [courseInfo]="course"-->
-<!--                                     (courseOutput)="fetchCourseAfterCRUD($event)"></app-course-update>-->
+                  <!--                  <app-course-update [courseInfo]="course"-->
+                  <!--                                     (courseOutput)="fetchCourseAfterCRUD($event)"></app-course-update>-->
 
-
+                  <a [routerLink]="[exam.id, 'users']"
+                    class="bg-white shadow-md hover:bg-blue-500 hover:text-gray-200 cursor-pointer transition duration-200 ease-in-out text-xs font-bold uppercase rounded outline-none focus:outline-none px-2 py-1">
+                    <span><i class="fa fa-users"></i></span>
+                  </a>
                 </td>
 
               </tr>
@@ -135,6 +153,11 @@
 
 
           </table>
+          <ng-container *ngIf="skeleton">
+            <app-table-skeleton [type]="'exam'"></app-table-skeleton>
+            <app-table-skeleton [type]="'exam'"></app-table-skeleton>
+            <app-table-skeleton [type]="'exam'"></app-table-skeleton>
+          </ng-container>
         </div>
 
         <!--        <div *ngIf="userList.length!==0"-->

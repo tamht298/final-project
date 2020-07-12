@@ -1,6 +1,11 @@
 $accentColor: #0c5d7d;
 $lightColor: #fff;
 $darkColor: #444;
+.modal-body{
+  max-height: calc(100vh - 210px);
+  overflow-y: auto;
+}
+
 :host ::ng-deep .ck-editor__editable {
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   background-color: #edf2f7;

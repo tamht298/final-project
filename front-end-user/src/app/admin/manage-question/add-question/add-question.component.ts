@@ -12,6 +12,7 @@ import {QTYPE} from '../../../models/question-type.enum';
 import {Choice} from '../../../models/choice';
 import * as BalloonEditor from '@ckeditor/ckeditor5-build-balloon';
 import {QuestionService} from '../../../_services/question.service';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-question',
@@ -45,7 +46,8 @@ export class AddQuestionComponent implements OnInit {
     private courseService: CourseService,
     private partService: PartService,
     private questionTypeService: QuestionTypeService,
-    private questionService: QuestionService) {
+    private questionService: QuestionService,
+    private toast: ToastrService) {
   }
 
   get course() {
@@ -88,22 +90,24 @@ export class AddQuestionComponent implements OnInit {
         choices.push(new Choice(this.choices.value, 1));
         const newQuestion = new Question(this.questionText, this.difficultyLevel.value, choices);
         this.questionService.createQuestion(newQuestion, this.questionType.value, this.part.value).subscribe(res1 => {
-          console.log('ok', res1);
-          return;
+          this.toast.success('1 câu hỏi true/false đã được tạo', 'Thành công');
+          this.resetFormAfterSubmit();
         });
         return;
       }
       case QTYPE.MC: {
         const newQuestion = new Question(this.questionText, this.difficultyLevel.value, this.multipleChoice);
         this.questionService.createQuestion(newQuestion, this.questionType.value, this.part.value).subscribe(res2 => {
-          console.log('2', res2);
+          this.toast.success('1 câu hỏi multiple choice đã được tạo', 'Thành công');
+          this.resetFormAfterSubmit();
         });
         return;
       }
       case QTYPE.MS: {
         const newQuestion = new Question(this.questionText, this.difficultyLevel.value, this.multipleSelect);
         this.questionService.createQuestion(newQuestion, this.questionType.value, this.part.value).subscribe(res2 => {
-          console.log('3', res2);
+          this.toast.success('1 câu hỏi multiple select đã được tạo', 'Thành công');
+          this.resetFormAfterSubmit();
         });
         return;
       }
@@ -120,6 +124,10 @@ export class AddQuestionComponent implements OnInit {
       this.questionTypeList = res;
     });
 
+    this.initChoice();
+  }
+
+  initChoice() {
     this.multipleChoice.push(
       new Choice('<p>Choice_1</p>', 1),
       new Choice('<p>Choice_2</p>', 0),
@@ -134,9 +142,11 @@ export class AddQuestionComponent implements OnInit {
     this.course.setValue(-1);
     this.questionType.setValue(QTYPE.TF);
     this.difficultyLevel.setValue(-1);
-    this.selectedPartId = -1;
+    this.part.setValue(-1);
     this.multipleChoice.length = 0;
     this.multipleSelect.length = 0;
+    this.currentQuestionType = QTYPE.TF;
+    this.questionText = '';
 
   }
 
@@ -166,10 +176,6 @@ export class AddQuestionComponent implements OnInit {
   }
 
   addMCAnswer() {
-    // this.multipleChoice.map((item, index) => {
-    //   item.choiceText = `<p>Choice_${index + 1}</p>`;
-    // });
-
     const newAnswer = new Choice(``, 0);
     this.multipleChoice.push(newAnswer);
   }
@@ -205,11 +211,16 @@ export class AddQuestionComponent implements OnInit {
   }
 
   addMSAnswer() {
-    // this.multipleSelect.map((item, index) => {
-    //   item.choiceText = `<p>Choice_${index + 1}</p>`;
-    // });
-
     const newAnswer = new Choice(``, 0);
     this.multipleSelect.push(newAnswer);
+  }
+
+  resetFormAfterSubmit() {
+    this.questionText = '';
+    this.multipleSelect.length = 0;
+    this.multipleChoice.length = 0;
+    this.selectedPartId = -1;
+    this.initChoice();
+
   }
 }

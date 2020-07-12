@@ -1,6 +1,6 @@
 <div class="w-full py-5">
   <div class="flex justify-between px-4 py-4 bg-white shadow-lg rounded-md sticky z-30" style="top: -8px">
-    <div>Timer: {{counter | formatTime}}</div>
+    <div>Timer: <span class="font-bold text-xl">{{counter | formatTime}}</span></div>
     <div class="">
       <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" (click)="showModal()">
         Submit
@@ -10,7 +10,7 @@
   </div>
   <ng-container *ngFor="let ques of questions; let i = index">
     <div class="my-12 mx-4 flex flex-row">
-      <div class="w-48 bg-gray-300 mx-4 px-2 py-2 h-32 rounded-md ml-0 flex flex-col  items-center">
+      <div class="w-48 bg-gray-300 mx-4 px-2 py-2 h-32 rounded-md ml-0 flex flex-col select-none items-center">
         <div class="font-bold text-gray-600 text-xl my-2">Question {{i + 1}}</div>
         <div class="text-gray-600 text-sm">Difficult:
           <ng-container [ngSwitch]="ques.difficultyLevel">
@@ -34,7 +34,7 @@
           <p class="select-none" [innerHTML]="ques.questionText"></p>
         </div>
         <div class="h-auto">
-          <div class="my-5 font-semibold text-blue-600">Select your answer<span
+          <div class="my-5 font-semibold text-blue-600 select-none">Select your answer<span
             *ngIf="ques.questionType.typeCode==='MS'">s</span>
           </div>
 
@@ -112,6 +112,8 @@
       </div>
     </div>
   </ng-container>
+  <hr class="w-full my-3">
+  <p class="text-center font-bold end-text">END</p>
 </div>
 
 

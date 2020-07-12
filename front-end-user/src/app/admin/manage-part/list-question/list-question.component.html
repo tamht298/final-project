@@ -110,7 +110,7 @@
                   class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs  p-4 text-left"
 
                 >
-                  <div [innerHTML]="ques.questionText"></div>
+                  <div class="cursor-pointer" (click)="goDetail(ques.id)" [innerHTML]="ques.questionText"></div>
                 </th>
 
                 <td class="border-t-0 text-center px-6 align-middle border-l-0 border-r-0 text-xs p-4">

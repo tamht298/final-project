@@ -1,6 +1,7 @@
 import {UserUpdate} from './user-update';
 import {UserAccount} from './user-account';
 import {Part} from './part';
+import {Intake} from './intake';
 
 export class Exam {
   title: string;
@@ -12,6 +13,7 @@ export class Exam {
   questionData: any;
   part: Part;
   id: number;
+  intake: Intake;
 
   constructor(title: string, durationExam: number, beginExam: string, finishExam: string, questionData: any) {
     this.title = title;

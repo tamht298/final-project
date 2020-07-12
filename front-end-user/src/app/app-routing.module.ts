@@ -22,6 +22,8 @@ import {ExamQuestionComponent} from './user/exam-question/exam-question.componen
 import {ExamResultComponent} from './user/exam-result/exam-result.component';
 import {ScheduleComponent} from './user/schedule/schedule.component';
 import {StatisticsComponent} from './user/statistics/statistics.component';
+import {QuestionDetailComponent} from './admin/manage-question/question-detail/question-detail.component';
+import {UserTestComponent} from './admin/manage-test/user-test/user-test.component';
 
 
 const routes: Routes = [
@@ -74,10 +76,12 @@ const routes: Routes = [
           {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
           {path: 'dashboard', component: AdminDashboardComponent},
           {path: 'profile', component: ProfileComponent},
-          {path: 'users/active', component: ManageUserComponent},
+          {path: 'users', component: ManageUserComponent},
           {path: 'question-bank', component: QuestionBankComponent},
+          {path: 'question-bank/question/:questionId', component: QuestionDetailComponent},
           {path: 'courses', component: ManageCourseComponent},
           {path: 'tests', component: ManageTestComponent},
+          {path: 'tests/:id/users', component: UserTestComponent},
           {path: 'tests/add-test', component: AddTestComponent},
           {path: 'courses/:courseId/parts/:partId/view-question', component: ListQuestionComponent},
           {path: 'courses/:courseId/parts', component: ManagePartComponent},

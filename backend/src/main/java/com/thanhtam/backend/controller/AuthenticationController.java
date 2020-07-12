@@ -3,12 +3,14 @@ package com.thanhtam.backend.controller;
 import com.thanhtam.backend.config.JwtUtils;
 import com.thanhtam.backend.dto.LoginUser;
 import com.thanhtam.backend.entity.User;
+import com.thanhtam.backend.exception.ErrorMessage;
 import com.thanhtam.backend.payload.response.JwtResponse;
 import com.thanhtam.backend.service.UserDetailsImpl;
 import com.thanhtam.backend.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -60,6 +62,9 @@ public class AuthenticationController {
         userLog.setLastLoginDate(new Date());
         userService.updateUser(userLog);
         logger.warn(userLog.toString());
+        if(userLog.isDeleted() == true){
+            return ResponseEntity.badRequest().build();
+        }
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),

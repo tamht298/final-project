@@ -33,10 +33,11 @@ export class LoginComponent implements OnInit {
       console.log(user);
       if (this.roles.includes(UserRole.ROLE_ADMIN)) {
         this.toLogin(UserRole.ROLE_ADMIN);
+      } else if (this.roles.includes(UserRole.ROLE_LECTURE)) {
+        this.toLogin(UserRole.ROLE_ADMIN);
       } else if (this.roles.includes(UserRole.ROLE_STUDENT)) {
         this.toLogin(UserRole.ROLE_STUDENT);
       }
-
     }
   }
 
@@ -48,21 +49,20 @@ export class LoginComponent implements OnInit {
       }
       case UserRole.ROLE_ADMIN: {
         this.router.navigateByUrl(this.returnUrl);
+        break;
+      }
+      case UserRole.ROLE_LECTURE: {
+        this.router.navigateByUrl(this.returnUrl);
+        break;
       }
     }
-    // this.router.navigate(['/user']).then((e) => {
-    //   if (e) {
-    //     console.log('login ok');
-    //   } else {
-    //     console.log('login fail');
-    //   }
-    // });
   }
 
   onSubmit() {
     this.preLoading = true;
     this.authService.login(this.form).subscribe(
       data => {
+
         this.tokenStorageService.saveToken(data.accessToken);
         this.tokenStorageService.saveUser(data);
 
@@ -70,22 +70,23 @@ export class LoginComponent implements OnInit {
         this.isLoggedIn = true;
 
         this.roles = this.tokenStorageService.getUser().roles;
-        if (this.roles.includes(UserRole.ROLE_ADMIN.toString())) {
-          this.toLogin(UserRole.ROLE_ADMIN.toString());
-        }
-        if (this.roles.includes('ROLE_STUDENT')) {
-          this.toLogin('ROLE_STUDENT');
+        if (this.roles.includes(UserRole.ROLE_ADMIN)) {
+          this.toLogin(UserRole.ROLE_ADMIN);
+        } else if (this.roles.includes(UserRole.ROLE_STUDENT)) {
+          this.toLogin(UserRole.ROLE_STUDENT);
+        } else if (this.roles.includes(UserRole.ROLE_LECTURE)) {
+          this.toLogin(UserRole.ROLE_LECTURE);
         }
       },
       err => {
-        console.error(err);
+        if (err.Status === 400) {
+          this.errorMessage = '400';
+          return;
+        }
         this.errorMessage = err;
-        console.log(this.errorMessage);
         this.isLoginFailed = true;
         this.preLoading = false;
       }
     );
   }
-
-
 }

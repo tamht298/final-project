@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "course")
@@ -23,4 +24,13 @@ public class Course implements Serializable {
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "img_url")
+    private String imgUrl;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @JoinTable(name = "course_intake", joinColumns = {@JoinColumn(name = "course_id", referencedColumnName = "id")},
+            inverseJoinColumns = {
+                    @JoinColumn(name = "intake_id", referencedColumnName = "id")})
+    private List<Intake> intakes;
 }

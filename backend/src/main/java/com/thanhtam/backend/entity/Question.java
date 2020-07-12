@@ -32,6 +32,9 @@ public class Question extends Auditable<Long> implements Serializable {
     @Column(name="point")
     private int point;
 
+    @Column(name="deleted")
+    private boolean deleted =false;
+
     @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "question_type_id")
     private QuestionType questionType;
@@ -40,7 +43,7 @@ public class Question extends Auditable<Long> implements Serializable {
     @JoinColumn(name = "question_id")
     private List<Choice> choices;
 
-    @JsonIgnore
+//    @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "part_id")
     private Part part;

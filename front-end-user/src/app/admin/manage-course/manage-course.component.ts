@@ -4,6 +4,7 @@ import {environment} from '../../../environments/environment';
 import {Course} from '../../models/course';
 import {PaginationDetail} from '../../models/pagination/pagination-detail';
 import {PageResult} from '../../models/page-result';
+import {delay} from 'rxjs/operators';
 
 @Component({
   selector: 'app-manage-course',
@@ -14,6 +15,7 @@ export class ManageCourseComponent implements OnInit {
 
   courseList: Course[] = [];
   paginationDetail: PaginationDetail;
+  skeleton = true;
 
   constructor(private courseService: CourseService) {
   }
@@ -24,9 +26,10 @@ export class ManageCourseComponent implements OnInit {
   }
 
   fetchCourseListByPage() {
-    this.courseService.getCourseListByPage(environment.pageMeta.pageNumber, environment.pageMeta.pageSize).subscribe(res => {
+    this.courseService.getCourseListByPage(environment.pageMeta.pageNumber, environment.pageMeta.pageSize).pipe(delay(1000)).subscribe(res => {
       this.courseList = res.data;
       this.paginationDetail = res.paginationDetails;
+      this.skeleton = false;
     });
   }
 

@@ -16,15 +16,26 @@ public interface QuestionService {
     Optional<Question> getQuestionById(Long id);
 
     List<Question> getQuestionByPart(Part part);
+
     List<Question> getQuestionByQuestionType(QuestionType questionType);
+
     List<Question> getQuestionPointList(List<ExamQuestionPoint> examQuestionPoints);
+
     List<AnswerSheet> convertFromQuestionList(List<Question> questionList);
+
     List<Question> getQuestionList();
+
     Page<Question> findQuestionsByPart(Pageable pageable, Part part);
+
     Page<Question> findAllQuestions(Pageable pageable);
+
     String findQuestionTextById(Long questionId);
 
+    Page<Question> findAllByDeleted(Pageable pageable, Boolean deleted);
+
     void save(Question question);
+
+    void update(Question question);
 
     void delete(Long id);
 

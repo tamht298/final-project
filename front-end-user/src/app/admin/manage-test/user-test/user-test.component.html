@@ -1,0 +1,94 @@
+<div class="bg-blue-600 md:pt-32 pb-32 pt-12">
+  <div class="px-4 md:px-10 mx-auto w-full">
+  </div>
+</div>
+
+<div class=" mx-auto w-full -m-24">
+
+  <div class="flex flex-wrap mt-4 justify-center">
+    <div class="w-full mb-12 xl:mb-0 px-4 max-w-5xl">
+      <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+        <div class="rounded-t mb-0 px-4 py-3 border-0">
+          <div class="flex flex-wrap items-center">
+            <div class="relative w-full px-4 max-w-full flex-grow leading-8 mb-3">
+              <h3 class="font-semibold text-2xl text-gray-800">
+                usertest
+              </h3>
+            </div>
+
+
+          </div>
+
+        </div>
+        <div class="block w-full">
+          <table
+            class="items-center w-full bg-transparent border-collapse whitespace-no-wrap user-list block lg:table overflow-x-auto overflow-y-auto">
+            <thead>
+            <tr>
+
+              <th
+                class="row-title px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
+                Họ tên
+              </th>
+
+              <th
+                class="row-name px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
+                TG bắt đầu
+              </th>
+              <th
+                class="row-name px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
+                TG kết thúc
+              </th>
+              <th
+                class="row-name text-center px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
+                Trạng thái bài làm
+              </th>
+
+              <th
+                class="row-action px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
+                Điểm số
+              </th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <ng-container *ngFor="let exam of examResults; trackBy: trackById">
+              <tr class="border hover:bg-gray-300">
+                <td
+                  class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-md font-semibold text-gray-800 whitespace-no-wrap p-4">
+                  {{exam.fullName}}
+                </td>
+                <td
+                  class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-no-wrap p-4 text-left"
+
+                >
+                  {{exam.userTimeBegin | date: 'medium'}}
+                </td>
+
+                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
+                  {{exam.userTimeFinish | date: 'medium'}}
+                </td>
+                <td class="border-t-0 text-center px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
+                  <ng-container [ngSwitch]="exam.examStatus">
+                    <ng-template [ngSwitchCase]="0"><span class="px-2 py-1 rounded-md text-yellow-700 bg-yellow-300">Chưa bắt đầu</span></ng-template>
+                    <ng-template [ngSwitchCase]="1"><span class="px-2 py-1 rounded-md text-green-700 bg-green-300">Đang thực hiện</span></ng-template>
+                    <ng-template [ngSwitchCase]="-1"><span class="px-2 py-1 rounded-md text-gray-700 bg-gray-300">Hoàn thành</span></ng-template>
+                    <ng-template [ngSwitchCase]="-2"><span class="px-2 py-1 rounded-md text-red-700 bg-red-300">Bỏ lỡ</span></ng-template>
+                  </ng-container>
+                </td>
+                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
+                  {{exam.totalPoint}}
+                </td>
+
+              </tr>
+            </ng-container>
+            </tbody>
+
+
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-admin-footer></app-admin-footer>
+</div>

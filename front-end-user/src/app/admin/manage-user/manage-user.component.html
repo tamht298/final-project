@@ -19,31 +19,29 @@
 
                 <div class="relative w-full px-4 max-w-full flex-flow flex-basis">
 
-                    <span class="mx-3 text-gray-600 text-sm">Hiển thị tối đa</span>
-                    <div class="inline-block relative max-w-xs w-20 mr-2">
-                      <select
-                        class="block appearance-none w-full bg-white px-3 py-1 pr-4 rounded shadow leading-tight focus:outline-none text-sm"
-                        (change)="changePageShow($event.target.value)"
-                      >
-                        <option *ngFor="let item of pageOptions" [value]="item.num"
-                                [selected]="item.num == 20">{{item.display}}</option>
+                  <span class="mx-3 text-gray-600 text-sm">Hiển thị tối đa</span>
+                  <div class="inline-block relative max-w-xs w-20 mr-2">
+                    <select
+                      class="block appearance-none w-full bg-white px-3 py-1 pr-4 rounded shadow leading-tight focus:outline-none text-sm"
+                      (change)="changePageShow($event.target.value)"
+                    >
+                      <option *ngFor="let item of pageOptions" [value]="item.num"
+                              [selected]="item.num == pageCountShowing">{{item.display}}</option>
 
-                      </select>
-                      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                          <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
-                        </svg>
-                      </div>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                      <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                      </svg>
                     </div>
+                  </div>
                   <button
                     class="bg-white shadow-md hover:bg-green-500 hover:text-green-200 transition duration-200 ease-in-out text-xs font-bold uppercase px-3 py-1 md:mb-0 rounded outline-none focus:outline-none mx-1 mb-1"
                     type="button"
                     (click)="exportUserToExcel()">
                     <span><i class="fa fa-file-excel-o mx-1"></i>Export file</span>
                   </button>
-                  <ng-container *ngIf="checkedAll">
-                    <app-delete-list-user></app-delete-list-user>
-                  </ng-container>
+
                   <app-add-user (usersAddOutput)="fetchUsersAfterCRUD($event)"></app-add-user>
 
                 </div>
@@ -52,12 +50,14 @@
                 <div class="p-2 flex justify-end">
                   <div class="bg-white flex items-center rounded-full shadow-md w-1/3">
 
-                    <input [(ngModel)]="searchKeyWord" name="search-input" class="rounded-l-full w-full py-2 px-6 text-gray-700 leading-tight focus:outline-none"
-                           id="search" type="text" placeholder="Nhập username hoặc email" autocomplete="off">
+                    <input [(ngModel)]="searchKeyWord" name="search-input"
+                           class="rounded-l-full w-full py-2 px-6 text-gray-700 leading-tight focus:outline-none"
+                           id="search" type="text" placeholder="Nhập username" autocomplete="off">
 
                     <div class="p-1">
                       <button class="focus:outline-none flex items-center" type="submit">
-                        <i class="fa fa-search bg-blue-500 text-white rounded-full p-1 pt-2 truncate hover:bg-blue-400 focus:outline-none w-8 h-8 flex items-center justify-center">
+                        <i
+                          class="fa fa-search bg-blue-500 text-white rounded-full p-1 pt-2 truncate hover:bg-blue-400 focus:outline-none w-8 h-8 flex items-center justify-center">
                         </i>
                       </button>
 
@@ -65,11 +65,7 @@
                   </div>
                 </div>
               </form>
-
-
             </div>
-
-
           </div>
         </div>
         <div class="block w-full">
@@ -78,11 +74,7 @@
             class="items-center w-full bg-transparent border-collapse whitespace-no-wrap user-list block lg:table overflow-x-auto overflow-y-auto">
             <thead>
             <tr>
-              <th
-                class="row-checkbox px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
-                <input type="checkbox" name="allCheck" [value]="userList" [(ngModel)]="checkedAll"
-                       (change)="selectAll($event)">
-              </th>
+
               <th
                 class="row-username px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
                 Username
@@ -97,6 +89,10 @@
                 Email
               </th>
               <th
+                class="row-active text-center px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
+                Trạng thái tài khoản
+              </th>
+              <th
                 class="row-action px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
               </th>
             </tr>
@@ -105,11 +101,7 @@
             <tbody>
             <ng-container *ngFor="let user of userList; trackBy: trackById">
               <tr class="border hover:bg-gray-300" [ngClass]="{'bg-gray-400': user?.deleted}">
-                <td
-                  class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-md text-gray-500 whitespace-no-wrap p-4">
-                  <input type="checkbox" name="noneCheck" [checked]="user.deleted" [(ngModel)]="user.deleted"
-                         (change)="checkIfAllSelected($event)">
-                </td>
+
                 <th
                   class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 text-left"
 
@@ -123,25 +115,33 @@
                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 w-1/3">
                   {{user.email}}
                 </td>
+                <td
+                  class="border-t-0 text-center px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 w-1/3">
+                  <span class="text-2xl" (click)="changeDeleted(user)"><i
+                    [ngClass]="user.deleted? 'fa fa-toggle-off text-gray-700': 'fa fa-toggle-on text-green-700'"></i></span>
+                </td>
 
                 <td
                   class="border-t-0 px-6 align-middle flex justify-between border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 w-full">
-                  <app-detail-user class="mx-1" [userInfo]="user" tooltip="Xem chi tiết" placement="top" show-delay="100" hide-delay="100"></app-detail-user>
-                  <app-update-user [userInfo]="user" (usersOutput)="fetchUsersAfterCRUD($event)" tooltip="Cập nhật thông tin" placement="top" show-delay="100" hide-delay="100"></app-update-user>
-                  <app-delete-user class="mx-1" [userInfo]="user"
-                                   (usersOutput)="fetchUsersAfterCRUD($event)" tooltip="Xoá người dùng" placement="top" show-delay="100" hide-delay="100"></app-delete-user>
+                  <app-detail-user class="mx-1" [userInfo]="user" tooltip="Xem chi tiết" placement="top"
+                                   show-delay="100" hide-delay="100"></app-detail-user>
+                  <app-update-user [userInfo]="user" (usersOutput)="fetchUsersAfterCRUD($event)"
+                                   tooltip="Cập nhật thông tin" placement="top" show-delay="100"
+                                   hide-delay="100"></app-update-user>
+                  <!--                  <app-delete-user class="mx-1" [userInfo]="user"-->
+                  <!--                                   (usersOutput)="fetchUsersAfterCRUD($event)" tooltip="Xoá người dùng" placement="top"-->
+                  <!--                                   show-delay="100" hide-delay="100"></app-delete-user>-->
                 </td>
 
               </tr>
             </ng-container>
             </tbody>
 
-
           </table>
         </div>
 
         <div *ngIf="userList.length!==0"
-          class="px-4 py-3 bg-white border-t flex flex-row justify-between xs:flex-row items-center xs:justify-between">
+             class="px-4 py-3 bg-white border-t flex flex-row justify-between xs:flex-row items-center xs:justify-between">
                         <span class="text-xs xs:text-sm text-gray-700 px-4">
                             Hiển thị {{paginationDetail?.isLastPage ? paginationDetail?.totalCount - paginationDetail.pageCount + 1 : paginationDetail?.pageNumber * paginationDetail?.pageCount + 1}}
                           đến {{paginationDetail?.isLastPage ? paginationDetail.totalCount : (paginationDetail?.pageNumber + 1) * paginationDetail?.pageCount}}
@@ -162,10 +162,17 @@
             </button>
           </div>
         </div>
-        <ng-container *ngIf="userList.length==0">
-          <div class="px-4 py-3 bg-white border-t flex flex-row justify-between xs:flex-row items-center xs:justify-between">
+        <ng-container *ngIf="userList.length==0 && skeleton==false">
+          <div
+            class="px-4 py-3 bg-white border-t flex flex-row justify-between xs:flex-row items-center xs:justify-between">
             <p class="mx-auto text-gray-700 text-sm">Nội dung không có để hiển thị</p>
           </div>
+        </ng-container>
+        <ng-container *ngIf="skeleton">
+          <app-table-skeleton [type]="'user'"></app-table-skeleton>
+          <app-table-skeleton [type]="'user'"></app-table-skeleton>
+          <app-table-skeleton [type]="'user'"></app-table-skeleton>
+
         </ng-container>
 
       </div>

@@ -3,21 +3,28 @@ package com.thanhtam.backend.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Strings;
 import com.thanhtam.backend.dto.*;
 import com.thanhtam.backend.entity.*;
 import com.thanhtam.backend.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
+import javax.xml.transform.Result;
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -48,13 +55,20 @@ public class ExamController {
         this.mapper = mapper;
     }
 
+//    @GetMapping(value = "/exams")
+//    public ResponseEntity<List<Exam>> getAll() {
+//        List<Exam> exams = examService.getAll();
+//        if (exams.isEmpty()) {
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }
+//        return new ResponseEntity<>(exams, HttpStatus.OK);
+//    }
+
     @GetMapping(value = "/exams")
-    public ResponseEntity<List<Exam>> getAll() {
-        List<Exam> exams = examService.getAll();
-        if (exams.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(exams, HttpStatus.OK);
+    @PreAuthorize("hasRole('ADMIN') or hasRole('LECTURER')")
+    public PageResult getExamsByPage(@PageableDefault(page = 0, size = 10, sort = "id") Pageable pageable) {
+        Page<Exam> examPage = examService.findAll(pageable);
+        return new PageResult(examPage);
     }
 
     @GetMapping(value = "/exams/list-all-by-user")
@@ -88,13 +102,10 @@ public class ExamController {
         Date timeExam = examUser.get().getExam().getBeginExam();
         Date now = new Date();
 
-        logger.error("timeExam" + timeExam.toString());
-        logger.error("now" + now.toString());
-        logger.error("equal=" + now.compareTo(timeExam));
-        if (now.compareTo(timeExam) < 0) {
-
-            return new ResponseEntity("Bài thi chưa bắt đầu", HttpStatus.BAD_REQUEST);
-        }
+//        if (examUser.get().getIsFinished().equals(false) && now.compareTo(timeExam) > 0) {
+//            examUser.get().setIsFinished(true);
+//            examUser.get().setTimeFinish(timeExam);
+//        }
         return ResponseEntity.ok(examUser.get());
     }
 
@@ -112,7 +123,7 @@ public class ExamController {
         }
         ExamUser examUser = examUserService.findByExamAndUser(examId, username);
         examQuestionList.setRemainingTime(examUser.getRemainingTime());
-        if (examUser.getIsStarted() == true) {
+        if (examUser.getIsStarted().equals(true)) {
 //            Get answersheet
             //            Convert question data json to array object
 
@@ -154,6 +165,7 @@ public class ExamController {
             });
             examQuestionList.setQuestions(questions1);
             examUser.setTimeStart(new Date());
+            examUserService.update(examUser);
             logger.error("case 2");
 
         } else {
@@ -200,7 +212,7 @@ public class ExamController {
                 exam.setPart(part.get());
             }
             exam.setShuffle(isShuffle);
-            logger.error("begin: "+ exam.getBeginExam());
+            logger.error("begin: " + exam.getBeginExam());
 
             this.examService.saveExam(exam);
             List<User> users = userService.findAllByIntakeId(intakeId);
@@ -218,14 +230,6 @@ public class ExamController {
         }
     }
 
-//    @PatchMapping(value="/exams/{examId}/join/users")
-//    public List<User> addUserListToExam(@Valid @RequestBody List<User> users, @PathVariable Long examId){
-//        Exam exam = this.examService.getExamById(examId).get();
-//        exam.setId(examId);
-//        exam.setUsers(users);
-//        this.examService.
-//
-//    }
 
     @GetMapping(value = "/exams/{id}")
     public ResponseEntity<Exam> getExamById(@PathVariable("id") Long id) {
@@ -262,11 +266,66 @@ public class ExamController {
 
     }
 
+
+    @GetMapping(value = "/exams/{examId}/result/all")
+    public ResponseEntity getResultExamAll(@PathVariable Long examId) throws IOException {
+        List<ExamResult> examResults = new ArrayList<>();
+        Optional<Exam> exam = examService.getExamById(examId);
+        if (!exam.isPresent()) {
+            return new ResponseEntity("Không tìm thấy exam", HttpStatus.NOT_FOUND);
+        }
+        List<ExamUser> examUserList = examUserService.findAllByExam_Id(exam.get().getId());
+        List<ExamQuestionPoint> examQuestionPoints = convertQuestionJsonToObject(exam);
+        Date now = new Date();
+        for (ExamUser examUser :
+                examUserList) {
+            ExamResult examResult = new ExamResult();
+            examResult.setExam(exam.get());
+            List<AnswerSheet> userChoices = convertAnswerJsonToObject(examUser);
+            if (userChoices.isEmpty()) {
+                examResult.setTotalPoint(null);
+                examResult.setFullName(examUser.getUser().getProfile().getLastName().concat(" ").concat(examUser.getUser().getProfile().getFirstName()));
+                examResult.setExamStatus(0);
+
+            } else {
+                List<ChoiceList> choiceLists = examService.getChoiceList(userChoices, examQuestionPoints);
+                examResult.setChoiceList(choiceLists);
+                Double totalPoint = 0.0;
+                for (ChoiceList choice : choiceLists) {
+                    if (choice.getIsSelectedCorrected().equals(true)) {
+                        totalPoint += choice.getPoint();
+                    }
+                }
+                examResult.setTotalPoint(totalPoint);
+                if (examUser.getTotalPoint() == -1) {
+                    examUser.setTotalPoint(totalPoint);
+                    examUserService.update(examUser);
+                }
+            }
+
+            examResult.setFullName(examUser.getUser().getProfile().getLastName().concat(" ").concat(examUser.getUser().getProfile().getFirstName()));
+            examResult.setUserTimeBegin(examUser.getTimeStart());
+            examResult.setUserTimeFinish(examUser.getTimeFinish());
+            if (exam.get().getFinishExam().compareTo(now) < 0 && examUser.getIsStarted().equals(false)) {
+                examResult.setExamStatus(-2);
+            } else if (examUser.getIsStarted().equals(false) && exam.get().getBeginExam().compareTo(now) == -1) {
+                examResult.setExamStatus(0);
+            } else if (examUser.getIsFinished().equals(true)) {
+                examResult.setExamStatus(-1);
+            } else {
+                examResult.setExamStatus(1);
+            }
+            examResults.add(examResult);
+        }
+        return new ResponseEntity(examResults, HttpStatus.OK);
+    }
+
     @GetMapping(value = "/exams/{examId}/result")
     public ResponseEntity getResultExam(@PathVariable Long examId) throws IOException {
         ExamResult examResult = new ExamResult();
         String username = userService.getUserName();
         Optional<Exam> exam = examService.getExamById(examId);
+
         if (!exam.isPresent()) {
             return new ResponseEntity("Không tìm thấy exam", HttpStatus.NOT_FOUND);
         }
@@ -286,12 +345,20 @@ public class ExamController {
             }
         }
         examResult.setTotalPoint(totalPoint);
+        if (examUser.getTotalPoint() == -1) {
+            examUser.setTotalPoint(totalPoint);
+            examUserService.update(examUser);
+        }
         return new ResponseEntity(examResult, HttpStatus.OK);
     }
 
     public List<AnswerSheet> convertAnswerJsonToObject(ExamUser examUser) throws IOException {
 
 //        ObjectMapper mapper = new ObjectMapper();
+        if (Strings.isNullOrEmpty(examUser.getAnswerSheet())) {
+            return Collections.emptyList();
+        }
+
         String answerSheet = examUser.getAnswerSheet();
         List<AnswerSheet> choiceUsers = mapper.readValue(answerSheet, new TypeReference<List<AnswerSheet>>() {
         });
@@ -307,7 +374,8 @@ public class ExamController {
     }
 
     @GetMapping(value = "/exams/schedule")
-    public List<ExamCalendar> getExamCalendar(){
+    public List<ExamCalendar> getExamCalendar() {
+        Date now = new Date();
         String username = userService.getUserName();
         List<ExamUser> examUsers = examUserService.getExamListByUsername(username);
         List<ExamCalendar> examCalendars = new ArrayList<ExamCalendar>();
@@ -321,19 +389,34 @@ public class ExamController {
             examCalendar.setDurationExam(examUser.getExam().getDurationExam());
             examCalendar.setBeginDate(examUser.getExam().getBeginExam());
             examCalendar.setFinishDate(examUser.getExam().getFinishExam());
-            if(examUser.getIsFinished().equals(true)){
+//            if (examUser.getIsFinished().equals(true)) {
+//                examCalendar.setCompleteString("Completed");
+//                examCalendar.setCompleted(true);
+//            } else {
+//                examCalendar.setCompleteString("Coming");
+//                examCalendar.setCompleted(false);
+//            }
+
+            if (examUser.getExam().getFinishExam().compareTo(now) < 0 && examUser.getIsStarted().equals(false)) {
+                examCalendar.setCompleteString("Missed");
+                examCalendar.setIsCompleted(-2);
+            } else if (examUser.getIsStarted().equals(false) && examUser.getExam().getBeginExam().compareTo(now) == -1) {
+                examCalendar.setCompleteString("Not yet started");
+                examCalendar.setIsCompleted(0);
+            } else if (examUser.getIsFinished().equals(true)) {
                 examCalendar.setCompleteString("Completed");
-                examCalendar.setCompleted(true);
+                examCalendar.setIsCompleted(-1);
+            } else {
+                examCalendar.setCompleteString("Doing");
+                examCalendar.setIsCompleted(1);
             }
-            else{
-                examCalendar.setCompleteString("Coming");
-                examCalendar.setCompleted(false);
-            }
+
             examCalendars.add(examCalendar);
 
         });
         return examCalendars;
     }
+
 }
 
 

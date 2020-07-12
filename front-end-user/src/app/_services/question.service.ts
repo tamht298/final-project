@@ -23,4 +23,13 @@ export class QuestionService {
     const reqParams = new HttpParams().set('questionType', questionType.toString()).set('partId', String(partId));
     return this.http.post<Question>(`${this.baseUrl}/questions`, question, {params: reqParams});
   }
+
+  public getQuestionById(id: number): Observable<Question> {
+    return this.http.get<Question>(`${this.baseUrl}/questions/${id}`);
+  }
+
+  deleteQuestion(questionId: number, deleted: boolean): Observable<any> {
+    return this.http.get(`${this.baseUrl}/questions/${questionId}/deleted/${deleted}`);
+  }
+
 }

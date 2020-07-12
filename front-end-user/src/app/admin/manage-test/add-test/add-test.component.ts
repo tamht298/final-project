@@ -13,6 +13,7 @@ import {Exam} from '../../../models/exam';
 import {Intake} from '../../../models/intake';
 import {IntakeService} from '../../../_services/intake.service';
 import {ExamService} from '../../../_services/exam.service';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-test',
@@ -44,7 +45,8 @@ export class AddTestComponent implements OnInit {
     private partService: PartService,
     private questionService: QuestionService,
     private intakeService: IntakeService,
-    private examService: ExamService) {
+    private examService: ExamService,
+    private toast: ToastrService) {
   }
 
   get testTitle() {
@@ -110,7 +112,7 @@ export class AddTestComponent implements OnInit {
       JSON.stringify(this.questionDataJson));
 
     this.examService.createExam(this.intake.value, this.selectedPartId, this.isShuffle.value, this.locked.value, newExam).subscribe(res => {
-      console.log(res);
+      this.toast.success('Đã tạo bài kiểm tra', 'Thành công')
     });
   }
 

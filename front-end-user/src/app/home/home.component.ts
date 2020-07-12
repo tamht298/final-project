@@ -9,25 +9,28 @@ import {UserRole} from '../models/user-role.enum';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private tokenStorageService: TokenStorageService) {
-  }
-
   isLoggedIn = false;
   defaultUrl = '../login';
   username = '';
+
+  constructor(private tokenStorageService: TokenStorageService) {
+  }
 
   ngOnInit(): void {
     const user = this.tokenStorageService.getUser();
 
     this.username = user?.username;
-    if (user?.roles.includes(UserRole.ROLE_ADMIN)) {
-
+    if (this.username) {
       this.isLoggedIn = true;
-      this.defaultUrl = '../admin';
-    }
-    if (user?.roles.includes('ROLE_STUDENT')) {
-      this.isLoggedIn = true;
-      this.defaultUrl = '../user/dashboard';
+      if (user?.roles.includes(UserRole.ROLE_ADMIN)) {
+        this.defaultUrl = '../admin';
+      }
+      if (user?.roles.includes(UserRole.ROLE_LECTURE)) {
+        this.defaultUrl = '../admin';
+      }
+      if (user?.roles.includes(UserRole.ROLE_STUDENT)) {
+        this.defaultUrl = '../user/dashboard';
+      }
     }
 
   }

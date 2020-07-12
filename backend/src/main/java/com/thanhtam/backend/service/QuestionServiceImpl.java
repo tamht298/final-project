@@ -88,6 +88,11 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
+    public Page<Question> findAllByDeleted(Pageable pageable, Boolean deleted) {
+        return questionRepository.findAllByDeleted(pageable, deleted);
+    }
+
+    @Override
     public void save(Question question) {
         int point;
         switch (question.getDifficultyLevel()) {
@@ -107,6 +112,11 @@ public class QuestionServiceImpl implements QuestionService {
                 point = 0;
         }
         question.setPoint(point);
+        questionRepository.save(question);
+    }
+
+    @Override
+    public void update(Question question) {
         questionRepository.save(question);
     }
 

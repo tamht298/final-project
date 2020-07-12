@@ -1,7 +1,7 @@
 <button
   class="bg-white shadow-md hover:bg-blue-500 hover:text-blue-200 transition duration-200 ease-in-out text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mx-1 mb-1"
   (click)="toggleModal()"
-><span><i class="fa fa-user-plus mr-1"></i>Add new</span>
+><span><i class="fa fa-plus mr-1"></i>Add new</span>
 </button>
 
 <form novalidate (ngSubmit)="onSubmit()" [formGroup]="rfAdd" *ngIf="showModal">
@@ -15,7 +15,6 @@
         <!--header-->
         <div class="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t">
           <h3 class="text-2xl font-semibold">Thêm câu hỏi</h3>
-
           <button
             class="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
             (click)="closeModal()"
@@ -27,7 +26,7 @@
           </button>
         </div>
         <!--body-->
-        <div class="flex flex-wrap px-3">
+        <div class="flex flex-wrap px-3 modal-body">
           <div class="w-full">
             <!--            <ul class="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row">-->
             <!--              <li class="-mb-px mr-2 last:mr-0 flex-auto text-center"><a-->
@@ -71,7 +70,7 @@
                           <select
                                   formControlName="part" name="part"
                                   class="block appearance-none w-full bg-gray-200 py-2 px-3 my-1 mt-3 pr-4 rounded shadow leading-tight focus:outline-none">
-                            <option value="">-- please choose part --</option>
+                            <option value="-1">-- please choose part --</option>
                             <option *ngFor="let part of partList" [selected]="part.id===selectedPartId"
                                     [value]="part.id">{{part.name}}</option>
 
@@ -199,7 +198,7 @@
                                   </div>
 
                                 </div>
-                                <button type="button" (click)="addMCAnswer()" class="mx-auto py-2 w-32 bg-blue-200 text-blue-500 hover:bg-blue-300 rounded-md focus:outline-none hover:text-blue-600 shadow-md">Thêm đáp
+                                <button type="button" (click)="addMCAnswer()" class="mx-auto my-3 py-2 w-32 bg-blue-300 text-blue-700 hover:bg-blue-400 rounded-md focus:outline-none hover:text-blue-800 shadow-md">Thêm đáp
                                   án
                                 </button>
                               </div>
@@ -238,7 +237,7 @@
                                   </div>
 
                                 </div>
-                                <button type="button" (click)="addMSAnswer()" class="mx-auto py-2 w-32 bg-blue-200 text-blue-500 hover:bg-blue-300 rounded-md focus:outline-none hover:text-blue-600 shadow-md">Thêm đáp
+                                <button type="button" (click)="addMSAnswer()" class="mx-auto my-3 py-2 w-32 bg-blue-300 text-blue-700 hover:bg-blue-400 rounded-md focus:outline-none hover:text-blue-800 shadow-md">Thêm đáp
                                   án
                                 </button>
                               </div>
@@ -250,7 +249,7 @@
                     <!--footer-->
                     <div class="flex items-center justify-end p-6 pb-0 border-t border-solid border-gray-300 rounded-b">
                       <button
-                        class="bg-white shadow-md hover:bg-blue-500 hover:text-blue-200 transition duration-200 ease-in-out text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
+                        class="bg-white shadow-md hover:bg-blue-500 hover:text-blue-200 transition duration-200 ease-in-out text-xs font-bold uppercase px-3 py-2 rounded outline-none focus:outline-none mr-1 mb-1"
                         type="submit"
                         [disabled]="!rfAdd.valid"
                         *ngIf="rfAdd.valid"
@@ -258,7 +257,7 @@
                       ><span><i class="fa fa-question-circle mr-1"></i>Tạo câu hỏi</span>
                       </button>
                       <button
-                        class="shadow-md bg-gray-600 text-gray-100 hover:bg-gray-700 hover:text-gray-200 transition duration-200 ease-in-out text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
+                        class="shadow-md bg-gray-600 text-gray-100 hover:bg-gray-700 hover:text-gray-200 transition duration-200 ease-in-out text-xs font-bold uppercase px-3 py-2 rounded outline-none focus:outline-none mr-1 mb-1"
                         type="button" (click)="closeModal()"
                       ><span><i class="fa fa-window-close mr-1"></i>Đóng</span>
                       </button>

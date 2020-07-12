@@ -9,7 +9,6 @@ import {FooterComponent} from './footer/footer.component';
 import {LeftSideComponent} from './left-side/left-side.component';
 import {RouterModule} from '@angular/router';
 import {ProfileComponent} from './profile/profile.component';
-import {ProfileCardComponent} from './profile-card/profile-card.component';
 import {ExamDetailComponent} from './exam-detail/exam-detail.component';
 import {ExamQuestionComponent} from './exam-question/exam-question.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -20,6 +19,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin
 import timeGridPlugin from '@fullcalendar/timegrid'; // a plugin
 import interactionPlugin from '@fullcalendar/interaction';
 import { StatisticsComponent } from './statistics/statistics.component';
+import {NgApexchartsModule} from 'ng-apexcharts';
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
   interactionPlugin
@@ -27,14 +27,15 @@ FullCalendarModule.registerPlugins([
 
 @NgModule({
   declarations: [
-    UserComponent, DashboardComponent, ExamCardComponent, FooterComponent, LeftSideComponent, ProfileComponent, ProfileCardComponent, ExamDetailComponent, ExamQuestionComponent, ExamResultComponent, ScheduleComponent, StatisticsComponent],
+    UserComponent, DashboardComponent, ExamCardComponent, FooterComponent, LeftSideComponent, ProfileComponent, ExamDetailComponent, ExamQuestionComponent, ExamResultComponent, ScheduleComponent, StatisticsComponent],
   imports: [
     CommonModule,
     SharedModule,
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    FullCalendarModule
+    FullCalendarModule,
+    NgApexchartsModule
   ]
 })
 export class UserModule {

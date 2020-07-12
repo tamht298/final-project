@@ -80,7 +80,7 @@
             <tr>
               <th
                 class="row-checkbox px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
-
+                #
               </th>
               <th
                 class="row-username px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
@@ -99,21 +99,23 @@
             </thead>
 
             <tbody>
-            <ng-container *ngFor="let course of courseList; trackBy: trackById">
+            <ng-container *ngFor="let course of courseList; trackBy: trackById; let i=index">
               <tr class="border hover:bg-gray-300">
                 <td
                   class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-md text-gray-500 whitespace-no-wrap p-4">
-
+                  {{i + 1}}
                 </td>
                 <th
                   class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm font-semibold whitespace-no-wrap p-4 text-left"
 
                 >
-                  <a class="hover:text-blue-700" [routerLink]="[course.id,'parts']" tooltip="Xem nội dung" placement="right" show-delay="100" hide-delay="100">{{course.courseCode}}</a>
+                  <a class="hover:text-blue-700" [routerLink]="[course.id,'parts']" tooltip="Xem nội dung"
+                     placement="right" show-delay="100" hide-delay="100">{{course.courseCode}}</a>
                 </th>
 
                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
-                  <a class="hover:text-blue-700" [routerLink]="[course.id,'parts']" tooltip="Xem nội dung" placement="right" show-delay="100" hide-delay="100">{{course.name}}</a>
+                  <a class="hover:text-blue-700" [routerLink]="[course.id,'parts']" tooltip="Xem nội dung"
+                     placement="right" show-delay="100" hide-delay="100">{{course.name}}</a>
                 </td>
 
 
@@ -131,15 +133,14 @@
 
             </tbody>
 
-            <ng-container *ngIf="courseList.length===0">
-              <ngx-skeleton-loader
-                count="10"
-                [theme]="{ 'border-radius': '0', height: '50px' }"
-              ></ngx-skeleton-loader>
-            </ng-container>
+
           </table>
         </div>
-
+        <ng-container *ngIf="skeleton">
+          <app-table-skeleton [type]="'course'"></app-table-skeleton>
+          <app-table-skeleton [type]="'course'"></app-table-skeleton>
+          <app-table-skeleton [type]="'course'"></app-table-skeleton>
+        </ng-container>
         <!--        <div *ngIf="userList.length!==0"-->
         <!--             class="px-4 py-3 bg-white border-t flex flex-row justify-between xs:flex-row items-center xs:justify-between">-->
         <!--                        <span class="text-xs xs:text-sm text-gray-700 px-4">-->

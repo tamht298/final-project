@@ -15,4 +15,7 @@ public interface ExamUserService {
     void update(ExamUser examUser);
     Optional<ExamUser> findExamUserById(Long id);
 
+    List<ExamUser> getCompleteExams(Long courseId, String username);
+    List<ExamUser> findAllByExam_Id(Long examId);
+
 }

@@ -18,7 +18,6 @@ import {DetailUserComponent} from './manage-user/detail-user/detail-user.compone
 import {DeleteUserComponent} from './manage-user/delete-user/delete-user.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {UpdateUserComponent} from './manage-user/update-user/update-user.component';
-import {DeleteListUserComponent} from './manage-user/delete-list-user/delete-list-user.component';
 import {QuestionBankComponent} from './manage-question/question-bank/question-bank.component';
 import {TabsComponent} from './tabs/tabs.component';
 import {ManageCourseComponent} from './manage-course/manage-course.component';
@@ -32,9 +31,11 @@ import { ManageTestComponent } from './manage-test/manage-test.component';
 import { AddTestComponent } from './manage-test/add-test/add-test.component';
 import {NgxSkeletonLoaderModule} from 'ngx-skeleton-loader';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import { QuestionDetailComponent } from './manage-question/question-detail/question-detail.component';
+import { UserTestComponent } from './manage-test/user-test/user-test.component';
 
 @NgModule({
-  declarations: [AdminComponent, NavSidebarComponent, AdminNavbarComponent, UserDropdownComponent, LineChartComponent, BarChartComponent, AdminDashboardComponent, ManageUserComponent, AdminFooterComponent, CardStatsComponent, AddUserComponent, DetailUserComponent, DeleteUserComponent, UpdateUserComponent, DeleteListUserComponent, QuestionBankComponent, TabsComponent, ManageCourseComponent, CourseUpdateComponent, CourseCreateComponent, ListQuestionComponent, ManagePartComponent, AddQuestionComponent, ManageTestComponent, AddTestComponent],
+  declarations: [AdminComponent, NavSidebarComponent, AdminNavbarComponent, UserDropdownComponent, LineChartComponent, BarChartComponent, AdminDashboardComponent, ManageUserComponent, AdminFooterComponent, CardStatsComponent, AddUserComponent, DetailUserComponent, DeleteUserComponent, UpdateUserComponent, QuestionBankComponent, TabsComponent, ManageCourseComponent, CourseUpdateComponent, CourseCreateComponent, ListQuestionComponent, ManagePartComponent, AddQuestionComponent, ManageTestComponent, AddTestComponent, QuestionDetailComponent, UserTestComponent],
   imports: [
     CommonModule,
     RouterModule,

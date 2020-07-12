@@ -34,6 +34,7 @@ public class CourseController {
 
 
     @GetMapping(value = "/course-list")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('LECTURER')")
     public List<Course> getAllCourse() {
         List<Course> courseList = courseService.getCourseList();
         return courseList;
@@ -41,14 +42,14 @@ public class CourseController {
     }
 
     @GetMapping(value = "/courses")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('LECTURER')")
     public PageResult getCourseListByPage(@PageableDefault(page = 0, size = 10, sort = "id") Pageable pageable) {
         Page<Course> courseListByPage = courseService.getCourseListByPage(pageable);
         return new PageResult(courseListByPage);
     }
 
     @GetMapping(value = "/courses/{id}/check-course-code")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('LECTURER')")
     public boolean checkCourseCode(@RequestParam String value, @PathVariable Long id) {
         if (courseService.existsByCode(value)) {
             if (courseService.getCourseById(id).get().getCourseCode().equals(value)) {
@@ -60,12 +61,13 @@ public class CourseController {
     }
 
     @GetMapping(value = "/courses/check-course-code")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('LECTURER')")
     public boolean checkCode(@RequestParam String value) {
         return courseService.existsByCode(value);
     }
 
     @GetMapping(value = "/courses/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('LECTURER')")
     public ResponseEntity<?> getCourseById(@PathVariable Long id) {
         Optional<Course> course = courseService.getCourseById(id);
         if (!course.isPresent()) {
@@ -112,5 +114,10 @@ public class CourseController {
         }
         courseService.delete(id);
         return ResponseEntity.ok().body(new ServiceResult(HttpStatus.NO_CONTENT.value(), "Deleted course with id: " + id + " successfully!", null));
+    }
+
+    @GetMapping(value = "/courses/part/{partId}")
+    public Course getCourseByPart(@PathVariable Long partId){
+        return courseService.findCourseByPartId(partId);
     }
 }

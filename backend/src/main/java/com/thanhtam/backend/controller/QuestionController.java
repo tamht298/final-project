@@ -2,10 +2,7 @@ package com.thanhtam.backend.controller;
 
 import com.thanhtam.backend.dto.PageResult;
 import com.thanhtam.backend.dto.ServiceResult;
-import com.thanhtam.backend.entity.Course;
-import com.thanhtam.backend.entity.Part;
-import com.thanhtam.backend.entity.Question;
-import com.thanhtam.backend.entity.QuestionType;
+import com.thanhtam.backend.entity.*;
 import com.thanhtam.backend.service.CourseService;
 import com.thanhtam.backend.service.PartService;
 import com.thanhtam.backend.service.QuestionService;
@@ -18,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -42,6 +40,8 @@ public class QuestionController {
     }
 
     @GetMapping(value = "/questions")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('LECTURER')")
+
     public ResponseEntity<ServiceResult> getAllQuestion() {
         List<Question> questionList = questionService.getQuestionList();
         log.info(questionList.toString());
@@ -49,22 +49,21 @@ public class QuestionController {
     }
 
     @GetMapping(value = "/questions/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('LECTURER')")
+
     public ResponseEntity<?> getQuestionById(@PathVariable Long id) {
         Optional<Question> questionOptional = questionService.getQuestionById(id);
         if (!questionOptional.isPresent()) {
             return ResponseEntity.ok().body(new ServiceResult(HttpStatus.NOT_FOUND.value(), "Not found with id: " + id, null));
         }
-        return ResponseEntity.ok().body(new ServiceResult(HttpStatus.OK.value(), "Get question with id: " + id, questionOptional));
+        return ResponseEntity.ok().body(questionOptional.get());
     }
 
     //    Get list of question by part
     @GetMapping(value = "/parts/{partId}/questions")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('LECTURER')")
+
     public PageResult getQuestionsByPart(@PageableDefault(page = 0, size = 10, sort = "id") Pageable pageable, @PathVariable Long partId) {
-//        if (partService.existsById(partId)) {
-//            Part part = partService.findPartById(partId).get();
-//            List<Question> questionList = questionService.getQuestionByPart(part);
-//            return ResponseEntity.ok().body(new ServiceResult(HttpStatus.OK.value(), "Get question list with course id: " + partId, questionList));
-//        }
         if (partId == 0) {
             Page<Question> questions = questionService.findAllQuestions(pageable);
             return new PageResult(questions);
@@ -78,6 +77,8 @@ public class QuestionController {
 //    Get list of question by question type
 
     @GetMapping(value = "/question-types/{typeId}/questions")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('LECTURER')")
+
     public ResponseEntity<?> getQuestionByQuestionType(@PathVariable Long typeId) {
         if (questionTypeService.existsById(typeId)) {
 
@@ -89,6 +90,7 @@ public class QuestionController {
     }
 
     @PostMapping(value = "/questions")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('LECTURER')")
     public Question createQuestion(@Valid @RequestBody Question question, @RequestParam String questionType, @RequestParam Long partId) {
         EQTypeCode eqTypeCode = EQTypeCode.valueOf(questionType);
         QuestionType questionType1 = questionTypeService.getQuestionTypeByCode(eqTypeCode).get();
@@ -103,6 +105,8 @@ public class QuestionController {
     }
 
     @PutMapping(value = "/questions/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('LECTURER')")
+
     public ResponseEntity<?> updateQuestion(@Valid @RequestBody Question question, @PathVariable Long id) {
         Optional<Question> questionReq = questionService.getQuestionById(id);
         if (!questionReq.isPresent()) {
@@ -113,5 +117,13 @@ public class QuestionController {
         return ResponseEntity.ok().body(new ServiceResult(HttpStatus.OK.value(), "Get question with id: " + id, question));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('LECTURER')")
+    @GetMapping("/questions/{questionId}/deleted/{deleted}")
+    public ResponseEntity<?> deleteTempQuestion(@PathVariable Long questionId, @PathVariable boolean deleted) {
 
+        Question question = questionService.getQuestionById(questionId).get();
+        question.setDeleted(deleted);
+        questionService.update(question);
+        return ResponseEntity.noContent().build();
+    }
 }

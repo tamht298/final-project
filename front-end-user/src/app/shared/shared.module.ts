@@ -17,6 +17,9 @@ import {FileUploadComponent} from './file-upload/file-upload.component';
 import {UpdateEmailComponent} from './update-profile/update-email/update-email.component';
 import {UpdatePasswordComponent} from './update-profile/update-password/update-password.component';
 import {UpdateAvatarComponent} from './update-profile/update-avatar/update-avatar.component';
+import {NgApexchartsModule} from 'ng-apexcharts';
+import { StatCardExamComponent } from './statistics/stat-card-exam/stat-card-exam.component';
+import { TableSkeletonComponent } from './table-skeleton/table-skeleton.component';
 
 
 @NgModule({
@@ -34,30 +37,37 @@ import {UpdateAvatarComponent} from './update-profile/update-avatar/update-avata
     UpdateEmailComponent,
     UpdatePasswordComponent,
     UpdateAvatarComponent,
+    StatCardExamComponent,
+    TableSkeletonComponent,
 
   ],
-  exports: [
-    PreLoadingComponent,
-    BreadcrumbsComponent,
-    SpinnerComponent,
-    TabComponent,
-    TooltipModule,
-    RichEditorComponent,
-    SkeletonComponent,
-    RoundProgressModule,
-    ResultCircleComponent,
-    FormatTimePipe,
-    FileUploadComponent,
-    UpdatePasswordComponent,
-    UpdateEmailComponent,
-    UpdateAvatarComponent,
-  ],
+    exports: [
+        PreLoadingComponent,
+        BreadcrumbsComponent,
+        SpinnerComponent,
+        TabComponent,
+        TooltipModule,
+        RichEditorComponent,
+        SkeletonComponent,
+        RoundProgressModule,
+        ResultCircleComponent,
+        FormatTimePipe,
+        FileUploadComponent,
+        UpdatePasswordComponent,
+        UpdateEmailComponent,
+        UpdateAvatarComponent,
+        StatCardExamComponent,
+        TableSkeletonComponent,
+    ],
   imports: [
     CommonModule,
     FormsModule,
     CKEditorModule,
+    TooltipModule,
     RoundProgressModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgApexchartsModule,
+
   ]
 })
 export class SharedModule {

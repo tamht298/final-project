@@ -5,6 +5,10 @@ export class ExamResult {
   exam: Exam;
   choiceList: ChoiceList[];
   totalPoint: number;
+  fullName: string;
+  userTimeBegin: string;
+  userTimeFinish: string;
+  examStatus: number;
 
 
   constructor(exam: Exam, choiceList: ChoiceList[], totalPoint: number) {

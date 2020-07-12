@@ -85,11 +85,9 @@ public class UserServiceImpl implements UserService {
                     case ROLE_ADMIN: {
                         addRoles(ERole.ROLE_ADMIN, roles);
                     }
-                    case ROLE_MANAGER: {
-                        addRoles(ERole.ROLE_MANAGER, roles);
-                    }
-                    case ROLE_LECTURE: {
-                        addRoles(ERole.ROLE_LECTURE, roles);
+
+                    case ROLE_LECTURER: {
+                        addRoles(ERole.ROLE_LECTURER, roles);
                     }
                     default: {
                         addRoles(ERole.ROLE_STUDENT, roles);

@@ -10,6 +10,8 @@ import com.thanhtam.backend.repository.ExamRepository;
 import com.thanhtam.backend.repository.IntakeRepository;
 import com.thanhtam.backend.ultilities.EQTypeCode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -41,6 +43,11 @@ public class ExamServiceImpl implements ExamService {
     @Override
     public Exam saveExam(Exam exam) {
         return examRepository.save(exam);
+    }
+
+    @Override
+    public Page<Exam> findAll(Pageable pageable) {
+        return examRepository.findAll(pageable);
     }
 
     @Override

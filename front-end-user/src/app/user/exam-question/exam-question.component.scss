@@ -22,7 +22,7 @@ form {
     background: lighten($accentColor, 50%);
     color: $darkColor;
     border-radius: 5px;
-    padding: 6px 20px;
+    padding: 6px 40px;
     border: 2px solid lighten($accentColor, 20%);
     margin-bottom: 5px;
     cursor: pointer;
@@ -160,5 +160,12 @@ form {
   }
 
 }
-
+.end-text::before{
+  content:"-----";
+  margin-right: 5px;
+}
+.end-text::after{
+  content: "-----";
+  margin-left: 5px;
+}
 

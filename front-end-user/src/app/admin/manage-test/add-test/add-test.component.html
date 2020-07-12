@@ -183,17 +183,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="w-64 px-3">
-                        <div class="radio-type flex-1">
-                          <div class="radio-btn">
-                            <input type="checkbox" id="locked"
-                                   formControlName="locked"
-                                   name="locked"
-                            />
-                            <label for="locked">Khoá đề</label>
-                          </div>
-                        </div>
-                      </div>
+
                     </div>
                   </div>
                   <hr class="border w-full my-3">
@@ -307,7 +297,7 @@
                 <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
                   <div class="example-box" *ngFor="let ques of questionListSelected; let i = index" cdkDrag>
                     <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-                    <div class="border w-full hover:bg-gray-300 flex flex-row items-center">
+                    <div class="w-full hover:bg-gray-300 flex flex-row items-center">
                       <div class="px-4">
                         <span class="text-gray-600 italic font-semibold text-lg">#{{i+1}}</span>
                       </div>

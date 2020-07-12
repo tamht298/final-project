@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {TokenStorageService} from '../_services/token-storage.service';
 import {UserService} from '../_services/user.service';
 import {UserProfile} from '../models/user-profile';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-user',
@@ -15,7 +16,7 @@ export class UserComponent implements OnInit {
   userProfile: UserProfile;
   toggledMenu = false;
 
-  constructor(private tokenStorageService: TokenStorageService, private  userService: UserService) {
+  constructor(private tokenStorageService: TokenStorageService, private  userService: UserService, private router: Router) {
   }
 
   ngOnInit(): void {

@@ -45,7 +45,7 @@ export class ScheduleComponent implements OnInit, AfterViewInit, AfterContentChe
   }
 
   ngAfterContentChecked(): void {
-    this.nowDate = moment(this.calendarApi?.getDate()).format('MMMM yyyy');
+    this.nowDate = moment(this.calendarApi?.getDate()).format('MMMM, yyyy');
 
   }
 
@@ -66,13 +66,26 @@ export class ScheduleComponent implements OnInit, AfterViewInit, AfterContentChe
 
     this.examService.getExamCalendar().subscribe(res => {
       this.examCalendars = res;
-      console.log(res);
       this.examCalendars.forEach(value => {
-        if (value.completed === true) {
-          this.examEvents.push({groupId: value.examId.toString(), title: value.courseCode, date: value.beginDate, color: '#A0AEC0'});
-        } else {
-          this.examEvents.push({groupId: value.examId.toString(), title: value.courseCode, date: value.beginDate, color: '#48BB78'});
+        switch (value.isCompleted) {
+          case -2: {
+            this.examEvents.push({groupId: value.examId.toString(), title: value.courseCode, date: value.beginDate, color: '#F56565'});
 
+            break;
+          }
+          case -1: {
+            this.examEvents.push({groupId: value.examId.toString(), title: value.courseCode, date: value.beginDate, color: '#A0AEC0'});
+            break;
+          }
+          case 0: {
+            this.examEvents.push({groupId: value.examId.toString(), title: value.courseCode, start: value.beginDate, end: value.finishDate, color: '#ECC94B'});
+            break;
+          }
+          case 1: {
+            this.examEvents.push({groupId: value.examId.toString(), title: value.courseCode, start: value.beginDate, end: value.finishDate, color: '#48BB78'});
+
+            break;
+          }
         }
       });
     }, error => {
@@ -81,10 +94,8 @@ export class ScheduleComponent implements OnInit, AfterViewInit, AfterContentChe
   }
 
   handleEventClick(calEvent) {
-    console.log(calEvent.event._def);
     const examId = calEvent.event._def.groupId;
     this.examDetail = this.examCalendars.find(item => Number(item.examId) === Number(examId));
-    console.log(this.examDetail);
     this.examEventDetail = true;
   }
 

@@ -32,7 +32,8 @@ export class DeleteUserComponent implements OnInit {
   }
 
   confirmDelete(id: number) {
-    this.userService.deleteTempUser(id)
+    this.userInfo.deleted = !this.userInfo.deleted;
+    this.userService.deleteUser(id, !this.userInfo.deleted)
       .pipe(switchMap(res => this.userService.getUserDeletedList(false)))
       .subscribe(res => {
         this.closeModal();

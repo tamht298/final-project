@@ -57,5 +57,8 @@ public class ExamUser{
     @Column(name = "remaining_time")
     private int remainingTime;
 
+    @Column(name = "total_point")
+    private Double totalPoint;
+
 }
 

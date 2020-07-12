@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ExamService} from '../../_services/exam.service';
 import {ExamUser} from '../../models/exam-user';
 import {delay} from 'rxjs/operators';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,6 +14,7 @@ export class DashboardComponent implements OnInit {
   listComing: ExamUser[] = [];
   listComplete: ExamUser[] = [];
   skeletonLoading = true;
+  now = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
 
   constructor(private examService: ExamService) {
   }
@@ -23,16 +25,21 @@ export class DashboardComponent implements OnInit {
   }
 
   getExam() {
-    this.examService.getAllExamByUser().pipe(delay(1000)).subscribe(res => {
+    this.examService.getAllExamByUser().subscribe(res => {
       res.filter(item => {
-        if (item.isStarted === false || (item.isFinished === false && item.isStarted === true)) {
+
+        item.isAvailable = this.examService.isAvailable(item.exam.finishExam);
+        if (
+          item.isAvailable
+          && item.isStarted === false
+          || (item.isFinished === false && item.isStarted === true)
+        ) {
           this.listComing.push(item);
         } else {
           this.listComplete.push(item);
         }
       });
       this.skeletonLoading = false;
-      console.log('listComing: ', this.listComing);
     });
   }
 }

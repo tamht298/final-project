@@ -2,6 +2,8 @@ import {AfterContentInit, AfterViewInit, Component, OnInit, ViewChild} from '@an
 import {UserService} from '../../_services/user.service';
 import {UserAccount} from '../../models/user-account';
 import {PaginationDetail} from '../../models/pagination/pagination-detail';
+import {delay, switchMap} from 'rxjs/operators';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-manage-user',
@@ -12,8 +14,7 @@ export class ManageUserComponent implements OnInit, AfterContentInit {
 
   userList: UserAccount[] = [];
   paginationDetail: PaginationDetail;
-  checkedAll: boolean;
-
+  skeleton = true;
   pageOptions: any = [
     {display: 20, num: 20},
     {display: 50, num: 50},
@@ -21,23 +22,29 @@ export class ManageUserComponent implements OnInit, AfterContentInit {
     {display: 'Tất cả', num: ''},
   ];
   searchKeyWord = '';
+  pageCountShowing = 20;
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private toast: ToastrService) {
   }
 
 
   ngOnInit(): void {
     this.fetchUserList();
-    console.log('manage-user');
   }
 
   fetchUserList() {
-    this.userService.searchUserListDeletedByPage(0, 20, this.searchKeyWord, false).subscribe(res => {
-      console.table(res);
+    // this.userService.searchUserListDeletedByPage(0, 20, this.searchKeyWord, false).subscribe(res => {
+    //   console.table(res);
+    //   this.userList = res.data;
+    //   this.paginationDetail = res.paginationDetails;
+    // }, error => {
+    //   console.error('Lỗi');
+    // });
+    this.userService.getUserList(0, 20).pipe(delay(1000)).subscribe(res => {
       this.userList = res.data;
+      console.log(res.data);
       this.paginationDetail = res.paginationDetails;
-    }, error => {
-      console.error('Lỗi');
+      this.skeleton = false;
     });
   }
 
@@ -57,13 +64,13 @@ export class ManageUserComponent implements OnInit, AfterContentInit {
   goPreviousPage() {
     const isFirstPage: boolean = this.paginationDetail.isFirstPage;
     if (!isFirstPage) {
-      this.userService.searchUserListDeletedByPage(this.paginationDetail.previousPage.pageNumber, this.paginationDetail.pageCount, this.searchKeyWord, false)
+      this.userService.searchUserListDeletedByPage(this.paginationDetail.previousPage.pageNumber, this.pageCountShowing, this.searchKeyWord, false)
         .subscribe(res => {
           this.userList = res.data;
           this.paginationDetail = res.paginationDetails;
           console.table(this.userList);
         });
-      this.checkedAll = false;
+      ;
     }
 
   }
@@ -71,8 +78,7 @@ export class ManageUserComponent implements OnInit, AfterContentInit {
   goNextPage() {
     const isLastPage = !this.paginationDetail.nextPage.available;
     if (!isLastPage) {
-      this.checkedAll = false;
-      this.userService.searchUserListDeletedByPage(this.paginationDetail.nextPage.pageNumber, this.paginationDetail.pageCount, this.searchKeyWord, false
+      this.userService.searchUserListDeletedByPage(this.paginationDetail.nextPage.pageNumber, this.pageCountShowing, this.searchKeyWord, false
       ).subscribe(res => {
         this.userList = res.data;
         this.paginationDetail = res.paginationDetails;
@@ -86,25 +92,15 @@ export class ManageUserComponent implements OnInit, AfterContentInit {
     this.paginationDetail = $event.paginationDetails;
   }
 
-  checkIfAllSelected(event) {
-    this.checkedAll = this.userList.every(item => item.deleted === true);
-  }
-
-
-  selectAll(event) {
-    const checked = event.target.checked;
-    this.userList.forEach(item => item.deleted = checked);
-  }
-
   changePageShow(value: any) {
-    console.log(value);
-    if (!value) {
+    this.pageCountShowing = value;
+    if (!this.pageCountShowing) {
       this.userService.getUserListDeletedByPage(0, this.paginationDetail.totalCount, false).subscribe(res => {
         this.userList = res.data;
         this.paginationDetail = res.paginationDetails;
       });
     } else {
-      this.userService.getUserListDeletedByPage(0, value, false).subscribe(res => {
+      this.userService.getUserListDeletedByPage(0, this.pageCountShowing, false).subscribe(res => {
         this.userList = res.data;
         this.paginationDetail = res.paginationDetails;
       });
@@ -121,5 +117,17 @@ export class ManageUserComponent implements OnInit, AfterContentInit {
 
   ngAfterContentInit(): void {
     console.log('after view init');
+  }
+
+  changeDeleted(user: UserAccount) {
+    user.deleted = !user.deleted;
+    this.userService.deleteUser(user.id, user.deleted)
+      .pipe(switchMap(res => this.userService.getUserList(0, 20)))
+      .subscribe(res => {
+        this.toast.success('Đã thay đổi trạng thái tài khoản', 'Thành công');
+      }, error => {
+        user.deleted = !user.deleted;
+        this.toast.error('Không thể thay đổi trạng thái', 'Lỗi');
+      });
   }
 }

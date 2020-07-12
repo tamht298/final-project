@@ -19,7 +19,6 @@ public class SpringSecurityAuditorAware implements AuditorAware<User> {
     @Override
     public Optional<User> getCurrentAuditor() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        logger.info(username);
         return userRepository.findByUsername(username);
     }
 }

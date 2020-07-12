@@ -7,6 +7,6 @@ export class ExamCalendar {
   durationExam: number;
   beginDate: string;
   finishDate: string;
-  completed: boolean;
+  isCompleted: number;
   completeString: string;
 }

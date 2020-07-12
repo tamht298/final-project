@@ -8,5 +8,6 @@ export class ExamUser {
   timeStart: string;
   timeFinish: string;
   isFinished: boolean;
+  isAvailable: boolean;
 
 }

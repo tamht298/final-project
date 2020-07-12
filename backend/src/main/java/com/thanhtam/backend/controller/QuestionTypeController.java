@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +27,8 @@ public class QuestionTypeController {
     }
 
     @GetMapping(value = "/question-types")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('LECTURER')")
+
     public List<QuestionType> getAllQuestionType() {
         List<QuestionType> questionTypeList = questionTypeService.getQuestionTypeList();
         log.info(questionTypeList.toString());
@@ -35,12 +38,16 @@ public class QuestionTypeController {
     }
 
     @GetMapping(value = "/question-types/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('LECTURER')")
+
     public QuestionType getQuestionTypeById(@PathVariable Long id) {
         QuestionType questionType = questionTypeService.getQuestionTypeById(id).get();
         return questionType;
     }
 
     @GetMapping(value = "/question-types/{typeCode}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('LECTURER')")
+
     public QuestionType getQuestionTypeByTypeCode(@PathVariable String typeCode) {
         EQTypeCode eqTypeCode = EQTypeCode.valueOf(typeCode);
         QuestionType questionType = questionTypeService.getQuestionTypeByCode(eqTypeCode).get();

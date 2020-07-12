@@ -16,6 +16,7 @@ export class Question {
   part: Part;
   point: number;
   isSelected: boolean;
+  deleted: boolean;
 
   constructor(
     questionText: string,

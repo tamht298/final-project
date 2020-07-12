@@ -22,6 +22,11 @@ export class UserService {
     return this.http.get<PageResult<UserAccount>>(`${this.baseUrl}/users/deleted/${status}`);
   }
 
+  getUserList(page: number, size: number): Observable<PageResult<UserAccount>> {
+    const pageParams = new HttpParams().set('page', page.toString()).set('size', size.toString());
+    return this.http.get<PageResult<UserAccount>>(`${this.baseUrl}/users`, {params: pageParams});
+  }
+
   // @ts-ignore
   getUserListDeletedByPage(page: number, size: number, status: boolean): Observable<PageResult<UserAccount>> {
     const pageParams = new HttpParams().set('page', page.toString()).set('size', size.toString());
@@ -45,9 +50,8 @@ export class UserService {
   addUser(user: UserAccount): Observable<UserAccount> {
     return this.http.post<UserAccount>(`${this.baseUrl}/users`, user);
   }
-
-  deleteTempUser(id: number): Observable<any> {
-    return this.http.patch<any>(`${this.baseUrl}/users/${id}`, {deleted: true});
+  deleteUser(id: number, deleted: boolean): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/users/${id}/deleted/${deleted}`);
   }
 
   updateUser(id: number, user: UserUpdate): Observable<any> {

@@ -12,11 +12,12 @@
   <div class="lg:w-full bg-gray-100 py-2 overflow-hidden overflow-y-scroll">
 
     <div class="flex flex-wrap items-center justify-between mx-4 my-4 overflow-hidden">
-      <div class="text-gray-300 text-xl cursor-pointer bg-blue-700 hover:bg-blue-600 px-2 rounded shadow-2xl" (click)="toggleMenu()">
-        <i class="fa fa-bars"></i>
+      <div class="text-gray-300 text-xl cursor-pointer bg-blue-500 hover:bg-blue-600 px-2 rounded shadow-2xl" (click)="toggleMenu()">
+        <i class="fa fa-expand" *ngIf="!toggledMenu"></i>
+        <i class="fa fa-compress" *ngIf="toggledMenu"></i>
       </div>
       <div class="group text-gray-600 text-2xl cursor-pointer flex items-center" (click)="signOut()">
-        <span class="text-base"><i class="fa fa-sign-out mr-2 group-hover:mr-0"></i>Thoát</span>
+        <span class="text-base"><i class="fa fa-sign-out mr-2 group-hover:mr-1"></i>Log out</span>
       </div>
     </div>
     <div class="px-5 py-4 m-6">

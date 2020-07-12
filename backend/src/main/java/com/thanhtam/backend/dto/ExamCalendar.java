@@ -22,5 +22,5 @@ public class ExamCalendar {
     private Date beginDate;
     private Date finishDate;
     private String completeString;
-    private boolean isCompleted;
+    private int isCompleted;
 }

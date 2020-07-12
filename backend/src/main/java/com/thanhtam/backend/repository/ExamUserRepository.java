@@ -4,6 +4,7 @@ import com.thanhtam.backend.entity.Exam;
 import com.thanhtam.backend.entity.ExamUser;
 import com.thanhtam.backend.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,5 +13,6 @@ import java.util.List;
 public interface ExamUserRepository extends JpaRepository<ExamUser, Long> {
     List<ExamUser> findAllByUser_Username(String username);
     ExamUser findByExam_IdAndUser_Username(Long examId, String username);
-
+    List<ExamUser> findAllByExam_Part_Course_IdAndUser_UsernameAndTotalPointIsGreaterThan(Long courseId, String username, Double point);
+    List<ExamUser> findAllByExam_Id(Long examId);
 }

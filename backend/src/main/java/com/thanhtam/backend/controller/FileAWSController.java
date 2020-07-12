@@ -85,10 +85,10 @@ public class FileAWSController {
         String keyName = new Date().getTime() + "_" + username + "_avatar." + extension;
         try {
             s3Services.uploadS3File(keyName, file);
-            if (!imgUrlUser.isEmpty()) {
-                String fileName = imgUrlUser.replace(endpointUrl + "/" + bucketName + "/", "");
-                s3Services.deleteFile(fileName);
-            }
+//            if (!imgUrlUser.isEmpty()) {
+//                String fileName = imgUrlUser.replace(endpointUrl + "/" + bucketName + "/", "");
+//                s3Services.deleteFile(fileName);
+//            }
             User user = userService.getUserByUsername(username).get();
             String avatarUrl = endpointUrl + "/" + bucketName + "/" + keyName;
             user.getProfile().setImage(avatarUrl);

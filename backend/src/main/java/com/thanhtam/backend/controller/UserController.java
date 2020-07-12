@@ -133,10 +133,11 @@ public class UserController {
         return false;
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<?> deleteTempUser(@PathVariable Long id, @Valid @RequestBody User userPartial) {
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/{id}/deleted/{deleted}")
+    public ResponseEntity<?> deleteTempUser(@PathVariable Long id, @PathVariable boolean deleted) {
         User user = userService.findUserById(id).get();
-        user.setDeleted(true);
+        user.setDeleted(deleted);
         userService.updateUser(user);
         return ResponseEntity.noContent().build();
     }

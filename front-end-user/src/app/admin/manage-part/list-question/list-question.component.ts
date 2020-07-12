@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Course} from '../../../models/course';
 import {CourseService} from '../../../_services/course.service';
 import {PartService} from '../../../_services/part.service';
@@ -26,7 +26,8 @@ export class ListQuestionComponent implements OnInit {
     private route: ActivatedRoute,
     private courseService: CourseService,
     private partService: PartService,
-    private questionService: QuestionService) {
+    private questionService: QuestionService,
+    private router: Router) {
   }
 
   ngOnInit(): void {
@@ -52,4 +53,7 @@ export class ListQuestionComponent implements OnInit {
     });
   }
 
+  goDetail(id: any) {
+    this.router.navigate(['./admin/question-bank/question', id]);
+  }
 }
