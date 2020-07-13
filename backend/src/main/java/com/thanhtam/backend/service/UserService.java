@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import javax.jws.soap.SOAPBinding;
+import javax.mail.MessagingException;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,5 +38,8 @@ public interface UserService {
     void updateUser(User user);
 
     List<User> findAllByIntakeId(Long id);
+
+    boolean requestPasswordReset(String email) throws MessagingException;
+
 
 }

@@ -1,9 +1,11 @@
 package com.thanhtam.backend.service;
 
+import com.thanhtam.backend.config.JwtUtils;
 import com.thanhtam.backend.dto.UserExport;
-import com.thanhtam.backend.entity.Intake;
+import com.thanhtam.backend.entity.PasswordResetToken;
 import com.thanhtam.backend.entity.Role;
 import com.thanhtam.backend.entity.User;
+import com.thanhtam.backend.repository.PasswordResetTokenRepository;
 import com.thanhtam.backend.repository.UserRepository;
 import com.thanhtam.backend.ultilities.ERole;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.util.*;
 
 @Service(value = "userService")
@@ -22,12 +25,16 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private RoleService roleService;
     private PasswordEncoder passwordEncoder;
+    private PasswordResetTokenRepository passwordResetTokenRepository;
+    private EmailService emailService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleService roleService, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, RoleService roleService, PasswordEncoder passwordEncoder, PasswordResetTokenRepository passwordResetTokenRepository, EmailService emailService) {
         this.userRepository = userRepository;
         this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
+        this.passwordResetTokenRepository = passwordResetTokenRepository;
+        this.emailService = emailService;
     }
 
 
@@ -124,6 +131,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAllByIntakeId(Long id) {
         return userRepository.findAllByIntakeId(id);
+    }
+
+    @Override
+    public boolean requestPasswordReset(String email) throws MessagingException {
+        boolean returnValue = false;
+        Optional<User> user = userRepository.findByEmail(email);
+        if (!user.isPresent()) {
+            return false;
+        }
+
+        String token = new JwtUtils().generatePasswordResetToken(user.get().getId());
+        PasswordResetToken passwordResetToken =new PasswordResetToken();
+        passwordResetToken.setToken(token);
+        passwordResetToken.setUser(user.get());
+
+        passwordResetTokenRepository.save(passwordResetToken);
+        emailService.resetPassword(email, token);
+        return true;
     }
 
     public void addRoles(ERole roleName, Set<Role> roles) {

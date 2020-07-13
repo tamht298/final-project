@@ -2,11 +2,15 @@ package com.thanhtam.backend.controller;
 
 import com.thanhtam.backend.config.JwtUtils;
 import com.thanhtam.backend.dto.LoginUser;
+import com.thanhtam.backend.dto.OperationStatusDto;
+import com.thanhtam.backend.dto.PasswordResetRequest;
 import com.thanhtam.backend.entity.User;
 import com.thanhtam.backend.exception.ErrorMessage;
 import com.thanhtam.backend.payload.response.JwtResponse;
 import com.thanhtam.backend.service.UserDetailsImpl;
 import com.thanhtam.backend.service.UserService;
+import com.thanhtam.backend.ultilities.RequestOperationName;
+import com.thanhtam.backend.ultilities.RequestOperationStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.Date;
@@ -74,7 +79,16 @@ public class AuthenticationController {
 
 
     @PostMapping(value="/password-reset-request")
-    public ResponseEntity resetRequest(@RequestBody String email){
+    public OperationStatusDto resetRequest(@RequestBody PasswordResetRequest passwordResetRequest) throws MessagingException {
+        OperationStatusDto operationStatusDto = new OperationStatusDto();
+        boolean operationResult = userService.requestPasswordReset(passwordResetRequest.getEmail());
+        operationStatusDto.setOperationName(RequestOperationName.REQUEST_PASSWORD_RESET.name());
+        operationStatusDto.setOperationResult(RequestOperationStatus.ERROR.name());
+        if(operationResult){
+            operationStatusDto.setOperationResult(RequestOperationStatus.SUCCESS.name());
 
+        }
+
+        return operationStatusDto;
     }
 }

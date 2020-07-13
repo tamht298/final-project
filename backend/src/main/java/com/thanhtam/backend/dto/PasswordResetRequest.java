@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OperationStatusDto {
-    private String operationResult;
-    private String operationName;
+public class PasswordResetRequest {
+    private String email;
 }

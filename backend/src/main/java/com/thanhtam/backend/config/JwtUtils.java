@@ -27,6 +27,24 @@ public class JwtUtils {
                 .compact();
     }
 
+    public String generateEmailVerificationToken(Long userId) {
+        String token = Jwts.builder()
+                .setSubject(String.valueOf(userId))
+                .setExpiration(new Date((new Date()).getTime() + Constants.ACCESS_TOKEN_VALIDITY_SECONDS * 1000))
+                .signWith(SignatureAlgorithm.HS512, Constants.SIGNING_KEY)
+                .compact();
+        return token;
+    }
+
+    public String generatePasswordResetToken(Long userId) {
+        String token = Jwts.builder()
+                .setSubject(String.valueOf(userId))
+                .setExpiration(new Date((new Date()).getTime() + Constants.ACCESS_TOKEN_VALIDITY_SECONDS * 1000))
+                .signWith(SignatureAlgorithm.HS512, Constants.SIGNING_KEY)
+                .compact();
+        return token;
+    }
+
     public String getUserNameFromJwtToken(String token) {
         return Jwts.parser().setSigningKey(Constants.SIGNING_KEY).parseClaimsJws(token).getBody().getSubject();
     }

@@ -20,6 +20,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Boolean existsByUsername(String username);
 
+    Optional<User> findByEmail(String email);
     Boolean existsByEmail(String email);
 
     Boolean existsByEmailOrUsername(String email, String username);
@@ -34,5 +35,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findAllByDeleted(boolean statusDeleted);
 
     List<User> findAllByIntakeId(Long id);
+
 
 }
