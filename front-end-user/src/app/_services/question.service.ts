@@ -19,6 +19,11 @@ export class QuestionService {
     return this.http.get<PageResult<Question>>(`${this.baseUrl}/parts/${partId}/questions`, {params: pageParams});
   }
 
+  public getQuestionListByPartNotDeleted(page: number, size: number, partId: number): Observable<PageResult<Question>> {
+    const pageParams = new HttpParams().set('page', page.toString()).set('size', size.toString());
+    return this.http.get<PageResult<Question>>(`${this.baseUrl}/parts/${partId}/questions/false/deleted`, {params: pageParams});
+  }
+
   public createQuestion(question: Question, questionType: string, partId: number): Observable<Question> {
     const reqParams = new HttpParams().set('questionType', questionType.toString()).set('partId', String(partId));
     return this.http.post<Question>(`${this.baseUrl}/questions`, question, {params: reqParams});
@@ -29,6 +34,7 @@ export class QuestionService {
   }
 
   deleteQuestion(id: number, deleted: boolean): Observable<any> {
+    console.log(deleted);
     return this.http.get(`${this.baseUrl}/questions/${id}/deleted/${deleted}`);
   }
 

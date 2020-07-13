@@ -21,6 +21,18 @@ public class Exam extends Auditable<Long> implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @Column(name = "canceled")
+    private boolean canceled = false;
+
+    @ManyToOne()
+    @JoinColumn(name = "intake_id")
+    private Intake intake;
+
+    @ManyToOne()
+    @JoinColumn(name = "part_id")
+    private Part part;
+
     @Column(name = "title")
     private String title;
 
@@ -44,18 +56,8 @@ public class Exam extends Auditable<Long> implements Serializable {
     @Transient
     private boolean locked;
 
-    @ManyToOne()
-    @JoinColumn(name = "intake_id")
-    private Intake intake;
-
-//    @OneToMany(mappedBy="exam", fetch = FetchType.EAGER)
-//    private List<ExamUser> examUsers = new ArrayList<>();
-
     @Column(name="question_data", columnDefinition = "text")
     private String questionData;
 
-    @ManyToOne()
-    @JoinColumn(name = "part_id")
-    private Part part;
 
 }

@@ -20,6 +20,7 @@ import timeGridPlugin from '@fullcalendar/timegrid'; // a plugin
 import interactionPlugin from '@fullcalendar/interaction';
 import { StatisticsComponent } from './statistics/statistics.component';
 import {NgApexchartsModule} from 'ng-apexcharts';
+import {BreadcrumbModule} from 'xng-breadcrumb';
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
   interactionPlugin
@@ -35,7 +36,8 @@ FullCalendarModule.registerPlugins([
     FormsModule,
     ReactiveFormsModule,
     FullCalendarModule,
-    NgApexchartsModule
+    NgApexchartsModule,
+    BreadcrumbModule
   ]
 })
 export class UserModule {

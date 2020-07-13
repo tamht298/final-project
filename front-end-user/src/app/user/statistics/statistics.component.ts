@@ -44,6 +44,7 @@ export class StatisticsComponent implements OnInit {
   getCoursePoint() {
     this.chartService.getCoursePoint().subscribe(res => {
       this.coursePointData = res;
+      console.log(this.coursePointData);
       this.chartOptions = {
         series: [
           {

@@ -1,6 +1,7 @@
 <div class="bg-blue-600 md:pt-32 pb-32 pt-12">
   <div class="px-4 md:px-10 mx-auto w-full">
-    <a [routerLink]="['/admin/tests']" class="text-white cursor-pointer hover:underline"><i class="fa fa-long-arrow-left"></i><span class="mx-2">Quay về danh sách test</span></a>
+    <a [routerLink]="['/admin/tests']" class="text-white cursor-pointer hover:underline"><i
+      class="fa fa-long-arrow-left"></i><span class="mx-2">Quay về danh sách test</span></a>
 
   </div>
 </div>
@@ -14,9 +15,12 @@
             <div class="flex flex-wrap items-center">
               <div class="relative flex justify-between w-full px-4 max-w-full flex-grow leading-8 mb-3">
                 <h3 class="font-semibold text-2xl text-gray-800">
-                  Chi tiết bài test
+                  Chi tiết bài test <span class="text-gray-500">#{{exam.id}}</span>
                 </h3>
-
+                <button *ngIf="!exam.canceled && isAvailable()" (click)="toggleModal()" class="px-2 py-1 rounded bg-gray-300 text-gray-700 hover:bg-gray-400">
+                  Huỷ bài test
+                </button>
+                <span *ngIf="exam.canceled" class="px-2 py-1 rounded bg-red-300 text-red-700">Đã huỷ</span>
               </div>
               <hr class="border w-full my-3">
               <div class="flex flex-wrap flex-col w-full">
@@ -24,7 +28,8 @@
                 <div class="flex flex-wrap flex-row">
                   <div class="relative w-full px-4 max-w-full flex-flow flex-basis">
 
-                    <p class="mx-3 my-3 text-gray-600 text-md text-blue-700 text-xl font-semibold">Đối tượng tham gia</p>
+                    <p class="mx-3 my-3 text-gray-600 text-md text-blue-700 text-xl font-semibold">Đối tượng tham
+                      gia</p>
 
                     <div class="-mx-3 md:flex mb-2 w-full">
                       <div class="md:w-full px-3">
@@ -59,7 +64,7 @@
 
                     <div class="-mx-3 md:flex mb-2 w-full">
                       <div class="md:w-1/2 px-3">
-                        <label class="block uppercase tracking-wide text-gray-600 text-xs font-bold mb-2"
+                        <label class="block uppercase tracking-wide text-gray-600 text-xs font-bold my-2"
                         >
                           Môn học
                         </label>
@@ -68,19 +73,19 @@
                           name="course"
                           class="block appearance-none w-full bg-gray-200 py-2 px-3 my-1 mt-3 pr-4 rounded shadow leading-tight focus:outline-none">
                           <option [value]="exam.part.course.id"
-                                  >{{exam.part.course.name}}</option>
+                          >{{exam.part.course.name}}</option>
 
                         </select>
 
                       </div>
                       <div class="md:w-1/2 px-3">
-                        <label class="block uppercase tracking-wide text-gray-600 text-xs font-bold mb-2"
+                        <label class="block uppercase tracking-wide text-gray-600 text-xs font-bold my-2"
                         >
                           Nội dung
                         </label>
                         <select
-                                name="part"
-                                class="block appearance-none w-full bg-gray-200 py-2 px-3 my-1 mt-3 pr-4 rounded shadow leading-tight focus:outline-none">
+                          name="part"
+                          class="block appearance-none w-full bg-gray-200 py-2 px-3 my-1 mt-3 pr-4 rounded shadow leading-tight focus:outline-none">
                           <option [value]="exam.part.id">{{exam.part.name}}</option>
 
                         </select>
@@ -94,7 +99,7 @@
 
                     <p class="mx-3 my-3 text-gray-600 text-md text-blue-700 text-xl font-semibold">Thiết lập thời
                       gian</p>
-                    <div class="-mx-3 md:flex mb-2 w-full">
+                    <div class="-mx-3 md:flex mb-2 w-full justify-around">
                       <div class="md:w-1/3 px-3">
                         <label class="block uppercase tracking-wide text-gray-600 text-xs font-bold mb-2"
                         >
@@ -128,7 +133,7 @@
                           <div class="radio-btn">
                             <input type="checkbox" id="shuffle"
                                    name="shuffle"
-                                  [checked]="exam.shuffle"
+                                   [checked]="exam.shuffle"
                                    [disabled]="true"
                             />
 
@@ -162,7 +167,7 @@
                   <div class="example-box" *ngFor="let ques of question; let i = index">
                     <div class="w-full hover:bg-gray-300 flex flex-row items-center">
                       <div class="px-4 w-20">
-                        <span class="text-gray-600 italic font-semibold text-lg">#{{i+1}}</span>
+                        <span class="text-gray-600 italic font-semibold text-lg">#{{i + 1}}</span>
                       </div>
                       <div
                         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs p-4 text-left md:w-3/5">
@@ -212,6 +217,54 @@
 
     </div>
   </form>
+  <div *ngIf="showModalDelete"
+       class="fixed inset-0 overflow-auto z-50 outline-none focus:outline-none justify-center flex">
+    <div class="relative w-4/5 my-5 mx-auto max-w-2xl" style="margin-top: 2.5rem">
+      <!--content-->
+      <div
+        class="border-0 rounded-lg shadow-lg relative flex flex-col w-full overflow-y-auto my-5 bg-white outline-none focus:outline-none"
+        style="max-height: 90%">
+        <!--header-->
+        <div class="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t">
+          <h3 class="text-2xl font-semibold">Huỷ bài test</h3>
+          <button
+            class="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+            (click)="closeModal()">
+              <span
+                class="bg-transparent text-gray-700 opacity-5 h-3 w-3 text-base block outline-none focus:outline-none">
+              <i class="fa fa-close"></i>
+              </span>
+          </button>
+        </div>
+        <!--body-->
+        <div class="relative p-3">
+          <div
+            class="my-4 px-8 text-gray-600 text-base leading-relaxed text-left flex-row flex flex-wrap justify-center lg:justify-start items-center">
+            Bài test này sẽ được huỷ?
+          </div>
+        </div>
+        <!--footer-->
+        <div class="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">
+          <button
+            class="bg-white shadow-md hover:bg-red-500 hover:text-red-200 transition duration-200 ease-in-out text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
+            type="button"
+            (click)="confirmDelete()"><span><i class="fa fa-trash mr-1"></i>Có, huỷ ngay</span>
+          </button>
+          <button
+            class="shadow-md bg-gray-600 text-gray-100 hover:bg-gray-700 hover:text-gray-200 transition duration-200 ease-in-out text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
+            type="button"
+
+            (click)="closeModal()"><span><i class="fa fa-window-close mr-1"></i>Để xem lại</span>
+          </button>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="showModalDelete" class="fixed inset-0 z-40 bg-smoke-light"></div>
+
   <app-admin-footer></app-admin-footer>
 </div>
+
 

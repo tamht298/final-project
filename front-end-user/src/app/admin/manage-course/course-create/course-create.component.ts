@@ -41,6 +41,7 @@ export class CourseCreateComponent implements OnInit {
 
   toggleModalAdd() {
     this.showModal = !this.showModal;
+    this.rfCreateCourse.reset();
   }
 
   onSubmit() {

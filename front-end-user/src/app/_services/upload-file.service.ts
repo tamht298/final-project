@@ -33,6 +33,15 @@ export class UploadFileService {
     });
   }
 
+  uploadUsersByExcel(file: File): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('file', file);
+    return this.http.post(`${this.baseUrl}/file/import/users`, formData, {
+      responseType: 'json',
+      reportProgress: true
+    });
+  }
+
   getFiles(): Observable<any> {
     return this.http.get(`${this.baseUrl}/aws/file/all`);
   }

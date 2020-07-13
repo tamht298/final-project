@@ -78,6 +78,16 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
+    public Page<Question> findQuestionsByPartAndDeletedFalse(Pageable pageable, Part part) {
+        return questionRepository.findQuestionsByPartAndDeletedFalse(pageable, part);
+    }
+
+    @Override
+    public Page<Question> findQuestionsByPart_IdAndCreatedBy_UsernameAndDeletedFalse(Pageable pageable, Long partId, String username) {
+        return questionRepository.findQuestionsByPart_IdAndCreatedBy_UsernameAndDeletedFalse(pageable, partId, username);
+    }
+
+    @Override
     public Page<Question> findAllQuestions(Pageable pageable) {
         return questionRepository.findAll(pageable);
     }

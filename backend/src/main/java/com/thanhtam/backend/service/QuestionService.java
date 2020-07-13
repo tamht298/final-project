@@ -27,6 +27,9 @@ public interface QuestionService {
 
     Page<Question> findQuestionsByPart(Pageable pageable, Part part);
 
+    Page<Question> findQuestionsByPartAndDeletedFalse(Pageable pageable, Part part);
+    Page<Question> findQuestionsByPart_IdAndCreatedBy_UsernameAndDeletedFalse(Pageable pageable, Long partId, String username);
+
     Page<Question> findAllQuestions(Pageable pageable);
 
     String findQuestionTextById(Long questionId);

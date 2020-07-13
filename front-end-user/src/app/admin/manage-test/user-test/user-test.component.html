@@ -10,10 +10,10 @@
         <div class="rounded-t mb-0 px-4 py-3 border-0">
           <div class="flex flex-wrap items-center">
             <div class="relative w-full px-4 max-w-full flex-grow leading-8 mb-3">
-              <h3 class="font-semibold text-2xl text-gray-800">
+              <h3 class="font-semibold text-2xl text-gray-800 mb-4">
                 Kết quả bài test
               </h3>
-              <p>
+              <p *ngIf="examResults[0]?.exam.title">
                 <span class="px-2 py-1 rounded bg-blue-200 text-blue-700">
                   {{examResults[0]?.exam.title}}</span> - <a [routerLink]="['../preview']" class="underline text-blue-700">[xem chi tiết]</a></p>
             </div>
@@ -22,6 +22,7 @@
           </div>
 
         </div>
+        <div class="text-center text-xl">Danh sách 10 bài làm ngẫu nhiên</div>
         <ng-container *ngIf="chartOptions">
           <apx-chart
             [series]="chartOptions.series"

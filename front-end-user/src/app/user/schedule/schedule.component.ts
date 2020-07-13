@@ -66,15 +66,16 @@ export class ScheduleComponent implements OnInit, AfterViewInit, AfterContentChe
 
     this.examService.getExamCalendar().subscribe(res => {
       this.examCalendars = res;
+      console.log(this.examCalendars);
       this.examCalendars.forEach(value => {
         switch (value.isCompleted) {
           case -2: {
-            this.examEvents.push({groupId: value.examId.toString(), title: value.courseCode, date: value.beginDate, color: '#F56565'});
+            this.examEvents.push({groupId: value.examId.toString(), title: value.courseCode, start: value.beginDate, end: value.finishDate, color: '#F56565'});
 
             break;
           }
           case -1: {
-            this.examEvents.push({groupId: value.examId.toString(), title: value.courseCode, date: value.beginDate, color: '#A0AEC0'});
+            this.examEvents.push({groupId: value.examId.toString(), title: value.courseCode, start: value.beginDate, end: value.finishDate, color: '#A0AEC0'});
             break;
           }
           case 0: {

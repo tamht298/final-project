@@ -92,6 +92,9 @@ export class AddQuestionComponent implements OnInit {
         this.questionService.createQuestion(newQuestion, this.questionType.value, this.part.value).subscribe(res1 => {
           this.toast.success('1 câu hỏi true/false đã được tạo', 'Thành công');
           this.resetFormAfterSubmit();
+        }, error => {
+          this.toast.error('Kiểm tra lại thông tin cần tạo', 'Lỗi');
+
         });
         return;
       }
@@ -100,6 +103,9 @@ export class AddQuestionComponent implements OnInit {
         this.questionService.createQuestion(newQuestion, this.questionType.value, this.part.value).subscribe(res2 => {
           this.toast.success('1 câu hỏi multiple choice đã được tạo', 'Thành công');
           this.resetFormAfterSubmit();
+        }, error => {
+          this.toast.error('Kiểm tra lại thông tin cần tạo', 'Lỗi');
+
         });
         return;
       }
@@ -108,6 +114,8 @@ export class AddQuestionComponent implements OnInit {
         this.questionService.createQuestion(newQuestion, this.questionType.value, this.part.value).subscribe(res2 => {
           this.toast.success('1 câu hỏi multiple select đã được tạo', 'Thành công');
           this.resetFormAfterSubmit();
+        }, error => {
+          this.toast.error('Kiểm tra lại thông tin cần tạo', 'Lỗi');
         });
         return;
       }

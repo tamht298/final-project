@@ -25,6 +25,7 @@
         <opencsv.version>4.5</opencsv.version>
         <amazonaws.version>1.11.816</amazonaws.version>
         <guava.version>29.0-jre</guava.version>
+        <decimal4j.version>1.0.3</decimal4j.version>
     </properties>
 
     <dependencies>
@@ -101,6 +102,16 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.decimal4j</groupId>
+            <artifactId>decimal4j</artifactId>
+            <version>${decimal4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+            <version>2.2.5.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

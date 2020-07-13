@@ -17,11 +17,13 @@ public interface ExamService {
 
     Page<Exam> findAll(Pageable pageable);
 
+    void cancelExam(Long id);
+
     List<Exam> getAll();
 
     Optional<Exam> getExamById(Long id);
 
-     Page<Exam> findAllByCreatedBy_Username(Pageable pageable, String username);
+    Page<Exam> findAllByCreatedBy_Username(Pageable pageable, String username);
 
     List<ChoiceList> getChoiceList(List<AnswerSheet> userChoices, List<ExamQuestionPoint> examQuestionPoints);
 }

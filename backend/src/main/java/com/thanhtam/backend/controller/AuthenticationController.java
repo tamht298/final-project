@@ -72,4 +72,9 @@ public class AuthenticationController {
                 roles));
     }
 
+
+    @PostMapping(value="/password-reset-request")
+    public ResponseEntity resetRequest(@RequestBody String email){
+
+    }
 }

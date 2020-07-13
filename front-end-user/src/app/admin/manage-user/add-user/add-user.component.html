@@ -30,11 +30,13 @@
           <div class="w-full">
             <ul class="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row">
               <li class="-mb-px mr-2 last:mr-0 flex-auto text-center"><a
-                class="text-xs font-bold uppercase px-5 py-3 hover:shadow-md rounded block leading-normal cursor-pointer" (click)="toggleTabs(1)"
+                class="text-xs font-bold uppercase px-5 py-3 hover:shadow-md rounded block leading-normal cursor-pointer"
+                (click)="toggleTabs(1)"
                 [ngClass]="{'text-blue-600 bg-white': openTab !== 1, 'text-white bg-blue-600': openTab === 1}"> <i
                 class="fa fa-user-circle text-base mr-1"></i> Profile </a></li>
               <li class="-mb-px mr-2 last:mr-0 flex-auto text-center"><a
-                class="text-xs font-bold uppercase px-5 py-3 hover:shadow-md rounded block leading-normal cursor-pointer" (click)="toggleTabs(2)"
+                class="text-xs font-bold uppercase px-5 py-3 hover:shadow-md rounded block leading-normal cursor-pointer"
+                (click)="toggleTabs(2)"
                 [ngClass]="{'text-blue-600 bg-white': openTab !== 2, 'text-white bg-blue-600': openTab === 2}"> <i
                 class="fa fa-upload mr-1"></i> Import </a></li>
 
@@ -155,7 +157,31 @@
 
                     </div>
                   </div>
+                  <div [ngClass]="{'hidden': openTab !== 2, 'block': openTab === 2}">
 
+                    <div class="-mx-3 md:flex flex-col mb-2 w-full">
+                      <div class="md:w-full px-3">
+                        <label class="block uppercase tracking-wide text-gray-600 text-xs font-bold mb-2"
+                        >
+                          Tải lên một file excel (*.xlsx, *.xls)
+                        </label>
+                        <app-file-upload (fileUrlOutput)="getExcel($event)"></app-file-upload>
+                      </div>
+                    </div>
+                    <div class="my-5 flex justify-end px-6">
+                      <button
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
+                        type="button" (click)="importExcelUser()">Upload
+                      </button>
+                    </div>
+
+                    <ng-container *ngIf="userTotal">
+                      <div class="font-semibold text-xl">Danh sách người dùng thêm thành công ({{userImportSuccess.length}})</div>
+                      <div *ngFor="let user of userImportSuccess" class="px-2 py-1 text-gray-700">
+                        {{user.username}}
+                      </div>
+                    </ng-container>
+                  </div>
                 </div>
               </div>
             </div>

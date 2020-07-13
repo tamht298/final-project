@@ -29,13 +29,15 @@ public class QuestionController {
     private PartService partService;
     private QuestionTypeService questionTypeService;
     private UserService userService;
+    private RoleService roleService;
 
     @Autowired
-    public QuestionController(QuestionService questionService, PartService partService, QuestionTypeService questionTypeService, UserService userService) {
+    public QuestionController(QuestionService questionService, PartService partService, QuestionTypeService questionTypeService, UserService userService, RoleService roleService) {
         this.questionService = questionService;
         this.partService = partService;
         this.questionTypeService = questionTypeService;
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @GetMapping(value = "/questions")
@@ -61,11 +63,12 @@ public class QuestionController {
     //    Get list of question by part
     @GetMapping(value = "/parts/{partId}/questions")
     @PreAuthorize("hasRole('ADMIN') or hasRole('LECTURER')")
-
     public PageResult getQuestionsByPart(@PageableDefault(page = 0, size = 10, sort = "id") Pageable pageable, @PathVariable Long partId) {
         String username = userService.getUserName();
         User user = userService.getUserByUsername(username).get();
-        boolean isAdmin = user.getRoles().contains(ERole.ROLE_ADMIN);
+        Role role = roleService.findByName(ERole.ROLE_ADMIN).get();
+        boolean isAdmin = user.getRoles().contains(role);
+
         Page<Question> questions;
         if (partId == 0) {
             if(isAdmin){
@@ -85,6 +88,23 @@ public class QuestionController {
         questions = questionService.findQuestionsByPart_IdAndCreatedBy_Username(pageable, partId, username);
         return new PageResult(questions);
 
+    }
+
+    @GetMapping(value = "/parts/{partId}/questions/false/deleted")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('LECTURER')")
+    public PageResult getQuestionsByPartNotDeleted(@PageableDefault(page = 0, size = 10, sort = "id") Pageable pageable, @PathVariable Long partId) {
+        String username = userService.getUserName();
+        User user = userService.getUserByUsername(username).get();
+        Role role = roleService.findByName(ERole.ROLE_ADMIN).get();
+        boolean isAdmin = user.getRoles().contains(role);
+        Page<Question> questions;
+        if (isAdmin) {
+            Part part = partService.findPartById(partId).get();
+            questions = questionService.findQuestionsByPartAndDeletedFalse(pageable, part);
+            return new PageResult(questions);
+        }
+        questions = questionService.findQuestionsByPart_IdAndCreatedBy_UsernameAndDeletedFalse(pageable, partId, username);
+        return new PageResult(questions);
     }
 
 //    Get list of question by question type
@@ -111,6 +131,7 @@ public class QuestionController {
 
         question.setQuestionType(questionType1);
         question.setPart(part);
+        question.setDeleted(false);
         questionService.save(question);
         Question questionCreated = questionService.getQuestionById(question.getId()).get();
         log.info(questionCreated.toString());
@@ -135,7 +156,9 @@ public class QuestionController {
     public ResponseEntity<?> deleteTempQuestion(@PathVariable Long id, @PathVariable boolean deleted) {
         log.error("Deleted");
         Question question = questionService.getQuestionById(id).get();
+        question.setDeleted(deleted);
         questionService.update(question);
         return ResponseEntity.noContent().build();
     }
+
 }

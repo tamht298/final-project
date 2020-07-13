@@ -6,6 +6,8 @@ import {UserProfile} from '../../../models/user-profile';
 import {PageResult} from '../../../models/page-result';
 import {switchMap} from 'rxjs/operators';
 import {ToastrService} from 'ngx-toastr';
+import {FileUploadComponent} from '../../../shared/file-upload/file-upload.component';
+import {UploadFileService} from '../../../_services/upload-file.service';
 
 @Component({
   selector: 'app-add-user',
@@ -18,10 +20,18 @@ export class AddUserComponent implements OnInit {
   @Output() usersAddOutput = new EventEmitter<PageResult<UserAccount>>();
   @Input() active = false;
   @Input() tabTitle: string;
+  // @ViewChild(FileUploadComponent) fileUpload: FileUploadComponent;
   openTab = 1;
   pageResult: PageResult<UserAccount>;
+  userExcelFile: any;
 
-  constructor(private userService: UserService, private fb: FormBuilder, private toast: ToastrService) {
+  userImportSuccess: UserAccount[] = [];
+  userTotal: number;
+
+  constructor(private userService: UserService,
+              private fb: FormBuilder,
+              private toast: ToastrService,
+              private uploadFileService: UploadFileService) {
   }
 
   get username() {
@@ -86,5 +96,18 @@ export class AddUserComponent implements OnInit {
 
   toggleTabs($tabNumber: number) {
     this.openTab = $tabNumber;
+  }
+
+  importExcelUser() {
+    this.uploadFileService.uploadUsersByExcel(this.userExcelFile).subscribe(res => {
+      this.userImportSuccess = res.data;
+      this.userTotal = res.userTotal;
+      console.log(this.userImportSuccess);
+      this.toast.success('Đã import danh sách user', 'Thành công');
+    });
+  }
+
+  getExcel(file) {
+    this.userExcelFile = file;
   }
 }

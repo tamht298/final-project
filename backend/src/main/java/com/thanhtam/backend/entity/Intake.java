@@ -25,7 +25,4 @@ public class Intake implements Serializable {
 
     @Column(name = "intake_code")
     private String intakeCode;
-
-
-
 }

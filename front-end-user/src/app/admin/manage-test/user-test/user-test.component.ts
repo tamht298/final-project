@@ -52,9 +52,9 @@ export class UserTestComponent implements OnInit {
     this.examId = Number(this.route.snapshot.paramMap.get('id'));
     this.examService.getExamResultListByExamId(this.examId).subscribe(data => {
       this.examResults = data;
+      console.log(this.examResults);
       this.dataSort = _.shuffle(data);
       this.dataSort = this.dataSort.slice(0, 10);
-      console.log(this.dataSort);
       this.chartOptions = {
         series: [
           {

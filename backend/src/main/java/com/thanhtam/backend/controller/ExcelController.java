@@ -20,6 +20,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
+@RequestMapping(value = "/api")
 public class ExcelController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExcelController.class);
     private FilesStorageService filesStorageService;
@@ -31,7 +32,7 @@ public class ExcelController {
         this.excelService = excelService;
     }
 
-    @PostMapping("/file/import")
+    @PostMapping("/file/import/users")
     public ResponseEntity<UserExcel> uploadUserToDB(@RequestParam("file") MultipartFile file) throws IOException {
         String message = "";
         try {

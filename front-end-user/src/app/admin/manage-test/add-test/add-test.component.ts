@@ -139,13 +139,13 @@ export class AddTestComponent implements OnInit {
     }
 
     goToExamManagePage() {
-        this.router.navigate(['']);
+        this.router.navigate(['/admin/tests']);
     }
 
     changePart(event) {
         this.selectedPartId = event.target.value;
         if (this.selectedPartId > 0) {
-            this.questionService.getQuestionListByPart(0, 20, this.selectedPartId).subscribe(res => {
+            this.questionService.getQuestionListByPartNotDeleted(0, 20, this.selectedPartId).subscribe(res => {
                 this.questionList = res.data;
                 this.paginationDetail = res.paginationDetails;
                 this.questionList.forEach(object => object.isSelected = false);

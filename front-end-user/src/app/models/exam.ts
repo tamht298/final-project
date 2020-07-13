@@ -13,6 +13,7 @@ export class Exam {
   questionData: any;
   part: Part;
   id: number;
+  canceled: boolean;
   intake: Intake;
 
 

@@ -1,6 +1,7 @@
 package com.thanhtam.backend.service;
 
 import com.thanhtam.backend.dto.UserExport;
+import com.thanhtam.backend.entity.Intake;
 import com.thanhtam.backend.entity.Profile;
 import com.thanhtam.backend.entity.Role;
 import com.thanhtam.backend.entity.User;
@@ -28,13 +29,15 @@ public class ExcelServiceImpl implements ExcelService {
     private PasswordEncoder passwordEncoder;
     private UserRepository userRepository;
     private RoleService roleService;
+    private IntakeService intakeService;
 
     @Autowired
-    public ExcelServiceImpl(FilesStorageService filesStorageService, PasswordEncoder passwordEncoder, UserRepository userRepository, RoleService roleService) {
+    public ExcelServiceImpl(FilesStorageService filesStorageService, PasswordEncoder passwordEncoder, UserRepository userRepository, RoleService roleService, IntakeService intakeService) {
         this.filesStorageService = filesStorageService;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.roleService = roleService;
+        this.intakeService = intakeService;
     }
 
     @Override
@@ -83,6 +86,12 @@ public class ExcelServiceImpl implements ExcelService {
 
                     }
 
+                    break;
+
+                    case 4: {
+                        Intake intake = intakeService.findByCode((String) getCellValue(cell));
+                        user.setIntake(intake);
+                    }
                     break;
                 }
 

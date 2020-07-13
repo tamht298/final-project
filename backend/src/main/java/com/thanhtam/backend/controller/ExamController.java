@@ -213,6 +213,8 @@ public class ExamController {
     @PostMapping(value = "/exams")
     public ResponseEntity<?> createExam(@Valid @RequestBody Exam exam, @RequestParam Long intakeId, @RequestParam Long partId, @RequestParam boolean isShuffle, boolean locked) {
         try {
+            String username = userService.getUserName();
+            User user = userService.getUserByUsername(username).get();
             Optional<Intake> intake = intakeService.findById(intakeId);
             if (intake.isPresent()) {
                 exam.setIntake(intake.get());
@@ -221,7 +223,9 @@ public class ExamController {
             if (part.isPresent()) {
                 exam.setPart(part.get());
             }
+            exam.setCreatedBy(user);
             exam.setShuffle(isShuffle);
+            exam.setCanceled(false);
             logger.error("begin: " + exam.getBeginExam());
 
             this.examService.saveExam(exam);
@@ -318,7 +322,7 @@ public class ExamController {
             examResult.setUserTimeFinish(examUser.getTimeFinish());
             if (exam.get().getFinishExam().compareTo(now) < 0 && examUser.getIsStarted().equals(false)) {
                 examResult.setExamStatus(-2);
-            } else if (examUser.getIsStarted().equals(false) && exam.get().getBeginExam().compareTo(now) == -1) {
+            } else if (examUser.getIsStarted().equals(false) && exam.get().getFinishExam().compareTo(now) == 1) {
                 examResult.setExamStatus(0);
             } else if (examUser.getIsFinished().equals(true)) {
                 examResult.setExamStatus(-1);
@@ -475,6 +479,21 @@ public class ExamController {
 
         });
         return examCalendars;
+    }
+
+    @GetMapping(value = "/exams/{id}/cancel")
+    public void cancelExam(@PathVariable Long id) {
+        String username = userService.getUserName();
+        User user = userService.getUserByUsername(username).get();
+        Date now = new Date();
+        Exam exam = examService.getExamById(id).get();
+        if (exam.getBeginExam().compareTo(now) > 0) {
+
+//            exam.setCanceled(true);
+            examService.cancelExam(id);
+            logger.error("LLLLL");
+
+        }
     }
 
 }

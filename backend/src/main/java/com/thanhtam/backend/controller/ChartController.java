@@ -7,6 +7,7 @@ import com.thanhtam.backend.entity.User;
 import com.thanhtam.backend.service.CourseService;
 import com.thanhtam.backend.service.ExamUserService;
 import com.thanhtam.backend.service.UserService;
+import org.decimal4j.util.DoubleRounder;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,26 +63,36 @@ public class ChartController {
                 }
             }
             courseChart.setCountExam(examUserListComplete.size());
-            courseChart.setTotalPoint(avgPoint / examUserListComplete.size());
+            Double avg = avgPoint/examUserListComplete.size();
+            courseChart.setTotalPoint(DoubleRounder.round(avg,2));
             if(lastWeekCountExamComplete==0 && currentCountExamComplete!=0){
                 courseChart.setCompareLastWeek(1);
                 courseChart.setChangeRating((double) currentCountExamComplete*100);
+                logger.error("1");
             }
             else if(lastWeekCountExamComplete==0 && currentCountExamComplete==0){
                 courseChart.setCompareLastWeek(0);
                 courseChart.setChangeRating(0.0);
+                logger.error("2");
             }
             else if(lastWeekCountExamComplete!=0 && currentCountExamComplete==0){
                 courseChart.setCompareLastWeek(-1);
-                courseChart.setChangeRating((double) currentCountExamComplete*100);
+                courseChart.setChangeRating((double) lastWeekCountExamComplete*100);
+                logger.error("3");
             }
             else {
-                final Double rate = (double)((currentCountExamComplete - lastWeekCountExamComplete)/lastWeekCountExamComplete);
-                courseChart.setChangeRating(rate*100);
+                logger.error("currentCountExamComplete: "+ currentCountExamComplete);
+                logger.error("lastWeekCountExamComplete: "+ lastWeekCountExamComplete);
+                Double rate = (double)currentCountExamComplete - lastWeekCountExamComplete;
+                courseChart.setChangeRating(DoubleRounder.round(rate/lastWeekCountExamComplete, 2)*100);
                 if(rate>0){
                     courseChart.setCompareLastWeek(1);
                 }
+                else if(rate==0){
+                    courseChart.setCompareLastWeek(0);
+                }
                 else courseChart.setCompareLastWeek(-1);
+                logger.error(rate.toString());
             }
             courseCharts.add(courseChart);
         }

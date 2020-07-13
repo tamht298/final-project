@@ -19,7 +19,7 @@ public class Course implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "course_code", nullable = false, unique = true)
+    @Column(name = "course_code")
     private String courseCode;
 
     @Column(name = "name")

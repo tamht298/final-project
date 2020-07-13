@@ -122,14 +122,20 @@
                 </td>
 
                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
-                  <ng-container [ngSwitch]="getStatusExam(exam)">
-                    <ng-template [ngSwitchCase]="0"><span class="text-gray-700 bg-gray-200 rounded px-2 py-1">Chưa bắt đầu</span>
-                    </ng-template>
-                    <ng-template [ngSwitchCase]="-1"><span
-                      class="text-red-700 bg-red-200 rounded px-2 py-1">Kết thúc</span></ng-template>
-                    <ng-template [ngSwitchCase]="1"><span class="text-green-700 bg-green-200 rounded px-2 py-1">Đang diễn ra</span>
-                    </ng-template>
+                  <ng-container *ngIf="!exam.canceled && getStatusExam(exam)==0">
+                    <span class="text-gray-700 bg-gray-200 rounded px-2 py-1">Chưa bắt đầu</span>
                   </ng-container>
+                  <ng-container *ngIf="!exam.canceled && getStatusExam(exam)==-1">
+                    <span
+                      class="text-red-700 bg-red-200 rounded px-2 py-1">Kết thúc</span>
+                  </ng-container>
+                  <ng-container *ngIf="!exam.canceled && getStatusExam(exam)==1">
+                    <span class="text-green-700 bg-green-200 rounded px-2 py-1">Đang diễn ra</span>
+                  </ng-container>
+                  <ng-container *ngIf="exam.canceled">
+                    <span class="text-red-900 bg-red-400 rounded px-2 py-1">Đã huỷ</span>
+                  </ng-container>
+
                 </td>
                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
                   {{exam.intake.name}}
@@ -137,8 +143,7 @@
                 <td
                   class="border-t-0 px-6 align-middle flex justify-between border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 w-full">
 
-
-                  <a [routerLink]="[exam.id, 'users']"
+                  <a [routerLink]="[exam.id, 'users']" *ngIf="!exam.canceled"
                     class="bg-white shadow-md hover:bg-blue-500 hover:text-gray-200 cursor-pointer transition duration-200 ease-in-out text-xs font-bold uppercase rounded outline-none focus:outline-none px-2 py-1">
                     <span><i class="fa fa-users"></i></span>
                   </a>

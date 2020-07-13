@@ -13,8 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -51,6 +53,11 @@ public class ExamServiceImpl implements ExamService {
     }
 
     @Override
+    public void cancelExam(Long id) {
+        examRepository.cancelExam(id);
+    }
+
+    @Override
     public List<Exam> getAll() {
         return examRepository.findAll();
     }
@@ -60,10 +67,12 @@ public class ExamServiceImpl implements ExamService {
         return examRepository.findById(id);
     }
 
+
     @Override
     public Page<Exam> findAllByCreatedBy_Username(Pageable pageable, String username) {
         return examRepository.findAllByCreatedBy_Username(pageable, username);
     }
+
 
     @Override
     public List<ChoiceList> getChoiceList(List<AnswerSheet> userChoices, List<ExamQuestionPoint> examQuestionPoints) {
@@ -75,8 +84,8 @@ public class ExamServiceImpl implements ExamService {
             choiceList.setPoint(userChoice.getPoint());
 
             List<ChoiceCorrect> choiceCorrects = new ArrayList<>();
-            switch (question.getQuestionType().getTypeCode()){
-                case TF:{
+            switch (question.getQuestionType().getTypeCode()) {
+                case TF: {
                     userChoice.getChoices().forEach(choice -> {
                         ChoiceCorrect choiceCorrect = new ChoiceCorrect();
 
@@ -95,7 +104,7 @@ public class ExamServiceImpl implements ExamService {
                     });
                     break;
                 }
-                case MC:{
+                case MC: {
 
                     choiceList.setIsSelectedCorrected(false);
                     userChoice.getChoices().forEach(choice -> {
@@ -103,21 +112,21 @@ public class ExamServiceImpl implements ExamService {
                         choiceCorrect.setChoice(choice);
                         Integer isRealCorrect = choiceService.findIsCorrectedById(choice.getId());
                         choiceCorrect.setIsRealCorrect(isRealCorrect);
-                        if(choice.getIsCorrected()==isRealCorrect && isRealCorrect==1){
+                        if (choice.getIsCorrected() == isRealCorrect && isRealCorrect == 1) {
                             choiceList.setIsSelectedCorrected(true);
                         }
                         choiceCorrects.add(choiceCorrect);
                     });
                     break;
                 }
-                case MS:{
+                case MS: {
                     choiceList.setIsSelectedCorrected(true);
                     userChoice.getChoices().forEach(choice -> {
                         ChoiceCorrect choiceCorrect = new ChoiceCorrect();
                         choiceCorrect.setChoice(choice);
                         Integer isRealCorrect = choiceService.findIsCorrectedById(choice.getId());
                         choiceCorrect.setIsRealCorrect(isRealCorrect);
-                        if(choice.getIsCorrected()==0 && isRealCorrect==1){
+                        if (choice.getIsCorrected() == 0 && isRealCorrect == 1) {
                             choiceList.setIsSelectedCorrected(false);
                         }
                         choiceCorrects.add(choiceCorrect);

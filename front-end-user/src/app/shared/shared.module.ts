@@ -20,6 +20,7 @@ import {UpdateAvatarComponent} from './update-profile/update-avatar/update-avata
 import {NgApexchartsModule} from 'ng-apexcharts';
 import { StatCardExamComponent } from './statistics/stat-card-exam/stat-card-exam.component';
 import { TableSkeletonComponent } from './table-skeleton/table-skeleton.component';
+import {RouterModule} from '@angular/router';
 
 
 @NgModule({
@@ -59,16 +60,17 @@ import { TableSkeletonComponent } from './table-skeleton/table-skeleton.componen
         StatCardExamComponent,
         TableSkeletonComponent,
     ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    CKEditorModule,
-    TooltipModule,
-    RoundProgressModule,
-    ReactiveFormsModule,
-    NgApexchartsModule,
+    imports: [
+        CommonModule,
+        FormsModule,
+        CKEditorModule,
+        TooltipModule,
+        RoundProgressModule,
+        ReactiveFormsModule,
+        NgApexchartsModule,
+        RouterModule,
 
-  ]
+    ]
 })
 export class SharedModule {
 }

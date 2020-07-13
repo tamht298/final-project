@@ -82,4 +82,8 @@ export class ExamService {
     return this.http.get<ExamDetail[]>(`${this.baseUrl}/exam/${id}/question-text`);
   }
 
+  public cancelExam(id: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/exams/${id}/cancel`);
+  }
+
 }

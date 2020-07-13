@@ -40,7 +40,7 @@ public class ExamUserServiceImpl implements ExamUserService {
 
     @Override
     public List<ExamUser> getExamListByUsername(String username) {
-        return examUserRepository.findAllByUser_Username(username);
+        return examUserRepository.findAllByUser_UsernameAndExam_Canceled(username, false);
     }
 
     @Override

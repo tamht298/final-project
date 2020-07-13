@@ -48,19 +48,20 @@ const routes: Routes = [
     path: 'user',
     component: UserComponent,
     canActivate: [AuthGuard],
+    data: { breadcrumb: 'Home' },
     children: [
       {
         path: '',
         canActivateChild: [AuthGuard],
         children: [
           {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
-          {path: 'dashboard', component: DashboardComponent},
-          {path: 'profile', component: ProfileComponent},
-          {path: 'schedule', component: ScheduleComponent},
-          {path: 'statistics', component: StatisticsComponent},
-          {path: 'exams/:examId', component: ExamDetailComponent},
+          {path: 'dashboard', component: DashboardComponent, data: { breadcrumb: 'Dashboard' }},
+          {path: 'profile', component: ProfileComponent, data: { breadcrumb: 'Profile' }},
+          {path: 'schedule', component: ScheduleComponent, data: {breadcrumb: 'Schedule'}},
+          {path: 'statistics', component: StatisticsComponent, data: {breadcrumb: 'Statistics'}},
+          {path: 'exams/:examId', component: ExamDetailComponent, data: {breadcrumb: 'Exam Detail'}},
           {path: 'exams/:examId/start', component: ExamQuestionComponent},
-          {path: 'exams/:examId/result', component: ExamResultComponent},
+          {path: 'exams/:examId/result', component: ExamResultComponent, data: {breadcrumb: 'Exam Result'}},
         ]
       }
 
@@ -76,8 +77,8 @@ const routes: Routes = [
         path: '',
         canActivateChild: [AuthGuard],
         children: [
-          {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
-          {path: 'dashboard', component: AdminDashboardComponent},
+          {path: '', redirectTo: 'users', pathMatch: 'full'},
+          // {path: 'dashboard', component: AdminDashboardComponent},
           {path: 'profile', component: AdminProfileComponent},
           {path: 'users', component: ManageUserComponent},
           {path: 'question-bank', component: QuestionBankComponent},

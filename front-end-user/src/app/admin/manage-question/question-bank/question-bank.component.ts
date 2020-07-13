@@ -149,7 +149,7 @@ export class QuestionBankComponent implements OnInit {
     this.questionService.deleteQuestion(ques.id, ques.deleted)
       .pipe(switchMap(res => this.questionService.getQuestionListByPart(0, 20, this.selectedPartId)))
       .subscribe(res => {
-        this.toast.success('Đã thay đổi trạng thái tài khoản', 'Thành công');
+        this.toast.success('Đã thay đổi trạng thái câu hỏi', 'Thành công');
       }, error => {
         ques.deleted = !ques.deleted;
         this.toast.error('Không thể thay đổi trạng thái', 'Lỗi');
