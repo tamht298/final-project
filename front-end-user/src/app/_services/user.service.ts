@@ -116,4 +116,6 @@ export class UserService {
   updatePassword(id: number, data: any): Observable<any> {
     return this.http.patch<any>(`${this.baseUrl}/users/${id}/password/updating`, data);
   }
+
+
 }

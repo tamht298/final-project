@@ -8,6 +8,8 @@ import com.thanhtam.backend.entity.User;
 import com.thanhtam.backend.repository.PasswordResetTokenRepository;
 import com.thanhtam.backend.repository.UserRepository;
 import com.thanhtam.backend.ultilities.ERole;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,9 +21,10 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import java.util.*;
 
+
 @Service(value = "userService")
 public class UserServiceImpl implements UserService {
-
+private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     private UserRepository userRepository;
     private RoleService roleService;
     private PasswordEncoder passwordEncoder;
@@ -140,15 +143,42 @@ public class UserServiceImpl implements UserService {
         if (!user.isPresent()) {
             return false;
         }
-
         String token = new JwtUtils().generatePasswordResetToken(user.get().getId());
-        PasswordResetToken passwordResetToken =new PasswordResetToken();
+        PasswordResetToken passwordResetToken = new PasswordResetToken();
         passwordResetToken.setToken(token);
         passwordResetToken.setUser(user.get());
 
         passwordResetTokenRepository.save(passwordResetToken);
         emailService.resetPassword(email, token);
         return true;
+    }
+
+    @Override
+    public boolean resetPassword(String token, String password) {
+        boolean returnValue = false;
+        logger.error(token);
+        if (new JwtUtils().hasTokenExpired(token)) {
+            return false;
+        }
+        PasswordResetToken passwordResetToken = passwordResetTokenRepository.findByToken(token);
+        if (passwordResetToken == null) {
+            return false;
+        }
+
+//        Prepare a new password
+        String encodedPassword = passwordEncoder.encode(password);
+
+//        Update user password into database
+        User user = passwordResetToken.getUser();
+        user.setPassword(encodedPassword);
+        User userSave = userRepository.save(user);
+
+//        verify if password was saved
+        if(userSave !=null && userSave.getPassword().equalsIgnoreCase(encodedPassword)){
+            returnValue = true;
+        }
+        passwordResetTokenRepository.delete(passwordResetToken);
+        return returnValue;
     }
 
     public void addRoles(ERole roleName, Set<Role> roles) {

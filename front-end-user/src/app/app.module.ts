@@ -18,12 +18,14 @@ import {ErrorInterceptor} from './_helpers/error.interceptor';
 import {LoadingBarHttpClientModule} from '@ngx-loading-bar/http-client';
 import {AdminModule} from './admin/admin.module';
 import {ToastrModule} from 'ngx-toastr';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     LoginComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     BrowserModule,

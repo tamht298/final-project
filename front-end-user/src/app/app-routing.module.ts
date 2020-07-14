@@ -27,6 +27,7 @@ import {UserTestComponent} from './admin/manage-test/user-test/user-test.compone
 import {AdminProfileComponent} from './admin/admin-profile/admin-profile.component';
 import {DetailTestComponent} from './admin/manage-test/detail-test/detail-test.component';
 import {UserTestResultComponent} from './admin/manage-test/user-test-result/user-test-result.component';
+import {ResetPasswordComponent} from './reset-password/reset-password.component';
 
 
 const routes: Routes = [
@@ -39,6 +40,9 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent,
+  }, {
+    path: 'verification-service/password-reset',
+    component: ResetPasswordComponent,
   },
   {
     path: 'login',
