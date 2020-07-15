@@ -38,7 +38,7 @@
               class="fa fa-envelope mr-3"></i><span>{{userInfo.email ? userInfo.email : 'Chưa có email'}}</span></div>
             <div class="w-full my-1 px-2 bg-gray-200 rounded px-3 py-1"><i
               class="fa fa-calendar mr-3"></i><span>{{userInfo.createdDate}}</span></div>
-            <ng-container *ngIf="userInfo.enabled else inactive">
+            <ng-container *ngIf="!userInfo.deleted else inactive">
               <div class="w-full my-1 px-2 bg-green-200 text-green-500 rounded px-3 py-1"><i
                 class="fa fa-toggle-on mr-3"></i><span>Đang hoạt động</span></div>
             </ng-container>

@@ -150,17 +150,17 @@ public class UserController {
         return new PageResult(userPage);
     }
 
-    @GetMapping("/deleted/{status}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public PageResult getUsersDeletedByPage(@PageableDefault(page = 0, size = 10, sort = "id") Pageable pageable, @PathVariable boolean status) {
-        Page<User> userPage = userService.findUsersDeletedByPage(pageable, status);
-        return new PageResult(userPage);
-    }
+//    @GetMapping("/deleted/{status}")
+//    @PreAuthorize("hasRole('ADMIN')")
+//    public PageResult getUsersByPage(@PageableDefault(page = 0, size = 10, sort = "id") Pageable pageable) {
+//        Page<User> userPage = userService.findUsersByPage(pageable);
+//        return new PageResult(userPage);
+//    }
 
-    @GetMapping("/deleted/{status}/search")
-    public PageResult searchUsersByUsername(@RequestParam(value = "search-keyword") String info, @PageableDefault(page = 0, size = 10, sort = "id") Pageable pageable, @PathVariable boolean status) {
+    @GetMapping("/search")
+    public PageResult searchUsersByUsernameOrEmail(@RequestParam(value = "search-keyword") String info, @PageableDefault(page = 0, size = 10, sort = "id") Pageable pageable) {
         LOGGER.error("check search");
-        Page<User> userPage = userService.findAllByDeletedAndUsernameContains(status, info, pageable);
+        Page<User> userPage = userService.findAllByUsernameContainsOrEmailContains(info, info, pageable);
         LOGGER.error(userPage.toString());
         return new PageResult(userPage);
     }

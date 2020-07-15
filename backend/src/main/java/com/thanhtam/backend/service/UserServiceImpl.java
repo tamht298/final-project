@@ -181,6 +181,11 @@ private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
         return returnValue;
     }
 
+    @Override
+    public Page<User> findAllByUsernameContainsOrEmailContains(String username, String email, Pageable pageable) {
+        return userRepository.findAllByUsernameContainsOrEmailContains(username, email, pageable);
+    }
+
     public void addRoles(ERole roleName, Set<Role> roles) {
         Role userRole = roleService.findByName(roleName).orElseThrow(() -> new RuntimeException("Error: Role is not found"));
         roles.add(userRole);

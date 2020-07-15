@@ -63,7 +63,7 @@ export class UpdateUserComponent implements OnInit {
       }],
       firstName: [this.userInfo.profile?.firstName, Validators.required],
       lastName: [this.userInfo.profile?.lastName, Validators.required],
-      password: [null, Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$')],
+      password: [null, Validators.pattern('^(?=.*[\\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])[\\w!@#$%^&*]{8,}$')],
       confirmPass: [null]
     }, {validator: this.passwordConfirming});
   }

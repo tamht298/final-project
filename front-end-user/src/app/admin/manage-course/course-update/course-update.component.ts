@@ -4,7 +4,7 @@ import {PageResult} from '../../../models/page-result';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {CourseService} from '../../../_services/course.service';
 import {ToastrService} from 'ngx-toastr';
-
+import * as _ from 'lodash'
 @Component({
   selector: 'app-course-update',
   templateUrl: './course-update.component.html',
@@ -18,6 +18,7 @@ export class CourseUpdateComponent implements OnInit {
   rfUpdateCourse: FormGroup;
   showLoading = false;
   pageResult: PageResult<Course>;
+  course: Course;
 
   constructor(private fb: FormBuilder, private courseService: CourseService, private toast: ToastrService) {
   }
@@ -31,13 +32,15 @@ export class CourseUpdateComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.course = _.cloneDeep(this.courseInfo);
+    console.log(this.courseInfo);
     this.rfUpdateCourse = this.fb.group({
-      courseCode: [this.courseInfo.courseCode, {
+      courseCode: [this.course.courseCode, {
         validators: [Validators.required],
-        asyncValidators: [this.courseService.validateCourseCode(this.courseInfo.id)],
+        asyncValidators: [this.courseService.validateCourseCode(this.course.id)],
         updateOn: 'blur'
       }],
-      courseName: [this.courseInfo.name, Validators.required]
+      courseName: [this.course.name, Validators.required]
     });
   }
 
@@ -48,7 +51,7 @@ export class CourseUpdateComponent implements OnInit {
   onSubmit() {
     this.showLoading = true;
     const course: Course = new Course(this.courseCode.value, this.courseName.value);
-    this.courseService.updateCourse(this.courseInfo.id, course).subscribe(res => {
+    this.courseService.updateCourse(this.course.id, course).subscribe(res => {
       this.courseService.getCourseListByPage().subscribe(pageResult => {
         this.showLoading = false;
         this.closeModal();

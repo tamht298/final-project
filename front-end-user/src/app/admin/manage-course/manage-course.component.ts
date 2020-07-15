@@ -16,7 +16,6 @@ export class ManageCourseComponent implements OnInit {
   courseList: Course[] = [];
   paginationDetail: PaginationDetail;
   skeleton = true;
-  searchKeyWord: any;
 
   constructor(private courseService: CourseService) {
   }

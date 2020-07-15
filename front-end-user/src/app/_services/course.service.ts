@@ -30,7 +30,7 @@ export class CourseService {
   }
 
   updateCourse(id: number, course: Course): Observable<any> {
-    return this.http.put<any>(`${this.baseUrl}/courses/${id}`, course);
+    return this.http.patch<any>(`${this.baseUrl}/courses/${id}`, course);
   }
 
   createCourse(course: Course): Observable<any> {

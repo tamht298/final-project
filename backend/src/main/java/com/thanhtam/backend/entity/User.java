@@ -40,8 +40,8 @@ public class User implements Serializable {
 //    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 //    private Set<ExamUser> examUsers = new HashSet<>();
 
-    @Column(name = "enabled")
-    private boolean enabled = true;
+//    @Column(name = "enabled")
+//    private boolean enabled = true;
     @Column(name = "deleted", nullable = false)
     private boolean deleted = false;
 

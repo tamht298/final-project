@@ -143,8 +143,8 @@
             <div class="pass-validation">
               <ul>
                 <li class="text-red-500 text-xs italic"
-                    *ngIf="password?.hasError('pattern') && password?.touched"
-                >Mật khẩu cần có ít nhất 8 kí tự, bao gồm chữ cái và số</li>
+                    *ngIf="password?.hasError('pattern') && password?.dirty"
+                >Mật khẩu cần có ít nhất 8 kí tự, bao gồm chữ cái và số, hoa, thường</li>
                 <li class="text-red-500 text-xs italic"
                     *ngIf="rfUpdateUser.hasError('invalid') && confirmPass.dirty">
                   Mật khẩu không trùng khớp</li>

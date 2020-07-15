@@ -40,7 +40,10 @@ public interface UserService {
     List<User> findAllByIntakeId(Long id);
 
     boolean requestPasswordReset(String email) throws MessagingException;
+
     boolean resetPassword(String token, String password);
+
+    public Page<User> findAllByUsernameContainsOrEmailContains(String username, String email, Pageable pageable);
 
 
 }

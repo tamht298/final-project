@@ -28,6 +28,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -53,6 +54,15 @@ public class AuthenticationController {
     @PostMapping("/signin")
     @Transactional
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginUser loginUser) {
+
+        String username = loginUser.getUsername();
+        Optional<User> user= userService.getUserByUsername(username);
+        if(!user.isPresent()){
+            return ResponseEntity.badRequest().build();
+        }
+        else if(user.get().isDeleted()==true){
+            return ResponseEntity.badRequest().build();
+        }
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginUser.getUsername(), loginUser.getPassword()));

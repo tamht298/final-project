@@ -38,6 +38,7 @@ export class UpdateEmailComponent implements OnInit {
   changeEmail() {
     const data = {email: this.email.value, password: this.currentPassword.value};
     this.emailUpdate.emit(data);
+    this.rfEmail.reset();
 
   }
 

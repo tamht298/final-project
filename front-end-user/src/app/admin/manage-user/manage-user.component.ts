@@ -64,7 +64,7 @@ export class ManageUserComponent implements OnInit, AfterContentInit {
   goPreviousPage() {
     const isFirstPage: boolean = this.paginationDetail.isFirstPage;
     if (!isFirstPage) {
-      this.userService.searchUserListDeletedByPage(this.paginationDetail.previousPage.pageNumber, this.pageCountShowing, this.searchKeyWord, false)
+      this.userService.searchUserList(this.paginationDetail.previousPage.pageNumber, this.pageCountShowing, this.searchKeyWord)
         .subscribe(res => {
           this.userList = res.data;
           this.paginationDetail = res.paginationDetails;
@@ -77,7 +77,7 @@ export class ManageUserComponent implements OnInit, AfterContentInit {
   goNextPage() {
     const isLastPage = !this.paginationDetail.nextPage.available;
     if (!isLastPage) {
-      this.userService.searchUserListDeletedByPage(this.paginationDetail.nextPage.pageNumber, this.pageCountShowing, this.searchKeyWord, false
+      this.userService.searchUserList(this.paginationDetail.nextPage.pageNumber, this.pageCountShowing, this.searchKeyWord
       ).subscribe(res => {
         this.userList = res.data;
         this.paginationDetail = res.paginationDetails;
@@ -94,12 +94,12 @@ export class ManageUserComponent implements OnInit, AfterContentInit {
   changePageShow(value: any) {
     this.pageCountShowing = value;
     if (!this.pageCountShowing) {
-      this.userService.getUserListDeletedByPage(0, this.paginationDetail.totalCount, false).subscribe(res => {
+      this.userService.getUserList(0, this.paginationDetail.totalCount).subscribe(res => {
         this.userList = res.data;
         this.paginationDetail = res.paginationDetails;
       });
     } else {
-      this.userService.getUserListDeletedByPage(0, this.pageCountShowing, false).subscribe(res => {
+      this.userService.getUserList(0, this.pageCountShowing).subscribe(res => {
         this.userList = res.data;
         this.paginationDetail = res.paginationDetails;
       });
@@ -108,7 +108,7 @@ export class ManageUserComponent implements OnInit, AfterContentInit {
 
   searchUser(searchKeyWord: string) {
     console.log(searchKeyWord);
-    this.userService.searchUserListDeletedByPage(0, 20, searchKeyWord, false).subscribe(res => {
+    this.userService.searchUserList(0, 20, searchKeyWord).subscribe(res => {
       this.userList = res.data;
       this.paginationDetail = res.paginationDetails;
     });

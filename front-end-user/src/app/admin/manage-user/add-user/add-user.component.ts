@@ -74,6 +74,9 @@ export class AddUserComponent implements OnInit {
 
   closeModal() {
     this.showModalAdd = false;
+    this.rfAddUser.reset();
+    this.openTab = 1;
+
   }
 
   onSubmit() {

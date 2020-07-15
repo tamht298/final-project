@@ -4,7 +4,7 @@
   (click)="toggleModalUpdate()"><span><i class="fa fa-edit"></i></span>
 </button>
 
-<form novalidate (ngSubmit)="onSubmit()" [formGroup]="rfUpdateCourse">
+<form novalidate (ngSubmit)="onSubmit()" [formGroup]="rfUpdateCourse" *ngIf="course">
   <div *ngIf="showModalUpdate"
        class="fixed inset-0 overflow-auto z-50 outline-none focus:outline-none justify-center flex">
 
@@ -84,7 +84,7 @@
             class="bg-white shadow-md hover:bg-blue-500 hover:text-blue-200 transition duration-200 ease-in-out text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
             type="submit"
             [disabled]="!rfUpdateCourse.valid"
-            *ngIf="rfUpdateCourse.valid"
+            *ngIf="rfUpdateCourse.valid && (courseName.dirty ||courseCode.dirty) "
           ><span><i class="fa fa-refresh mr-1" [ngClass]="{'fa-spin': showLoading}"></i>Cập nhật</span>
           </button>
           <button

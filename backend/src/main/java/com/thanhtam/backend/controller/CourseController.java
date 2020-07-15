@@ -94,15 +94,17 @@ public class CourseController {
 
     }
 
-    @PutMapping(value = "/courses/{id}")
+    @PatchMapping(value = "/courses/{id}")
     public ResponseEntity<?> updateCourse(@Valid @RequestBody Course course, @PathVariable Long id) {
         Optional<Course> updateCourse = courseService.getCourseById(id);
         if (!updateCourse.isPresent()) {
             throw new EntityNotFoundException("Not found with course id: " + id + " successfully!");
         }
         course.setId(id);
+        course.setImgUrl(updateCourse.get().getImgUrl());
+        course.setIntakes(updateCourse.get().getIntakes());
         courseService.saveCourse(course);
-        log.warn(course.toString());
+        log.error(course.toString());
         return ResponseEntity.ok().body(new ServiceResult(HttpStatus.OK.value(), "Update course with id: " + id, course));
     }
 

@@ -27,19 +27,19 @@ export class UserService {
     return this.http.get<PageResult<UserAccount>>(`${this.baseUrl}/users`, {params: pageParams});
   }
 
-  // @ts-ignore
-  getUserListDeletedByPage(page: number, size: number, status: boolean): Observable<PageResult<UserAccount>> {
-    const pageParams = new HttpParams().set('page', page.toString()).set('size', size.toString());
-    return this.http.get<PageResult<UserAccount>>(`${this.baseUrl}/users/deleted/${status}`, {params: pageParams});
-  }
+  // // @ts-ignore
+  // getUserListDeletedByPage(page: number, size: number, status: boolean): Observable<PageResult<UserAccount>> {
+  //   const pageParams = new HttpParams().set('page', page.toString()).set('size', size.toString());
+  //   return this.http.get<PageResult<UserAccount>>(`${this.baseUrl}/users/deleted/${status}`, {params: pageParams});
+  // }
 
   getDefaultAvatar() {
     return '../../assets/images/avatar-default.png';
   }
 
-  searchUserListDeletedByPage(page: number, size: number, searchKey: string, status: boolean): Observable<PageResult<UserAccount>> {
+  searchUserList(page: number, size: number, searchKey: string): Observable<PageResult<UserAccount>> {
     const pageParams = new HttpParams().set('page', page.toString()).set('size', size.toString()).set('search-keyword', searchKey.toString());
-    return this.http.get<PageResult<UserAccount>>(`${this.baseUrl}/users/deleted/${status}/search`, {params: pageParams});
+    return this.http.get<PageResult<UserAccount>>(`${this.baseUrl}/users/search`, {params: pageParams});
   }
 
   exportExcel(status: boolean): Observable<any> {
