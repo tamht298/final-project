@@ -7,4 +7,5 @@ export class Statistics {
   changeExam: number;
   changeAccount: number;
   changeExamUser: number;
+  examUserLastedSevenDaysTotal: number[];
 }

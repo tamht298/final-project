@@ -1,38 +1,50 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import Chart from 'chart.js';
+import {Statistics} from '../../models/statistics';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-line-chart',
   templateUrl: './line-chart.component.html',
   styleUrls: ['./line-chart.component.scss']
 })
-export class LineChartComponent implements OnInit, AfterViewInit {
+export class LineChartComponent implements OnInit, AfterViewInit, OnChanges {
+
+  @Input() data: Statistics;
+  lastSevenDays: any[] = [];
 
   constructor() {
   }
 
   ngOnInit(): void {
+    this.getLastSevenDays();
   }
 
   ngAfterViewInit() {
-    let config = {
+
+  }
+
+  getLastSevenDays() {
+    let dayIndex = 0;
+    while (dayIndex < 7) {
+      this.lastSevenDays.push(moment().subtract(dayIndex, 'days').format('DD MMM'));
+      dayIndex++;
+    }
+
+    console.log(this.lastSevenDays.reverse());
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const config = {
       type: 'line',
       data: {
-        labels: [
-          'January',
-          'February',
-          'March',
-          'April',
-          'May',
-          'June',
-          'July'
-        ],
+        labels: this.lastSevenDays,
         datasets: [
           {
             label: new Date().getFullYear(),
             backgroundColor: '#4c51bf',
             borderColor: '#4c51bf',
-            data: [65, 78, 66, 44, 56, 67, 75],
+            data: this.data?.examUserLastedSevenDaysTotal,
             fill: false
           }
 

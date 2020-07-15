@@ -16,5 +16,5 @@ public interface ExamUserRepository extends JpaRepository<ExamUser, Long> {
     ExamUser findByExam_IdAndUser_Username(Long examId, String username);
     List<ExamUser> findAllByExam_Part_Course_IdAndUser_UsernameAndTotalPointIsGreaterThan(Long courseId, String username, Double point);
     List<ExamUser> findAllByExam_Id(Long examId);
-    List<ExamUser> findByIsFinishedIsTrueOrderByTimeFinishDesc();
+    List<ExamUser> findExamUsersByOrderByTimeFinish();
 }

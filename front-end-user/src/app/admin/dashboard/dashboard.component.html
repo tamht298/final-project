@@ -65,7 +65,7 @@
                 <div class="relative w-auto pl-4 flex-initial">
                   <div
                     class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-orange-500">
-                    <i class="fa fa-address-book"></i>
+                    <i class="fa fa-book"></i>
                   </div>
                 </div>
               </div>
@@ -108,7 +108,7 @@
                 <div class="relative w-auto pl-4 flex-initial">
                   <div
                     class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-pink-500">
-                    <i class="fa fa-users"></i>
+                    <i class="fa fa-question-circle"></i>
                   </div>
                 </div>
               </div>
@@ -142,7 +142,7 @@
               <div class="flex flex-wrap">
                 <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
                   <h5 class="text-gray-500 uppercase font-bold text-xs">
-                    Bài kiểm tra
+                    Bài làm
                   </h5>
                   <span class="font-semibold text-xl text-gray-800">
                       {{statistics.examUserTotal}}
@@ -151,7 +151,7 @@
                 <div class="relative w-auto pl-4 flex-initial">
                   <div
                     class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-blue-500">
-                    <i class="fa fa-percent"></i>
+                    <i class="fa fa-address-book"></i>
                   </div>
                 </div>
               </div>
@@ -185,7 +185,7 @@
 </div>
 <div class="px-4 md:px-10 mx-auto w-full -m-24">
   <div class="flex flex-wrap">
-    <app-line-chart class="w-full mb-12 xl:mb-0 px-4"></app-line-chart>
+    <app-line-chart class="w-full mb-12 xl:mb-0 px-4" [data]="statistics"></app-line-chart>
   </div>
 
   <app-admin-footer></app-admin-footer>

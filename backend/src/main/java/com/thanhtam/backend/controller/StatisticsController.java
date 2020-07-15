@@ -26,12 +26,13 @@ public class StatisticsController {
         StatisticsDashboard statisticsDashboard = new StatisticsDashboard();
         statisticsDashboard.setAccountTotal(statisticsService.countAccountTotal());
         statisticsDashboard.setExamTotal(statisticsService.countExamTotal());
-        statisticsDashboard.setIntakeTotal(statisticsService.countExamUserTotal());
+        statisticsDashboard.setExamUserTotal(statisticsService.countExamUserTotal());
         statisticsDashboard.setQuestionTotal(statisticsService.countQuestionTotal());
         statisticsDashboard.setChangeQuestion(statisticsService.getChangeQuestion());
         statisticsDashboard.setChangeExam(statisticsService.getChangeExam());
         statisticsDashboard.setChangeAccount(statisticsService.getChangeAccount());
-        statisticsDashboard.setChangeIntake(statisticsService.getChangeExamUser());
+        statisticsDashboard.setChangeExamUser(statisticsService.getChangeExamUser());
+        statisticsDashboard.setExamUserLastedSevenDaysTotal(statisticsService.countExamUserLastedSevenDaysTotal());
         return statisticsDashboard;
     }
 }
