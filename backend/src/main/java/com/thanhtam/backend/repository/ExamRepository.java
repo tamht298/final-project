@@ -16,6 +16,7 @@ import java.util.List;
 public interface ExamRepository extends JpaRepository<Exam, Long> {
 
     List<Exam> findAllByPart_Course_Id(Long courseId);
+List<Exam> findByCanceledIsTrueOrderByCreatedDateDesc();
     public Page<Exam> findAll(Pageable pageable);
     public Page<Exam> findAllByCreatedBy_Username(Pageable pageable, String username);
     @Transactional

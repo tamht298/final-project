@@ -11,10 +11,11 @@
       <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
         <div class="rounded-t mb-0 px-4 py-3 border-0">
           <div class="flex flex-wrap items-center bg-blue-200">
-            <div class="relative w-full px-4 max-w-full flex-grow leading-8 my-3">
+            <div class="relative w-full flex justify-between px-4 max-w-full flex-grow leading-8 my-3">
               <h2 class="font-semibold text-xl text-blue-700">
                 [{{currentCourse?.courseCode}}] <b>{{currentCourse?.name}}</b>
               </h2>
+              <app-part-create (outputParts)="fetchParts($event)"></app-part-create>
             </div>
             <div class="flex flex-wrap flex-col w-full">
               <div class="flex flex-wrap flex-row">

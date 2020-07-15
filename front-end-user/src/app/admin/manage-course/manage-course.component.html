@@ -44,6 +44,9 @@
                 class="row-name px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
                 Tên môn
               </th>
+              <th
+                class="row-name px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
+              </th>
 
               <th
                 class="row-action px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-no-wrap font-semibold text-left">
@@ -53,7 +56,7 @@
 
             <tbody>
             <ng-container *ngFor="let course of courseList; trackBy: trackById; let i=index">
-              <tr class="border hover:bg-gray-300">
+              <tr class="border hover:bg-gray-300 align-middle">
                 <td
                   class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-md text-gray-500 whitespace-no-wrap p-4">
                   {{i + 1}}
@@ -62,18 +65,23 @@
                   class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm font-semibold whitespace-no-wrap p-4 text-left"
 
                 >
-                  <a class="hover:text-blue-700 hover:bg-blue-300 px-2 py-1 bg-blue-200 text-blue-600 rounded" [routerLink]="[course.id,'parts']" tooltip="Xem nội dung"
+                  <a class="hover:text-blue-700 hover:bg-blue-300 px-2 py-1 bg-blue-200 text-blue-600 rounded"
+                     [routerLink]="[course.id,'parts']" tooltip="Xem nội dung"
                      placement="right" show-delay="100" hide-delay="100">{{course.courseCode}}</a>
                 </th>
 
                 <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
-                  <a class="hover:text-green-700 hover:bg-green-300 px-2 py-1 bg-green-200 text-green-600 rounded" [routerLink]="[course.id,'parts']" tooltip="Xem nội dung"
+                  <a class="hover:text-green-700 hover:bg-green-300 px-2 py-1 bg-green-200 text-green-600 rounded"
+                     [routerLink]="[course.id,'parts']" tooltip="Xem nội dung"
                      placement="right" show-delay="100" hide-delay="100">{{course.name}}</a>
+                </td>
+                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
+                  <div><img [src]="course.imgUrl" class="w-16 h-16 border rounded-sm shadow-md"></div>
                 </td>
 
 
                 <td
-                  class="border-t-0 px-6 align-middle flex justify-between border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 w-full">
+                  class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-no-wrap p-4">
                   <app-course-update [courseInfo]="course"
                                      (courseOutput)="fetchCourseAfterCRUD($event)"></app-course-update>
 

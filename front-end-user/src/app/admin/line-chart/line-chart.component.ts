@@ -34,14 +34,8 @@ export class LineChartComponent implements OnInit, AfterViewInit {
             borderColor: '#4c51bf',
             data: [65, 78, 66, 44, 56, 67, 75],
             fill: false
-          },
-          {
-            label: new Date().getFullYear() - 1,
-            fill: false,
-            backgroundColor: '#ed64a6',
-            borderColor: '#ed64a6',
-            data: [40, 68, 86, 74, 56, 60, 87]
           }
+
         ]
       },
       options: {
@@ -49,7 +43,7 @@ export class LineChartComponent implements OnInit, AfterViewInit {
         responsive: true,
         title: {
           display: false,
-          text: 'Sales Charts',
+          text: 'Exam Charts',
           fontColor: 'white',
         },
         legend: {

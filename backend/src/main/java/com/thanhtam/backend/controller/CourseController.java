@@ -1,12 +1,15 @@
 package com.thanhtam.backend.controller;
 
+import com.google.common.io.Files;
 import com.thanhtam.backend.dto.PageResult;
 import com.thanhtam.backend.dto.ServiceResult;
 import com.thanhtam.backend.entity.Course;
 import com.thanhtam.backend.entity.User;
 import com.thanhtam.backend.service.CourseService;
+import com.thanhtam.backend.service.S3Services;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -14,9 +17,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,10 +31,12 @@ import java.util.Optional;
 @Slf4j
 public class CourseController {
     private CourseService courseService;
+    private S3Services s3Services;
 
     @Autowired
-    public CourseController(CourseService courseService) {
+    public CourseController(CourseService courseService, S3Services s3Services) {
         this.courseService = courseService;
+        this.s3Services = s3Services;
     }
 
 
@@ -90,8 +97,6 @@ public class CourseController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.toString());
         }
-
-
     }
 
     @PatchMapping(value = "/courses/{id}")
@@ -101,7 +106,13 @@ public class CourseController {
             throw new EntityNotFoundException("Not found with course id: " + id + " successfully!");
         }
         course.setId(id);
-        course.setImgUrl(updateCourse.get().getImgUrl());
+        if(course.getImgUrl().isEmpty()){
+            course.setImgUrl(updateCourse.get().getImgUrl());
+        }
+        else{
+            course.setImgUrl(course.getImgUrl());
+
+        }
         course.setIntakes(updateCourse.get().getIntakes());
         courseService.saveCourse(course);
         log.error(course.toString());
@@ -119,12 +130,14 @@ public class CourseController {
     }
 
     @GetMapping(value = "/courses/part/{partId}")
-    public Course getCourseByPart(@PathVariable Long partId){
+    public Course getCourseByPart(@PathVariable Long partId) {
         return courseService.findCourseByPartId(partId);
     }
 
-    @GetMapping(value="/intakes/{intakeId}/courses")
-    public List<Course> findAllByIntakeId(@PathVariable Long intakeId){
+    @GetMapping(value = "/intakes/{intakeId}/courses")
+    public List<Course> findAllByIntakeId(@PathVariable Long intakeId) {
         return courseService.findAllByIntakeId(intakeId);
     }
+
+
 }

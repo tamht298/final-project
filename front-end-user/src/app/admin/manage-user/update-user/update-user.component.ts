@@ -21,6 +21,7 @@ export class UpdateUserComponent implements OnInit {
   @Output() usersOutput = new EventEmitter<PageResult<UserAccount>>();
   pageResult: PageResult<UserAccount>;
   showLoading = false;
+  user: UserAccount;
 
   constructor(private fb: FormBuilder, private userService: UserService, private toast: ToastrService) {
   }
@@ -54,18 +55,8 @@ export class UpdateUserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.rfUpdateUser = this.fb.group({
-      username: [{value: this.userInfo.username, disabled: true}],
-      email: [this.userInfo.email, {
-        validators: [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')],
-        asyncValidators: [this.userService.validateEmailUpdate(this.userInfo.id)],
-        updateOn: 'blur'
-      }],
-      firstName: [this.userInfo.profile?.firstName, Validators.required],
-      lastName: [this.userInfo.profile?.lastName, Validators.required],
-      password: [null, Validators.pattern('^(?=.*[\\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])[\\w!@#$%^&*]{8,}$')],
-      confirmPass: [null]
-    }, {validator: this.passwordConfirming});
+    this.user = Object.assign({}, this.userInfo);
+    this.initForm();
   }
 
   passwordConfirming(c: AbstractControl): { invalid: boolean } {
@@ -75,8 +66,26 @@ export class UpdateUserComponent implements OnInit {
   }
 
   toggleModalUpdate() {
+    this.user = Object.assign({}, this.userInfo);
+    this.initForm();
     this.showModalUpdate = !this.showModalUpdate;
   }
+
+  initForm() {
+    this.rfUpdateUser = this.fb.group({
+      username: [{value: this.user.username, disabled: true}],
+      email: [this.userInfo.email, {
+        validators: [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')],
+        asyncValidators: [this.userService.validateEmailUpdate(this.user.id)],
+        updateOn: 'blur'
+      }],
+      firstName: [this.user.profile?.firstName, Validators.required],
+      lastName: [this.user.profile?.lastName, Validators.required],
+      password: [null, Validators.pattern('^(?=.*[\\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])[\\w!@#$%^&*]{8,}$')],
+      confirmPass: [null]
+    }, {validator: this.passwordConfirming});
+  }
+
 
   onSubmit() {
     const profile = new UserProfile(this.firstName.value, this.lastName.value);

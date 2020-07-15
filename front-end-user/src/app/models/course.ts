@@ -4,9 +4,10 @@ export class Course {
   name: string;
   imgUrl: string;
 
-  constructor(courseCode: string, name: string) {
+  constructor(courseCode: string, name: string, imgUrl: string) {
     this.courseCode = courseCode;
     this.name = name;
+    this.imgUrl = imgUrl;
   }
 
 }

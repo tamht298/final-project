@@ -26,7 +26,7 @@ export class ManageCourseComponent implements OnInit {
   }
 
   fetchCourseListByPage() {
-    this.courseService.getCourseListByPage(environment.pageMeta.pageNumber, environment.pageMeta.pageSize).pipe(delay(1000)).subscribe(res => {
+    this.courseService.getCourseListByPage(environment.pageMeta.pageNumber, environment.pageMeta.pageSize).subscribe(res => {
       this.courseList = res.data;
       this.paginationDetail = res.paginationDetails;
       this.skeleton = false;

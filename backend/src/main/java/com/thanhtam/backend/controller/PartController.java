@@ -39,6 +39,7 @@ public class PartController {
         Page<Part> parts = partService.getPartLisByCourse(pageable, courseId);
         return new PageResult(parts);
     }
+
     @GetMapping(value = "/courses/{courseId}/part-list")
     @PreAuthorize("hasRole('ADMIN') or hasRole('LECTURER')")
     public List<Part> getPartListByCourse(@PathVariable Long courseId) {
@@ -47,7 +48,7 @@ public class PartController {
         return parts;
     }
 
-    @GetMapping(value="/parts/{id}")
+    @GetMapping(value = "/parts/{id}")
     @PreAuthorize("hasRole('ADMIN') or hasRole('LECTURER')")
     public ResponseEntity<?> getPartById(@PathVariable Long id) {
         Optional<Part> part = partService.findPartById(id);
@@ -57,6 +58,7 @@ public class PartController {
         }
         return ResponseEntity.ok().body(part);
     }
+
     @PatchMapping(value = "/parts/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> updatePartName(@PathVariable Long id, @Valid @RequestBody String name) {
@@ -65,4 +67,13 @@ public class PartController {
         partService.savePart(part);
         return ResponseEntity.ok().body(part);
     }
+
+    @PostMapping(value = "/courses/{courseId}/parts")
+    public void createPartByCourse(@Valid @RequestBody Part part, @PathVariable Long courseId) {
+        Course course = courseService.getCourseById(courseId).get();
+        part.setCourse(course);
+        partService.savePart(part);
+
+    }
+
 }

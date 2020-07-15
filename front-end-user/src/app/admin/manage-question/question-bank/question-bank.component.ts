@@ -123,7 +123,7 @@ export class QuestionBankComponent implements OnInit {
   changeCourse(event) {
     this.selectedCourseId = event.target.value;
     this.skeleton = true;
-    this.partService.getPartByCourse(this.selectedCourseId).subscribe(res => {
+    this.partService.getPartsByCourse(this.selectedCourseId).subscribe(res => {
       this.partList = res;
     });
   }

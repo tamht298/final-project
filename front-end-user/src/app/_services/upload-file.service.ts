@@ -33,6 +33,15 @@ export class UploadFileService {
     });
   }
 
+  uploadCourseImg(file: File): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('file', file);
+    return this.http.post(`${this.baseUrl}/aws/file/upload/course`, formData, {
+      reportProgress: true,
+      responseType: 'text'
+    });
+  }
+
   uploadUsersByExcel(file: File): Observable<any> {
     const formData: FormData = new FormData();
     formData.append('file', file);

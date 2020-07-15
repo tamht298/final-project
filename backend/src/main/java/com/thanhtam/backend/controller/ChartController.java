@@ -98,6 +98,7 @@ public class ChartController {
         }
         return courseCharts;
     }
+
     public static boolean isSameWeek(final DateTime d1, final DateTime d2) {
         if ((d1 == null) || (d2 == null))
             throw new IllegalArgumentException("The date must not be null");

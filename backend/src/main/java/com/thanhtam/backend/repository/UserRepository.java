@@ -36,6 +36,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findAllByDeleted(boolean statusDeleted);
 
     List<User> findAllByIntakeId(Long id);
+    List<User> findByDeletedIsFalseOrderByCreatedDateDesc();
 
 
 }

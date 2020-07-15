@@ -120,7 +120,7 @@ export class AddTestComponent implements OnInit {
         this.selectedCourseId = event.target.value;
         this.selectedPartId = -1;
         if (this.selectedCourseId > 0) {
-            this.partService.getPartByCourse(this.selectedCourseId).subscribe(res => {
+            this.partService.getPartsByCourse(this.selectedCourseId).subscribe(res => {
                 this.partList = res;
 
             });

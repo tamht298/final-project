@@ -49,4 +49,8 @@ export class ManagePartComponent implements OnInit {
         this.selectedUpdateId = -1;
       });
   }
+
+  fetchParts(parts: Part[]) {
+    this.parts = parts;
+  }
 }

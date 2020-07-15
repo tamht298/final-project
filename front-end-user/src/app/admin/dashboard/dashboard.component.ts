@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {StatisticsService} from '../../_services/statistics.service';
+import {Statistics} from '../../models/statistics';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,9 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminDashboardComponent implements OnInit {
 
-  constructor() { }
+  statistics: Statistics;
+
+  constructor(private statisticsService: StatisticsService) {
+  }
 
   ngOnInit(): void {
+    this.fetchStatistics();
+  }
+
+  fetchStatistics() {
+    this.statisticsService.getStatistics().subscribe(res => {
+      this.statistics = res;
+      console.log(this.statistics);
+    });
   }
 
 }

@@ -16,6 +16,8 @@ import java.util.Optional;
 public interface QuestionRepository extends JpaRepository<Question, Long> {
     List<Question> findByPart(Part part);
 
+    List<Question> findByOrderByCreatedDateDesc();
+
     List<Question> findByQuestionType(QuestionType questionType);
 
     Page<Question> findQuestionsByPart(Pageable pageable, Part part);

@@ -92,14 +92,38 @@ public class ExcelServiceImpl implements ExcelService {
                         Intake intake = intakeService.findByCode((String) getCellValue(cell));
                         user.setIntake(intake);
                     }
+                    case 5: {
+                        switch ((String) getCellValue(cell)) {
+                            case "ADMIN": {
+                                Role userRole = roleService.findByName(ERole.ROLE_ADMIN).orElseThrow(() -> new RuntimeException("Error: Role is not found"));
+                                Set<Role> roles = new HashSet<>();
+                                roles.add(userRole);
+                                user.setRoles(roles);
+                                break;
+                            }
+
+                            case "LECTURER": {
+                                Role userRole = roleService.findByName(ERole.ROLE_LECTURER).orElseThrow(() -> new RuntimeException("Error: Role is not found"));
+                                Set<Role> roles = new HashSet<>();
+                                roles.add(userRole);
+                                user.setRoles(roles);
+                                break;
+                            }
+
+                            default: {
+                                Role userRole = roleService.findByName(ERole.ROLE_STUDENT).orElseThrow(() -> new RuntimeException("Error: Role is not found"));
+                                Set<Role> roles = new HashSet<>();
+                                roles.add(userRole);
+                                user.setRoles(roles);
+                                break;
+                            }
+                        }
+                    }
                     break;
                 }
 
             }
-            Role userRole = roleService.findByName(ERole.ROLE_STUDENT).orElseThrow(() -> new RuntimeException("Error: Role is not found"));
-            Set<Role> roles = new HashSet<>();
-            roles.add(userRole);
-            user.setRoles(roles);
+
             userList.add(user);
         }
 

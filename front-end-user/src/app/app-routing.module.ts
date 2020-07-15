@@ -81,8 +81,8 @@ const routes: Routes = [
         path: '',
         canActivateChild: [AuthGuard],
         children: [
-          {path: '', redirectTo: 'users', pathMatch: 'full'},
-          // {path: 'dashboard', component: AdminDashboardComponent},
+          {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
+          {path: 'dashboard', component: AdminDashboardComponent},
           {path: 'profile', component: AdminProfileComponent},
           {path: 'users', component: ManageUserComponent},
           {path: 'question-bank', component: QuestionBankComponent},

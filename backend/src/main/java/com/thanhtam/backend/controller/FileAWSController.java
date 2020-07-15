@@ -63,11 +63,24 @@ public class FileAWSController {
                 user.getProfile().setImage(avatarUrl);
                 return avatarUrl;
             }
+            case "course": {
+                keyName = new Date().toString().concat(file.getOriginalFilename());
+
+            }
             default: {
                 keyName = file.getOriginalFilename();
                 break;
             }
         }
+
+        s3Services.uploadS3File(keyName, file);
+
+        return endpointUrl + "/" + bucketName + "/" + keyName;
+    }
+
+    @PostMapping("/file/upload/course")
+    public String uploadCourseImg(@RequestParam("file") MultipartFile file) {
+        String keyName = new Date().toString().concat(file.getOriginalFilename());
 
         s3Services.uploadS3File(keyName, file);
 
@@ -95,7 +108,7 @@ public class FileAWSController {
             userService.updateUser(user);
             return avatarUrl;
 
-        } catch (Exception exception){
+        } catch (Exception exception) {
             throw new Exception(exception.getMessage());
         }
     }

@@ -2,6 +2,9 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {UploadFileService} from '../../_services/upload-file.service';
 import {HttpEventType, HttpResponse} from '@angular/common/http';
 import {ToastrService} from 'ngx-toastr';
+import {Course} from '../../models/course';
+import {switchMap} from 'rxjs/operators';
+import {CourseService} from '../../_services/course.service';
 
 @Component({
   selector: 'app-file-upload',
@@ -15,7 +18,7 @@ export class FileUploadComponent implements OnInit {
 
   @Output() fileUrlOutput = new EventEmitter<any>();
 
-  constructor(private uploadService: UploadFileService, private toast: ToastrService) {
+  constructor(private uploadService: UploadFileService, private toast: ToastrService, private courseService: CourseService) {
   }
 
   ngOnInit() {
@@ -44,9 +47,10 @@ export class FileUploadComponent implements OnInit {
 
     this.uploadService.uploadUsersByExcel(currentFileUpload).subscribe(event => {
       console.log(event);
-      this.toast.success('Upload user thành công', 'Hoàn thành')
+      this.toast.success('Upload user thành công', 'Hoàn thành');
     });
   }
+
 
   pushAvatarToServer() {
     this.currentFileUpload = this.selectedFiles.item(0);

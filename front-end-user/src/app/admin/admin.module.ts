@@ -37,9 +37,10 @@ import { AdminProfileComponent } from './admin-profile/admin-profile.component';
 import { DetailTestComponent } from './manage-test/detail-test/detail-test.component';
 import {NgApexchartsModule} from 'ng-apexcharts';
 import { UserTestResultComponent } from './manage-test/user-test-result/user-test-result.component';
+import { PartCreateComponent } from './manage-part/part-create/part-create.component';
 
 @NgModule({
-  declarations: [AdminComponent, NavSidebarComponent, AdminNavbarComponent, UserDropdownComponent, LineChartComponent, BarChartComponent, AdminDashboardComponent, ManageUserComponent, AdminFooterComponent, CardStatsComponent, AddUserComponent, DetailUserComponent, DeleteUserComponent, UpdateUserComponent, QuestionBankComponent, TabsComponent, ManageCourseComponent, CourseUpdateComponent, CourseCreateComponent, ListQuestionComponent, ManagePartComponent, AddQuestionComponent, ManageTestComponent, AddTestComponent, QuestionDetailComponent, UserTestComponent, AdminProfileComponent, DetailTestComponent, UserTestResultComponent],
+  declarations: [AdminComponent, NavSidebarComponent, AdminNavbarComponent, UserDropdownComponent, LineChartComponent, BarChartComponent, AdminDashboardComponent, ManageUserComponent, AdminFooterComponent, CardStatsComponent, AddUserComponent, DetailUserComponent, DeleteUserComponent, UpdateUserComponent, QuestionBankComponent, TabsComponent, ManageCourseComponent, CourseUpdateComponent, CourseCreateComponent, ListQuestionComponent, ManagePartComponent, AddQuestionComponent, ManageTestComponent, AddTestComponent, QuestionDetailComponent, UserTestComponent, AdminProfileComponent, DetailTestComponent, UserTestResultComponent, PartCreateComponent],
     imports: [
         CommonModule,
         RouterModule,

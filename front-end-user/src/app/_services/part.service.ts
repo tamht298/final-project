@@ -31,7 +31,11 @@ export class PartService {
     return this.http.get<Part>(`${this.baseUrl}/parts/${id}`);
   }
 
-  getPartByCourse(courseId: number): Observable<Part[]> {
+  getPartsByCourse(courseId: number): Observable<Part[]> {
     return this.http.get<Part[]>(`${this.baseUrl}/courses/${courseId}/part-list`);
+  }
+
+  createPartByCourse(courseId: number, part: Part): Observable<Part> {
+    return this.http.post<Part>(`${this.baseUrl}/courses/${courseId}/parts`, part);
   }
 }

@@ -40,9 +40,8 @@ export class ManageUserComponent implements OnInit, AfterContentInit {
     // }, error => {
     //   console.error('Lỗi');
     // });
-    this.userService.getUserList(0, 20).pipe(delay(1000)).subscribe(res => {
+    this.userService.getUserList(0, 20).subscribe(res => {
       this.userList = res.data;
-      console.log(res.data);
       this.paginationDetail = res.paginationDetails;
       this.skeleton = false;
     });
