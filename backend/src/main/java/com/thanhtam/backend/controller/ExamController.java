@@ -30,6 +30,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -334,6 +335,57 @@ public class ExamController {
         return new ResponseEntity(examResults, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/exams/{examId}/result/all/question-report")
+    public ResponseEntity getResultExamQuestionsReport(@PathVariable Long examId) throws IOException {
+
+        Optional<Exam> exam = examService.getExamById(examId);
+        if (!exam.isPresent()) {
+            logger.error("NOT found");
+            return new ResponseEntity("Không tìm thấy exam", HttpStatus.NOT_FOUND);
+        }
+        List<ExamUser> finishedExamUser = examUserService.findExamUsersByIsFinishedIsTrueAndExam_Id(examId);
+        if (finishedExamUser.size() == 0) {
+            return new ResponseEntity("Chưa có người dùng thực hiện bài kiểm tra", HttpStatus.OK);
+        }
+        ExamUser firstExamUser = finishedExamUser.get(0);
+        List<QuestionExamReport> questionExamReports = new ArrayList<>();
+        List<ExamQuestionPoint> examQuestionPoints = convertQuestionJsonToObject(exam);
+//        convert answer sheet of first user
+        List<AnswerSheet> userChoicesFirstExam = convertAnswerJsonToObject(firstExamUser);
+//        get exam result of first user
+        List<ChoiceList> firstChoiceList = examService.getChoiceList(userChoicesFirstExam, examQuestionPoints);
+        for (ChoiceList choice : firstChoiceList) {
+            QuestionExamReport questionExamReport = new QuestionExamReport();
+            questionExamReport.setQuestion(choice.getQuestion());
+
+            if (choice.getIsSelectedCorrected().equals(true)) {
+                questionExamReport.setCorrectTotal(1);
+            } else {
+                questionExamReport.setCorrectTotal(0);
+            }
+            questionExamReports.add(questionExamReport);
+        }
+
+//        done for first user
+        if (questionExamReports.size() == 0) {
+            return new ResponseEntity(questionExamReports, HttpStatus.OK);
+        }
+        for (int i = 1; i < finishedExamUser.size(); i++) {
+            List<AnswerSheet> userChoices = convertAnswerJsonToObject(firstExamUser);
+//        get exam result of first user
+            List<ChoiceList> choiceList = examService.getChoiceList(userChoices, examQuestionPoints);
+            for (ChoiceList choice : firstChoiceList) {
+
+                List<QuestionExamReport> questionExamReportsList = questionExamReports.stream().filter(item -> item.getQuestion().getId() == choice.getQuestion().getId()).collect(Collectors.toList());
+                QuestionExamReport questionExamReport = questionExamReportsList.get(0);
+                if (choice.getIsSelectedCorrected().equals(true)) {
+                    questionExamReport.setCorrectTotal(questionExamReport.getCorrectTotal() + 1);
+                }
+            }
+        }
+        return new ResponseEntity(questionExamReports, HttpStatus.OK);
+    }
+
     @GetMapping(value = "/exams/{examId}/result")
     public ResponseEntity getResultExam(@PathVariable Long examId) throws IOException {
         ExamResult examResult = new ExamResult();
@@ -370,12 +422,13 @@ public class ExamController {
     public ResponseEntity getResultExamByUser(@PathVariable Long examId, @PathVariable String username) throws IOException {
         ExamResult examResult = new ExamResult();
         Optional<Exam> exam = examService.getExamById(examId);
-
+        User user = userService.getUserByUsername(username).get();
         if (!exam.isPresent()) {
             return new ResponseEntity("Không tìm thấy exam", HttpStatus.NOT_FOUND);
         }
 //        Set exam for examResult
         examResult.setExam(exam.get());
+        examResult.setUser(user);
 
 //        Set list question user's choice for examResult
         List<ExamQuestionPoint> examQuestionPoints = convertQuestionJsonToObject(exam);
@@ -394,6 +447,8 @@ public class ExamController {
             examUser.setTotalPoint(totalPoint);
             examUserService.update(examUser);
         }
+        examResult.setUserTimeFinish(examUser.getTimeFinish());
+        examResult.setUserTimeBegin(examUser.getTimeStart());
         examResult.setRemainingTime(exam.get().getDurationExam() * 60 - examUser.getRemainingTime());
         return new ResponseEntity(examResult, HttpStatus.OK);
     }

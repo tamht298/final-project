@@ -23,8 +23,8 @@
                 <div>
                   <div class="mb-2 block uppercase tracking-wide text-grey-darker text-xs font-bold">Người tạo</div>
                   <div class="flex items-center">
-                    <img class="w-8 h-8 rounded-full mx-2" src="{{questionInfo.lastModifiedBy.profile.image || imgDefaultUrl}}">
-                    <span>{{questionInfo.lastModifiedBy.username}}</span>
+                    <img class="w-8 h-8 rounded-full mx-2" src="{{questionInfo.lastModifiedBy?.profile.image || imgDefaultUrl}}">
+                    <span>{{questionInfo.lastModifiedBy?.username}}</span>
                   </div>
                 </div>
                 <div>

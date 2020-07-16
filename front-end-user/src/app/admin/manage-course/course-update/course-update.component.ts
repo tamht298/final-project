@@ -63,9 +63,22 @@ export class CourseUpdateComponent implements OnInit {
 
   onSubmit() {
     this.showLoading = true;
-
-    this.uploadFileService.uploadCourseImg(this.currentFileUpload).subscribe(url => {
-      const course: Course = new Course(this.courseCode.value, this.courseName.value, url);
+    if (this.currentFileUpload) {
+      this.uploadFileService.uploadCourseImg(this.currentFileUpload).subscribe(url => {
+        const course: Course = new Course(this.courseCode.value, this.courseName.value, url);
+        this.courseService.updateCourse(this.course.id, course).subscribe(res => {
+          this.courseService.getCourseListByPage().subscribe(pageResult => {
+            this.showLoading = false;
+            this.closeModal();
+            this.courseOutput.emit(pageResult);
+            this.currentFileUpload = undefined;
+            this.toggle = false;
+            this.toast.success('Môn học đã được cập nhật', 'Thành công');
+          });
+        });
+      });
+    } else {
+      const course: Course = new Course(this.courseCode.value, this.courseName.value, this.course.imgUrl);
       this.courseService.updateCourse(this.course.id, course).subscribe(res => {
         this.courseService.getCourseListByPage().subscribe(pageResult => {
           this.showLoading = false;
@@ -76,7 +89,7 @@ export class CourseUpdateComponent implements OnInit {
           this.toast.success('Môn học đã được cập nhật', 'Thành công');
         });
       });
-    });
+    }
   }
 
   closeModal() {

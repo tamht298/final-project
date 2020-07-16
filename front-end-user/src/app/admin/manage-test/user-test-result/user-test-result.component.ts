@@ -20,7 +20,8 @@ export class UserTestResultComponent implements OnInit {
   user: UserAccount;
   constructor(private route: ActivatedRoute,
               private examService: ExamService,
-              private userService: UserService) {
+              private userService: UserService,
+              private location: Location) {
   }
 
   ngOnInit(): void {
@@ -32,10 +33,14 @@ export class UserTestResultComponent implements OnInit {
     this.examId = Number(this.route.snapshot.paramMap.get('id'));
     this.examService.getResultExamByUser(this.examId, this.username).subscribe(res => {
       this.result = res;
+      console.log(res);
     });
     this.userService.getUserInfo(this.username).subscribe(res => {
       this.user = res.data;
     });
   }
 
+  goBack() {
+    this.location.back();
+  }
 }

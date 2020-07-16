@@ -32,7 +32,7 @@ export class ManageTestComponent implements OnInit {
   }
 
   fetchExamList() {
-    this.examService.getAllExams(0, 20).pipe(delay(1000)).subscribe(res => {
+    this.examService.getAllExams(0, 20).subscribe(res => {
       this.examList = res.data;
       this.paginationDetail = res.paginationDetails;
       this.skeleton = false;

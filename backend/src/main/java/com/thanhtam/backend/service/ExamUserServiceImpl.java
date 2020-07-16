@@ -69,4 +69,9 @@ public class ExamUserServiceImpl implements ExamUserService {
     public List<ExamUser> findAllByExam_Id(Long examId) {
         return examUserRepository.findAllByExam_Id(examId);
     }
+
+    @Override
+    public List<ExamUser> findExamUsersByIsFinishedIsTrueAndExam_Id(Long examId) {
+        return examUserRepository.findExamUsersByIsFinishedIsTrueAndExam_Id(examId);
+    }
 }

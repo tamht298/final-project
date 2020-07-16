@@ -112,7 +112,7 @@
               <tr class="border hover:bg-gray-300">
                 <td
                   class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-md font-semibold text-gray-800 whitespace-no-wrap p-4">
-                  <a [routerLink]="[exam.id, 'preview']" class="hover:text-blue-700">{{exam.title}}</a>
+                  <a [routerLink]="[exam.id, 'preview']" [tooltip]="'Xem chi tiết'" class="hover:text-blue-700"><span *ngIf="exam.canceled" class="mx-2 text-gray-600 text-sm">(Đã huỷ)</span>{{exam.title}}</a>
                 </td>
                 <td
                   class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-no-wrap p-4 text-left"
@@ -143,7 +143,7 @@
                 <td
                   class="border-t-0 px-6 align-middle flex justify-between border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 w-full">
 
-                  <a [routerLink]="[exam.id, 'users']" *ngIf="!exam.canceled"
+                  <a [routerLink]="[exam.id, 'users']" *ngIf="!exam.canceled" [tooltip]="'Kết quả người dùng'"
                     class="bg-white shadow-md hover:bg-blue-500 hover:text-gray-200 cursor-pointer transition duration-200 ease-in-out text-xs font-bold uppercase rounded outline-none focus:outline-none px-2 py-1">
                     <span><i class="fa fa-users"></i></span>
                   </a>

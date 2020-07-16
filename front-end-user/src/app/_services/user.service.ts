@@ -18,8 +18,8 @@ export class UserService {
   constructor(private http: HttpClient) {
   }
 
-  getUserDeletedList(status: boolean): Observable<PageResult<UserAccount>> {
-    return this.http.get<PageResult<UserAccount>>(`${this.baseUrl}/users/deleted/${status}`);
+  getUsers(status: boolean): Observable<PageResult<UserAccount>> {
+    return this.http.get<PageResult<UserAccount>>(`${this.baseUrl}/users`);
   }
 
   getUserList(page: number, size: number): Observable<PageResult<UserAccount>> {

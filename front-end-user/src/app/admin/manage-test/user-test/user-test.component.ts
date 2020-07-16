@@ -15,6 +15,8 @@ import {
   ApexYAxis, ChartComponent
 } from 'ng-apexcharts';
 import {ColorsService} from '../../../_services/colors.service';
+import {ExamQuestionReport} from '../../../models/exam-question-report';
+import {Location} from '@angular/common';
 
 export interface ChartOptions {
   series: ApexAxisChartSeries;
@@ -40,12 +42,33 @@ export class UserTestComponent implements OnInit {
   examId: number;
   sortBy = false;
   dataSort: ExamResult[] = [];
+  questionsReport: ExamQuestionReport[] = [];
+  skeleton = true;
 
-  constructor(private examService: ExamService, private route: ActivatedRoute, private colorsService: ColorsService, private router: Router) {
+  constructor(private examService: ExamService,
+              private route: ActivatedRoute,
+              private colorsService: ColorsService,
+              private router: Router,
+              private location: Location) {
   }
 
   ngOnInit(): void {
     this.getExamList();
+    this.getQuestionReport();
+  }
+
+  getPercent(x: number, size: number) {
+    const dv = x / size;
+    return 100 * Math.round((dv + 0.00001) * 100) / 100;
+  }
+
+  getQuestionReport() {
+    this.examService.getExamQuestionReport(this.examId).subscribe(data => {
+      this.questionsReport = data;
+      this.skeleton = false;
+    }, error => {
+      this.skeleton = false;
+    });
   }
 
   getExamList() {
@@ -130,5 +153,13 @@ export class UserTestComponent implements OnInit {
 
   goUserExamDetail(username: string, userProfile: string) {
     this.router.navigate([`admin/tests/${this.examId}/users`, username]);
+  }
+
+  goDeTail(id: number) {
+    this.router.navigate(['admin/question-bank/question', id]);
+  }
+
+  goBack() {
+    this.location.back();
   }
 }

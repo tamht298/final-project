@@ -78,10 +78,10 @@ export class QuestionBankComponent implements OnInit {
       this.skeleton = true;
       this.questionService.getQuestionListByPart(this.paginationDetail.previousPage.pageNumber, this.pageCountShowing, 0)
         .pipe(delay(1000)).subscribe(res => {
-          this.questionList = res.data;
-          this.paginationDetail = res.paginationDetails;
-          this.skeleton = false;
-        });
+        this.questionList = res.data;
+        this.paginationDetail = res.paginationDetails;
+        this.skeleton = false;
+      });
       ;
     }
 
@@ -131,7 +131,10 @@ export class QuestionBankComponent implements OnInit {
   changePart(event) {
     const selectPartId = event.target.value;
     this.skeleton = true;
-
+    if (this.selectedCourseId === 0) {
+      this.fetchQuestionList();
+      return;
+    }
     this.questionService.getQuestionListByPart(0, this.pageCountShowing, selectPartId).subscribe(res => {
       this.questionList = res.data;
       this.paginationDetail = res.paginationDetails;

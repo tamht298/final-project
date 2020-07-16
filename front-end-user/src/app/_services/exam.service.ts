@@ -11,6 +11,7 @@ import * as moment from 'moment';
 import {PageResult} from '../models/page-result';
 import {ExamResult} from '../models/exam-result';
 import {ExamDetail} from '../models/exam-detail';
+import {ExamQuestionReport} from '../models/exam-question-report';
 
 @Injectable({
   providedIn: 'root'
@@ -68,6 +69,10 @@ export class ExamService {
 
   public getExamResultListByExamId(examId: number): Observable<ExamResult[]> {
     return this.http.get<ExamResult[]>(`${this.baseUrl}/exams/${examId}/result/all`);
+  }
+
+  public getExamQuestionReport(examId: number): Observable<ExamQuestionReport[]> {
+    return this.http.get<ExamQuestionReport[]>(`${this.baseUrl}/exams/${examId}/result/all/question-report`);
   }
 
   public getResultExamByUser(examId: number, username: string): Observable<any> {

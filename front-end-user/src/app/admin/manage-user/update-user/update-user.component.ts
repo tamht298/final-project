@@ -88,11 +88,12 @@ export class UpdateUserComponent implements OnInit {
 
 
   onSubmit() {
+    console.log('eew');
     const profile = new UserProfile(this.firstName.value, this.lastName.value);
     const userUpdate: UserUpdate = new UserUpdate(this.username.value, this.email.value, this.password.value, profile);
     this.showLoading = true;
     this.userService.updateUser(this.userInfo.id, userUpdate)
-      .pipe(switchMap(res => this.userService.getUserDeletedList(false)))
+      .pipe(switchMap(res => this.userService.getUserList(0, 20)))
       .subscribe(res => {
         this.showLoading = false;
         this.closeModal();

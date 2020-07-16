@@ -17,5 +17,7 @@ public interface ExamUserService {
 
     List<ExamUser> getCompleteExams(Long courseId, String username);
     List<ExamUser> findAllByExam_Id(Long examId);
+    List<ExamUser> findExamUsersByIsFinishedIsTrueAndExam_Id(Long examId);
+
 
 }
