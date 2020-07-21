@@ -1,0 +1,7 @@
+2020-07-18 17:56:46.246  WARN 10668 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1d5h32m55s683ms90µs900ns).
+2020-07-18 17:57:32.602 ERROR 10668 --- [http-nio-8080-exec-28] com.thanhtam.backend.config.JwtUtils     : Expired JWT token
+2020-07-18 17:57:32.602 ERROR 10668 --- [http-nio-8080-exec-21] com.thanhtam.backend.config.JwtUtils     : Expired JWT token
+2020-07-18 17:57:32.602 ERROR 10668 --- [http-nio-8080-exec-17] com.thanhtam.backend.config.JwtUtils     : Expired JWT token
+2020-07-18 17:57:34.017 ERROR 10668 --- [http-nio-8080-exec-17] c.t.backend.config.AuthEntryPointJwt     : Unauthorized error: Full authentication is required to access this resource
+2020-07-18 17:57:34.017 ERROR 10668 --- [http-nio-8080-exec-21] c.t.backend.config.AuthEntryPointJwt     : Unauthorized error: Full authentication is required to access this resource
+2020-07-18 17:57:34.017 ERROR 10668 --- [http-nio-8080-exec-28] c.t.backend.config.AuthEntryPointJwt     : Unauthorized error: Full authentication is required to access this resource

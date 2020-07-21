@@ -1,0 +1,30 @@
+.remember-me input:checked ~ .check-mark {
+  background-color: #48bb78;
+
+  &:after {
+    display: block;
+
+  }
+}
+
+.check-mark {
+  &::after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+
+}
+
+/* Style the checkmark/indicator */
+.remember-me .check-mark:after {
+  left: 6px;
+  top: 3px;
+  width: 7px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}

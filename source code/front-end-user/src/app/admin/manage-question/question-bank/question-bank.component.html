@@ -1,0 +1,195 @@
+<div class="bg-blue-600 md:pt-32 pb-32 pt-12">
+  <div class="px-4 md:px-10 mx-auto w-full">
+  </div>
+</div>
+
+<div class=" mx-auto w-full -m-24">
+
+  <div class="flex flex-wrap mt-4 justify-center">
+    <div class="w-full mb-12 xl:mb-0 px-4 max-w-5xl">
+      <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+        <div class="rounded-t mb-0 px-4 py-3 border-0">
+          <div class="flex flex-wrap items-center">
+            <div class="relative w-full px-4 max-w-full flex-grow leading-8 mb-3">
+              <h3 class="font-semibold text-2xl text-gray-800">
+                Ngân hàng câu hỏi
+              </h3>
+            </div>
+            <div class="flex flex-wrap flex-col w-full">
+              <div class="flex flex-wrap flex-row">
+
+                <div class="relative w-full px-4 max-w-full flex-flow flex-basis">
+
+                  <span class="mx-3 text-gray-600 text-sm">Hiển thị tối đa</span>
+                  <div class="inline-block relative max-w-xs w-20 mr-2">
+                    <select
+                      class="block appearance-none w-full bg-white px-3 py-1 pr-4 rounded shadow leading-tight focus:outline-none text-sm"
+                      (change)="changePageShow($event.target.value)"
+                    >
+                      <option *ngFor="let item of pageOptions" [value]="item.num"
+                              [selected]="item.num == pageCountShowing">{{item.display}}</option>
+
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                      <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <app-add-question (questionsAddOutput)="fetchQuestionsAfterCRUD($event)"></app-add-question>
+
+                  <div class="flex mt-4">
+                    <div class="md:w-1/2 px-3">
+                      <label class="block uppercase tracking-wide text-gray-600 text-xs font-bold mb-2"
+                      >
+                        Môn học
+                      </label>
+                      <select (change)="changeCourse($event)"
+                              name="course"
+                              class="block appearance-none w-full bg-gray-200 py-2 px-3 my-1 mt-3 pr-4 rounded shadow leading-tight focus:outline-none">
+                        <option value="0">-- please choose course --</option>
+                        <option *ngFor="let course of courseList" [value]="course.id"
+                                [selected]="course.id === selectedCourseId">{{course.name}}</option>
+
+                      </select>
+
+                    </div>
+                    <div class="md:w-1/2 px-3">
+                      <label class="block uppercase tracking-wide text-gray-600 text-xs font-bold mb-2"
+                      >
+                        Nội dung
+                      </label>
+                      <select (change)="changePart($event)"
+                              name="part"
+                              class="block appearance-none w-full bg-gray-200 py-2 px-3 my-1 mt-3 pr-4 rounded shadow leading-tight focus:outline-none">
+                        <option value="0">-- please choose part --</option>
+                        <option *ngFor="let part of partList" [selected]="part.id===selectedPartId"
+                                [value]="part.id">{{part.name}}</option>
+
+                      </select>
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+
+
+          </div>
+        </div>
+        <div class="block w-full">
+          <!-- Projects table -->
+          <table
+            class="items-center table-fixed w-full bg-transparent border-collapse user-list block lg:table overflow-x-auto overflow-y-auto">
+            <thead>
+            <tr>
+
+              <th
+                class="row-question px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 font-semibold text-left">
+                Câu hỏi
+              </th>
+              <th
+                class="row-status px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 font-semibold text-left">
+                Ẩn/Hiện
+              </th>
+              <th
+                class="row-difficulty text-center px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 font-semibold text-left">
+                Độ khó
+              </th>
+              <th
+                class="row-type px-6 bg-gray-100 text-gray-600 align-middle border border-solid border-gray-200 py-3 text-xs uppercase border-l-0 border-r-0 font-semibold text-left">
+                Loại câu
+              </th>
+
+            </tr>
+            </thead>
+
+            <tbody *ngIf="skeleton==false">
+            <ng-container *ngFor="let ques of questionList; trackBy: trackById">
+              <tr class="border hover:bg-gray-300">
+
+                <th
+                  class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs  p-4 text-left"
+
+                >
+                  <div [innerHTML]="ques.questionText" class="cursor-pointer hover:text-blue-800 text-md"
+                       (click)="goDeTail(ques.id)"></div>
+                </th>
+                <td
+                  class="border-t-0 text-center px-6 align-middle  border-l-0 border-r-0 text-xs whitespace-no-wrap p-4 w-1/3">
+                  <span class="text-2xl cursor-pointer" (click)="changeDeleted(ques)"><i
+                    [ngClass]="ques.deleted? 'fa fa-toggle-off text-gray-700': 'fa fa-toggle-on text-green-700'"></i></span>
+                </td>
+                <td class="border-t-0 text-center px-6 align-middle border-l-0 border-r-0 text-xs p-4">
+                  <ng-container [ngSwitch]="ques.difficultyLevel">
+                    <ng-template [ngSwitchCase]="'EASY'">
+                      <span
+                        class="px-2 py-1 bg-green-200 cursor-pointer font-medium hover:bg-green-300 transition duration-300 ease-in-out font-light text-green-600 text-xs rounded-md">{{ques.difficultyLevel}}</span>
+                    </ng-template>
+                    <ng-template [ngSwitchCase]="'MEDIUM'">
+                      <span
+                        class="px-2 py-1 bg-gray-200 cursor-pointer font-medium hover:bg-gray-400 transition duration-300 ease-in-out font-light text-gray-600 text-xs rounded-md">{{ques.difficultyLevel}}</span>
+                    </ng-template>
+                    <ng-template [ngSwitchCase]="'HARD'">
+                      <span
+                        class="px-2 py-1 bg-red-200 cursor-pointer font-medium hover:bg-red-300 transition duration-300 ease-in-out font-light text-red-600 text-xs rounded-md">{{ques.difficultyLevel}}</span>
+                    </ng-template>
+                  </ng-container>
+                </td>
+                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs p-4 italic font-semibold">
+                  #{{ques.questionType.description}}
+                </td>
+
+              </tr>
+            </ng-container>
+            </tbody>
+
+
+          </table>
+        </div>
+        <div *ngIf="questionList.length!==0"
+             class="px-4 py-3 bg-white border-t flex flex-row justify-between xs:flex-row items-center xs:justify-between">
+                        <span class="text-xs xs:text-sm text-gray-700 px-4">
+                            Hiển thị {{paginationDetail?.isLastPage ? paginationDetail?.totalCount - paginationDetail.pageCount + 1 : paginationDetail?.pageNumber * paginationDetail?.pageCount + 1}}
+                          đến {{paginationDetail?.isLastPage ? paginationDetail.totalCount : (paginationDetail?.pageNumber + 1) * paginationDetail?.pageCount}}
+                          trong số {{paginationDetail?.totalCount}} kết quả
+                        </span>
+          <div class="inline-flex mt-2 px-4 xs:mt-0">
+            <button
+              class="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l focus:outline-none"
+              (click)="goPreviousPage()"
+            >
+              <span><i class="fa fa-arrow-left"></i></span><span class="hidden md:inline ml-1 ">Trang trước</span>
+            </button>
+            <button
+              class="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r focus:outline-none"
+              (click)="goNextPage()"
+            >
+              <span class="hidden md:inline mr-1">Trang kế</span><span><i class="fa fa-arrow-right"></i></span>
+            </button>
+          </div>
+        </div>
+        <ng-container *ngIf="questionList.length==0 && skeleton==false">
+          <div
+            class="px-4 py-3 bg-white border-t flex flex-row justify-between xs:flex-row items-center xs:justify-between">
+            <p class="mx-auto text-gray-700 text-sm">Nội dung không có để hiển thị</p>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="skeleton">
+          <app-table-skeleton [type]="'question'"></app-table-skeleton>
+          <app-table-skeleton [type]="'question'"></app-table-skeleton>
+          <app-table-skeleton [type]="'question'"></app-table-skeleton>
+
+
+        </ng-container>
+      </div>
+    </div>
+
+
+  </div>
+
+  <app-admin-footer></app-admin-footer>
+</div>
+

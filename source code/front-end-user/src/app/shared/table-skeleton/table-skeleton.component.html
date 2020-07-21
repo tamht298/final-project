@@ -1,0 +1,43 @@
+<div class="w-full rounded-lg">
+  <div class="flex flex-col relative w-full bg-white overflow-hidden card translate-3d-none-after relative w-full bg-white overflow-hidden card translate-3d-none-after border-b border-gray-300">
+
+    <div class="flex flex-col flex-grow">
+      <div class="px-2 pt-2 mb-2 text-left relative flex-grow">
+        <div
+          class="text-lg font-bold text-gray-darkest flex flex-col">
+          <div class="flex justify-between">
+            <ng-container [ngSwitch]="type">
+              <ng-template [ngSwitchCase]="'user'">
+                <span class="skeleton-box h-5 w-1/6 mx-2 inline-block"></span>
+                <span class="skeleton-box h-5 w-1/6 mx-2 inline-block"></span>
+                <span class="skeleton-box h-5 w-1/4 mx-2 inline-block"></span>
+                <span class="skeleton-box h-5 w-1/6 mx-2 inline-block"></span>
+                <span class="skeleton-box h-5 w-1/6 mx-2 inline-block"></span>
+              </ng-template>
+              <ng-template [ngSwitchCase]="'exam'">
+                <span class="skeleton-box h-5 w-1/4 mx-2 inline-block"></span>
+                <span class="skeleton-box h-5 w-1/5 mx-2 inline-block"></span>
+                <span class="skeleton-box h-5 w-1/5 mx-2 inline-block"></span>
+                <span class="skeleton-box h-5 w-1/5 mx-2 inline-block"></span>
+                <span class="skeleton-box h-5 w-1/6 mx-2 inline-block"></span>
+              </ng-template>
+              <ng-template [ngSwitchCase]="'question'">
+                <span class="skeleton-box h-5 w-3/5 mx-2 inline-block"></span>
+                <span class="skeleton-box h-5 w-1/6 mx-2 inline-block"></span>
+                <span class="skeleton-box h-5 w-1/6 mx-2 inline-block"></span>
+                <span class="skeleton-box h-5 w-1/6 mx-2 inline-block"></span>
+              </ng-template>
+              <ng-template [ngSwitchCase]="'course'">
+                <span class="skeleton-box h-5 w-1/12 mx-2 inline-block"></span>
+                <span class="skeleton-box h-5 w-1/4 mx-2 inline-block"></span>
+                <span class="skeleton-box h-5 w-3/5 mx-2 inline-block"></span>
+                <span class="skeleton-box h-5 w-1/6 mx-2 inline-block"></span>
+              </ng-template>
+            </ng-container>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

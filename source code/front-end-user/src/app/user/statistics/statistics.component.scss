@@ -1,0 +1,15 @@
+:host ::ng-deep .apexcharts-theme-light{
+  background-color: white;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border-radius: 0.1rem;
+}
+
+:host ::ng-deep .xng-breadcrumb-item{
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  background-color: #e2e8f0;
+  border-radius: 0.25rem;
+
+}

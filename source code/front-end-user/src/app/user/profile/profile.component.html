@@ -1,0 +1,53 @@
+<xng-breadcrumb></xng-breadcrumb>
+
+<div class="py-3" *ngIf="userProfile">
+  <h2 class="lg:text-2xl font-semibold text-gray-800 mb-6 px-4">Manage Account</h2>
+  <div class="my-2 flex w-full">
+    <div class="rounded-lg shadow-lg w-64 mx-2 px-3 py-2 bg-white text-gray-700 text-center">
+      <div class="my-3 my-1">
+        <img [src]="imgUpload"
+             class="avatar mx-auto shadow-md">
+      </div>
+      <div class="px-3 my-4"><label
+        class="text-blue-700 text-xl font-semibold uppercase">{{userProfile.profile.lastName}} {{userProfile.profile.firstName}}</label>
+      </div>
+      <div class="px-3 my-1"><label class="font-medium">@{{userProfile.username}}</label></div>
+      <div class="px-3 my-1"><label>{{userProfile.intake.name}}</label></div>
+      <div class="px-3 my-2"><label class="underline text-blue-500">{{userProfile.email}}</label></div>
+      <div class="mx-3 my-3 flex justify-center">
+        <div
+          class="mx-2 w-8 h-8 flex justify-center items-center rounded-full bg-blue-500 hover:bg-blue-700 text-white text-lg cursor-pointer"
+          [tooltip]="'Change password'" show-delay="100" hide-delay="100"
+          [ngClass]="{'bg-blue-700 shadow-lg': togglePwd}"
+          (click)="toggleChangePwd()"
+        ><i class="fa fa-lock"></i></div>
+        <div
+          class="mx-2 w-8 h-8 flex justify-center items-center rounded-full bg-blue-500 hover:bg-blue-700 text-white text-lg cursor-pointer"
+          [tooltip]="'Update email'" show-delay="100" hide-delay="100"
+          [ngClass]="{'bg-blue-700 shadow-lg': toggleEmail}"
+          (click)="toggleUpdateEmail()"
+        ><i class="fa fa-envelope"></i></div>
+        <div
+          class="mx-2 w-8 h-8 flex justify-center items-center rounded-full bg-blue-500 hover:bg-blue-700 text-white text-lg cursor-pointer"
+          [tooltip]="'Change avatar'" show-delay="100" hide-delay="100"
+          (click)="toggleChangeAvatar()"
+          [ngClass]="{'bg-blue-700 shadow-lg': toggleAvatar}"
+        ><i class="fa fa-image"></i></div>
+      </div>
+    </div>
+    <div class="mx-8 md:w-1/2">
+
+      <ng-template [ngIf]="togglePwd">
+        <app-update-password (passwordUpdate)="updatePassword($event)"></app-update-password>
+      </ng-template>
+
+      <ng-template [ngIf]="toggleEmail">
+        <app-update-email [userProfile]="userProfile" (emailUpdate)="updateEmail($event)"></app-update-email>
+      </ng-template>
+      <ng-template [ngIf]="toggleAvatar">
+        <app-update-avatar (avatarUploadUrl)="getAvatarUpload($event)"></app-update-avatar>
+      </ng-template>
+    </div>
+  </div>
+
+</div>

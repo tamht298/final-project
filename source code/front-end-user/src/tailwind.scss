@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+.alert {
+  @apply text-sm font-semibold
+  }
+
+.alert-danger {
+  @apply text-red-500
+  }
+
+@tailwind utilities;

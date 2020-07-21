@@ -1,0 +1,109 @@
+<xng-breadcrumb></xng-breadcrumb>
+
+<div class="py-3 px-4" *ngIf="examCalendars">
+  <div class="flex justify-between items-center">
+    <button
+      class="hover:text-blue-600 text-blue-500 font-bold py-2 px-4 mx-2 rounded cursor-pointer focus:outline-none"
+      (click)="goToday()"><span class="mr-2"><i class="fa fa-dot-circle-o"></i></span>Today
+    </button>
+    <div class="text-2xl font-bold">{{nowDate}}</div>
+    <div>
+      <button
+        class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-4 mx-1 rounded cursor-pointer focus:outline-none"
+        (click)="goPrevMonth()"><span><i class="fa fa-caret-left"></i></span>
+      </button>
+      <button
+        class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-4 mx-1 rounded cursor-pointer focus:outline-none"
+        (click)="goNextMonth()"><span><i class="fa fa-caret-right"></i></span>
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="examEventDetail"
+       class="fixed inset-0 overflow-auto z-50 outline-none focus:outline-none justify-center flex">
+    <div class="relative my-5 mx-auto max-w-2xl" style="margin-top: 2.5rem">
+      <!--content-->
+      <div
+        class="border-0 rounded-lg shadow-lg relative flex flex-col w-full overflow-y-auto my-5 bg-white outline-none focus:outline-none"
+        style="max-height: 90%">
+        <!--header-->
+        <div class="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t">
+          <h3 class="text-2xl font-semibold">Event Detail</h3>
+
+          <button
+            class="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+            (click)="closeModal()">
+              <span
+                class="bg-transparent text-gray-700 opacity-5 h-3 w-3 text-base block outline-none focus:outline-none">
+              <i class="fa fa-close"></i>
+              </span>
+          </button>
+        </div>
+        <!--body-->
+        <div class="flex flex-wrap px-3">
+          <div class="w-full">
+            <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 rounded">
+              <div class="px-4 py-5 pb-0 flex-auto">
+                <div class="tab-content tab-space">
+                  <div class="flex items-center"><span class="mr-3 w-5 text-xl text-blue-700"><i class="fa fa-question-circle"></i></span><div class="bg-blue-200 text-blue-700 font-semibold rounded-sm px-2 py-1 my-2 w-full opacity-75">{{examDetail.examTitle}}</div></div>
+                  <div class="flex items-center"><span class="mr-3 w-5 text-xl text-gray-700"><i class="fa fa-calendar"></i></span><div class="bg-gray-200 text-black rounded-sm px-2 py-1 my-2 w-full opacity-75">{{examDetail.beginDate | date:'medium'}} - {{examDetail.finishDate | date: 'medium'}}</div></div>
+                  <div class="flex items-center"><span class="mr-3 w-5 text-xl text-gray-700"><i class="fa fa-heart-o"></i></span><div class="bg-gray-200 text-black rounded-sm px-2 py-1 my-2 w-full opacity-75">
+                    <ng-container [ngSwitch]="examDetail.isCompleted">
+                      <ng-template [ngSwitchCase]="-2">
+                        <span class="text-red-500">
+                          <i class="fa fa-dot-circle-o"></i>
+                        </span>
+                      </ng-template>
+                      <ng-template [ngSwitchCase]="-1">
+                        <span class="text-gray-500">
+                          <i class="fa fa-dot-circle-o" ></i>
+                        </span>
+                      </ng-template>
+                      <ng-template [ngSwitchCase]="0">
+                        <span class="text-yellow-500">
+                          <i class="fa fa-dot-circle-o" ></i>
+                        </span>
+                      </ng-template>
+                      <ng-template [ngSwitchCase]="1">
+                        <span class="text-green-500">
+                          <i class="fa fa-dot-circle-o" ></i>
+                        </span>
+                      </ng-template>
+                    </ng-container>
+                     {{examDetail.completeString}}</div></div>
+                  <div class="flex items-center"><span class="mr-3 w-5 text-xl text-gray-700"><i class="fa fa-clock-o"></i></span><div class="bg-gray-200 text-black rounded-sm px-2 py-1 my-2 w-full opacity-75">{{examDetail.durationExam}} min</div></div>
+                  <div class="flex items-center"><span class="mr-3 w-5 text-xl text-gray-700"><i class="fa fa-book"></i></span><div class="bg-gray-200 text-black rounded-sm px-2 py-1 my-2 w-full opacity-75">{{examDetail.courseCode}} - {{examDetail.courseName}}</div></div>
+                  <div class="flex items-center"><span class="mr-3 w-5 text-xl text-gray-700"></span><div class="bg-gray-200 text-black rounded-sm px-2 py-1 my-2 w-full opacity-75">{{examDetail.partName}}</div></div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center justify-end p-6 pb-2 mb-2 border-t border-solid border-gray-300 rounded-b">
+          <a [routerLink]="['../exams', examDetail.examId]"
+            class="bg-gray-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mx-2 rounded cursor-pointer focus:outline-none"
+          ><span><i class="fa fa-paper-plane mr-2"></i>View exam</span>
+          </a>
+          <button
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mx-2 rounded cursor-pointer focus:outline-none"
+            type="button"
+            (click)="closeModal()"><span><i class="fa fa-window-close mr-2"></i>Close</span>
+          </button>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mt-8" *ngIf="calendarOptions">
+
+    <full-calendar
+      #calendar
+      deepChangeDetection="true"
+      [options]="calendarOptions"
+    ></full-calendar>
+  </div>
+</div>
+
+<div *ngIf="examEventDetail" class="fixed inset-0 z-40 bg-smoke-light"></div>

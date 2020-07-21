@@ -1,0 +1,215 @@
+<!-- Header -->
+<div class="relative bg-blue-600 md:pt-32 pb-32 pt-12" *ngIf="statistics">
+  <div class="px-4 md:px-10 mx-auto w-full">
+    <div>
+      <!-- Card stats -->
+      <div class="flex flex-wrap">
+        <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
+          <div class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
+            <div class="flex-auto p-4">
+              <div class="flex flex-wrap">
+                <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
+                  <h5 class="text-gray-500 uppercase font-bold text-xs">
+                    Người dùng
+                  </h5>
+                  <span class="font-semibold text-xl text-gray-800">
+                      {{statistics.accountTotal}}
+                    </span>
+                </div>
+                <div class="relative w-auto pl-4 flex-initial">
+                  <div
+                    class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-red-500">
+                    <i class="fa fa-user"></i>
+                  </div>
+                </div>
+              </div>
+              <p class="text-sm text-gray-500 mt-4">
+                <ng-container *ngIf="statistics.changeAccount>0">
+                  <span class="text-green-500 mr-2">
+                    <i class="fa fa-arrow-up"></i> {{statistics.changeAccount}}%
+                  </span>
+                </ng-container>
+                <ng-container *ngIf="statistics.changeAccount<0">
+                  <span class="text-red-500 mr-2">
+                    <i class="fa fa-arrow-down"></i> {{statistics.changeAccount}}%
+                  </span>
+                </ng-container>
+                <ng-container *ngIf="statistics.changeAccount==0">
+                  <span class="text-gray-500 mr-2">
+                    <i class="fa fa-minus"></i> {{statistics.changeAccount}}%
+                  </span>
+                </ng-container>
+                <span class="whitespace-no-wrap">
+                    so tuần trước
+                  </span>
+              </p>
+
+            </div>
+          </div>
+        </div>
+        <ng-template>
+          <app-card-stats></app-card-stats>
+        </ng-template>
+        <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
+          <div class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
+            <div class="flex-auto p-4">
+              <div class="flex flex-wrap">
+                <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
+                  <h5 class="text-gray-500 uppercase font-bold text-xs">
+                    Đề kiểm tra
+                  </h5>
+                  <span class="font-semibold text-xl text-gray-800">
+                      {{statistics.examTotal}}
+                    </span>
+                </div>
+                <div class="relative w-auto pl-4 flex-initial">
+                  <div
+                    class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-orange-500">
+                    <i class="fa fa-book"></i>
+                  </div>
+                </div>
+              </div>
+              <p class="text-sm text-gray-500 mt-4">
+                <ng-container *ngIf="statistics.changeExam>0">
+                  <span class="text-green-500 mr-2">
+                    <i class="fa fa-arrow-up"></i> {{statistics.changeExam}}%
+                  </span>
+                </ng-container>
+                <ng-container *ngIf="statistics.changeExam<0">
+                  <span class="text-red-500 mr-2">
+                    <i class="fa fa-arrow-down"></i> {{statistics.changeExam}}%
+                  </span>
+                </ng-container>
+                <ng-container *ngIf="statistics.changeExam==0">
+                  <span class="text-gray-500 mr-2">
+                    <i class="fa fa-minus"></i> {{statistics.changeExam}}%
+                  </span>
+                </ng-container>
+                <span class="whitespace-no-wrap">
+                    so tuần trước
+                  </span>
+              </p>
+
+            </div>
+          </div>
+        </div>
+        <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
+          <div class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
+            <div class="flex-auto p-4">
+              <div class="flex flex-wrap">
+                <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
+                  <h5 class="text-gray-500 uppercase font-bold text-xs">
+                    Câu hỏi
+                  </h5>
+                  <span class="font-semibold text-xl text-gray-800">
+                      {{statistics.questionTotal}}
+                    </span>
+                </div>
+                <div class="relative w-auto pl-4 flex-initial">
+                  <div
+                    class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-pink-500">
+                    <i class="fa fa-question-circle"></i>
+                  </div>
+                </div>
+              </div>
+              <p class="text-sm text-gray-500 mt-4">
+                <ng-container *ngIf="statistics.changeQuestion>0">
+                  <span class="text-green-500 mr-2">
+                    <i class="fa fa-arrow-up"></i> {{statistics.changeQuestion}}%
+                  </span>
+                </ng-container>
+                <ng-container *ngIf="statistics.changeQuestion<0">
+                  <span class="text-red-500 mr-2">
+                    <i class="fa fa-arrow-down"></i> {{statistics.changeQuestion}}%
+                  </span>
+                </ng-container>
+                <ng-container *ngIf="statistics.changeQuestion==0">
+                  <span class="text-gray-500 mr-2">
+                    <i class="fa fa-minus"></i> {{statistics.changeQuestion}}%
+                  </span>
+                </ng-container>
+                <span class="whitespace-no-wrap">
+                    so tuần trước
+                  </span>
+              </p>
+
+            </div>
+          </div>
+        </div>
+        <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
+          <div class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
+            <div class="flex-auto p-4">
+              <div class="flex flex-wrap">
+                <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
+                  <h5 class="text-gray-500 uppercase font-bold text-xs">
+                    Bài làm
+                  </h5>
+                  <span class="font-semibold text-xl text-gray-800">
+                      {{statistics.examUserTotal}}
+                    </span>
+                </div>
+                <div class="relative w-auto pl-4 flex-initial">
+                  <div
+                    class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-blue-500">
+                    <i class="fa fa-address-book"></i>
+                  </div>
+                </div>
+              </div>
+              <p class="text-sm text-gray-500 mt-4">
+                <ng-container *ngIf="statistics.changeExamUser>0">
+                  <span class="text-green-500 mr-2">
+                    <i class="fa fa-arrow-up"></i> {{statistics.changeExamUser}}%
+                  </span>
+                </ng-container>
+                <ng-container *ngIf="statistics.changeExamUser<0">
+                  <span class="text-red-500 mr-2">
+                    <i class="fa fa-arrow-down"></i> {{statistics.changeExamUser}}%
+                  </span>
+                </ng-container>
+                <ng-container *ngIf="statistics.changeExamUser==0">
+                  <span class="text-gray-500 mr-2">
+                    <i class="fa fa-minus"></i> {{statistics.changeExamUser}}%
+                  </span>
+                </ng-container>
+
+                <span class="whitespace-no-wrap">
+                    so tuần trước
+                  </span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="px-4 md:px-10 mx-auto w-full -m-24">
+  <div class="flex flex-wrap">
+<!--    <app-line-chart class="w-full mb-12 xl:mb-0 px-4" [data]="statistics"></app-line-chart>-->
+    <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-gray-900">
+      <div class="rounded-t mb-0 px-4 py-3 bg-transparent">
+        <div class="flex flex-wrap items-center">
+          <div class="relative w-full max-w-full flex-grow flex-1">
+
+            <h2 class="text-white text-xl font-semibold">
+              Thống kê bài kiểm tra
+            </h2>
+            <h5 class="text-white text-md">
+              7 ngày gần nhất
+            </h5>
+          </div>
+        </div>
+      </div>
+      <div class="p-4 flex-auto">
+
+        <!-- Chart -->
+        <div class="relative" style="height:350px">
+          <canvas id="line-chart"></canvas>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <app-admin-footer></app-admin-footer>
+</div>

@@ -1,0 +1,195 @@
+<div class="bg-blue-600 md:pt-32 pb-32 pt-12">
+  <div class="px-4 md:px-10 mx-auto w-full">
+    <div (click)="goBack()" class="text-white cursor-pointer hover:underline"><i class="fa fa-long-arrow-left"></i><span
+      class="mx-2">Quay lại</span></div>
+  </div>
+</div>
+
+<div class="mx-auto w-full -m-24">
+  <div class="flex flex-wrap mt-4 justify-center">
+
+    <div class="w-full mb-12 xl:mb-0 px-4 max-w-5xl">
+      <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+        <div class="relative w-full px-4 max-w-full flex-grow leading-8 mb-3">
+          <div class="rounded-t mb-0 px-4 py-3 border-0">
+            <h3 class="font-semibold text-2xl text-gray-800">Chi tiết câu hỏi</h3></div>
+
+        </div>
+        <div class="rounded-t mb-0 px-4 py-3 border-0">
+          <div class="mx-4 flex flex-row" *ngIf="questionInfo">
+            <div
+              class="my-4 px-8 text-gray-600 text-base leading-relaxed text-left flex-row flex flex-wrap justify-center lg:justify-start items-center">
+              <div class="flex justify-between w-full mb-4 text-gray-700">
+                <div>
+                  <div class="mb-2 block uppercase tracking-wide text-grey-darker text-xs font-bold">Người tạo</div>
+                  <div class="flex items-center">
+                    <img class="w-8 h-8 rounded-full mx-2" src="{{questionInfo.lastModifiedBy?.profile.image || imgDefaultUrl}}">
+                    <span>{{questionInfo.lastModifiedBy?.username}}</span>
+                  </div>
+                </div>
+                <div>
+                  <div class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">Ngày tạo</div>
+                  <div>
+                    {{questionInfo.lastModifiedDate.toString()}}
+                  </div>
+                </div>
+              </div>
+              <hr class="w-full mb-4">
+              <div class="-mx-3 md:flex mb-2 w-full">
+                <div class="md:w-1/2 px-3">
+                  <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+                  >
+                    Môn học
+                  </label>
+                  <select [disabled]="true"
+                          class="block appearance-none w-full bg-gray-200 py-2 px-3 my-1 mt-3 pr-4 rounded shadow leading-tight focus:outline-none">
+                    <option
+                    >{{course?.name}}</option>
+
+                  </select>
+
+                </div>
+                <div class="md:w-1/2 px-3">
+                  <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+                  >
+                    Nội dung
+                  </label>
+                  <select [disabled]="true"
+                          class="block appearance-none w-full bg-gray-200 py-2 px-3 my-1 mt-3 pr-4 rounded shadow leading-tight focus:outline-none">
+                    <option [value]="questionInfo.part.id">{{questionInfo?.part.name}}</option>
+
+                  </select>
+
+                </div>
+
+              </div>
+              <div class="-mx-3 md:flex mb-2 w-full">
+                <div class="md:w-full px-3">
+                  <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+                  >
+                    Độ khó
+                  </label>
+                  <select [disabled]="true"
+                          class="block appearance-none w-full bg-gray-200 py-2 px-3 my-1 mt-3 pr-4 rounded shadow leading-tight focus:outline-none">
+                    <option value="0" [selected]="difficultyLevel==0" class="text-green-600">Easy - 5pts</option>
+                    <option value="1" [selected]="difficultyLevel==1" class="text-gray-600">Medium - 10pts</option>
+                    <option value="2" [selected]="difficultyLevel==2" class="text-red-600">Hard - 15pts</option>
+                  </select>
+                </div>
+
+              </div>
+              <div class="-mx-3 md:flex my-3 w-full">
+                <div class="md:w-full px-3">
+                  <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+                  >
+                    Kiểu câu hỏi
+                  </label>
+                  <div class="flex">
+                    <div class="radio-type flex-1">
+                      <div class="radio-btn">
+                        <input type="radio" id="{{questionInfo.questionType.id}}" [disabled]="true"
+                               name="questionType" value="{{questionInfo.questionType.typeCode}}"
+                               [checked]="true"
+                        />
+                        <label for="{{questionInfo.questionType.id}}">{{questionInfo.questionType.description}}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="-mx-3 md:flex mb-2 mt-6 w-full">
+                <div class="md:w-full px-3">
+                  <label class="block uppercase tracking-wide text-gray-600 text-xs font-bold mb-2"
+                  >
+                    Nội dung câu hỏi
+                  </label>
+
+                  <div class="mx-2" [innerHTML]="questionInfo?.questionText"></div>
+                </div>
+              </div>
+
+              <div class="-mx-3 md:flex my-2 w-full">
+                <div class="md:w-full px-3">
+                  <label class="block uppercase tracking-wide text-gray-600 text-xs font-bold mb-2"
+                  >
+                    Đáp án
+                  </label>
+                  <div [ngSwitch]="questionInfo?.questionType.typeCode">
+                    <div *ngSwitchCase="'TF'">
+                      <div class="flex">
+                        <div class="radio-type flex-1">
+                          <div class="radio-btn">
+                            <input type="radio" id="T" [checked]="questionInfo.choices[0].choiceText=='True'"
+                                   name="choices" value="True"
+                                   [disabled]="true"
+                            />
+                            <label for="T">True</label>
+                          </div>
+                        </div>
+
+                        <div class="radio-type flex-1">
+                          <div class="radio-btn">
+                            <input type="radio" id="False"
+                                   name="choices" value="F"
+                                   [disabled]="true"
+                                   [checked]="questionInfo.choices[0].choiceText=='False'"/>
+                            <label for="False">False</label>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div *ngSwitchCase="'MC'">
+                      <div class="flex flex-col">
+                        <div class="w-full my-2" *ngFor="let mc of questionInfo.choices; let i=index">
+
+                          <div class="flex my-2">
+                            <div class="radio-type w-full">
+                              <div class="radio-btn">
+                                <input type="radio" name="mcChoices-{{mc.id}}"
+                                       [checked]="mc.isCorrected==1">
+                                <label class="select-none" [innerHTML]="mc.choiceText"></label>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                    <div *ngSwitchCase="'MS'">
+                      <div class="flex flex-col">
+                        <div class="w-full my-2" *ngFor="let ms of questionInfo.choices; let index=index">
+                          <div class="flex my-2">
+                            <div class="radio-type w-full">
+                              <div class="check-box-btn">
+                                <input type="checkbox" name="msChoices-{{ms.id}}"
+                                       id="ms-{{ms.id}}"
+                                       [checked]="ms.isCorrected==1"
+                                >
+                                <label for="ms-{{ms.id}}" class="check-box select-none"
+                                       [innerHTML]="ms.choiceText"></label>
+                              </div>
+                            </div>
+
+                          </div>
+
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-admin-footer></app-admin-footer>
+
+</div>
+

@@ -1,0 +1,195 @@
+<button
+  class="bg-white shadow-md hover:bg-blue-500 hover:text-blue-200 transition duration-200 ease-in-out text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mx-1 mb-1"
+  type="button"
+  (click)="toggleModalAdd()"><span><i class="fa fa-user-plus mr-1"></i>Add new</span>
+</button>
+
+<form novalidate (ngSubmit)="onSubmit()" [formGroup]="rfAddUser">
+  <div *ngIf="showModalAdd"
+       class="fixed inset-0 overflow-auto z-50 outline-none focus:outline-none justify-center flex">
+    <div class="relative w-4/5 my-5 mx-auto max-w-2xl" style="margin-top: 2.5rem">
+      <!--content-->
+      <div
+        class="border-0 rounded-lg shadow-lg relative flex flex-col w-full overflow-y-auto my-5 bg-white outline-none focus:outline-none"
+        style="max-height: 90%">
+        <!--header-->
+        <div class="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t">
+          <h3 class="text-2xl font-semibold">Thêm người dùng</h3>
+
+          <button
+            class="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+            (click)="closeModal()">
+              <span
+                class="bg-transparent text-gray-700 opacity-5 h-3 w-3 text-base block outline-none focus:outline-none">
+              <i class="fa fa-close"></i>
+              </span>
+          </button>
+        </div>
+        <!--body-->
+        <div class="flex flex-wrap px-3">
+          <div class="w-full">
+            <ul class="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row">
+              <li class="-mb-px mr-2 last:mr-0 flex-auto text-center"><a
+                class="text-xs font-bold uppercase px-5 py-3 hover:shadow-md rounded block leading-normal cursor-pointer"
+                (click)="toggleTabs(1)"
+                [ngClass]="{'text-blue-600 bg-white': openTab !== 1, 'text-white bg-blue-600': openTab === 1}"> <i
+                class="fa fa-user-circle text-base mr-1"></i> Profile </a></li>
+              <li class="-mb-px mr-2 last:mr-0 flex-auto text-center"><a
+                class="text-xs font-bold uppercase px-5 py-3 hover:shadow-md rounded block leading-normal cursor-pointer"
+                (click)="toggleTabs(2)"
+                [ngClass]="{'text-blue-600 bg-white': openTab !== 2, 'text-white bg-blue-600': openTab === 2}"> <i
+                class="fa fa-upload mr-1"></i> Import </a></li>
+
+            </ul>
+            <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 rounded">
+              <div class="px-4 py-5 pb-0 flex-auto">
+                <div class="tab-content tab-space">
+                  <div [ngClass]="{'hidden': openTab !== 1, 'block': openTab === 1}">
+                    <div class="relative">
+                      <div
+                        class="my-4 px-8 text-gray-600 text-base leading-relaxed text-left flex-row flex flex-wrap justify-center lg:justify-start items-center">
+                        <div class="-mx-3 md:flex mb-2 w-full">
+                          <div class="md:w-full px-3">
+                            <label class="block uppercase tracking-wide text-gray-600 text-xs font-bold mb-2"
+                                   for="frm-add-username">
+                              Tên đăng nhập
+                            </label>
+                            <input
+                              class="appearance-none border rounded-md w-full py-2 px-3 my-1 text-gray-600 bg-gray-200 leading-tight outline-none focus:border-green-500"
+                              id="frm-add-username"
+                              type="text"
+                              placeholder="Nhập thông tin username"
+                              autocomplete="off"
+                              formControlName="username"
+                              required
+                            >
+                            <p class="text-red-500 text-xs italic"
+                               *ngIf="username?.hasError('required') && (username.dirty || username.touched)">
+                              Username không được bỏ trống</p>
+                            <p class="text-red-500 text-xs italic"
+                               *ngIf="username?.hasError('minlength') && (username?.dirty || username.touched)">
+                              Username phải có ít nhất 6 kí tự</p>
+                            <p class="text-red-500 text-xs italic"
+                               *ngIf="username?.hasError('usernameExists') && (username?.dirty || username.touched)">
+                              Username đã tồn tại</p>
+                          </div>
+                        </div>
+                        <div class="-mx-3 md:flex mb-2 w-full">
+                          <div class="md:w-1/2 px-3">
+                            <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+                                   for="frm-add-last-name">
+                              Họ, tên đệm
+                            </label>
+                            <input
+                              class="appearance-none border rounded-md w-full py-2 px-3 my-1 text-gray-600 bg-gray-200 leading-tight outline-none focus:border-green-500"
+                              id="frm-add-last-name" type="text" placeholder="Huỳnh Thanh"
+                              autocomplete="off"
+                              formControlName="lastName"
+                              required
+                            >
+                            <p class="text-red-500 text-xs italic"
+                               *ngIf="lastName?.hasError('required') && (lastName.dirty || lastName.touched)">
+                              Họ, tên đệm không được bỏ trống</p>
+
+                          </div>
+                          <div class="md:w-1/2 px-3 mb-6 md:mb-0">
+                            <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+                                   for="frm-add-first-name">
+                              Tên
+                            </label>
+                            <input
+                              class="appearance-none border rounded-md w-full py-2 px-3 my-1 text-gray-600 bg-gray-200 leading-tight outline-none focus:border-green-500"
+                              id="frm-add-first-name" type="text" placeholder="Tâm"
+                              autocomplete="off"
+                              formControlName="firstName"
+                              required
+                            >
+                            <p class="text-red-500 text-xs italic"
+                               *ngIf="firstName?.hasError('required') && (firstName.dirty || firstName.touched)">
+                              Tên không được bỏ trống</p>
+                          </div>
+
+                        </div>
+
+                        <div class="-mx-3 md:flex mb-2 w-full">
+                          <div class="md:w-full px-3">
+                            <label class="block uppercase tracking-wide text-gray-600 text-xs font-bold mb-2"
+                                   for="frm-add-username">
+                              Email
+                            </label>
+                            <input
+                              class="appearance-none border rounded-md w-full py-2 px-3 my-1 text-gray-600 bg-gray-200 leading-tight outline-none focus:border-green-500"
+                              id="frm-add-email"
+                              type="email"
+                              placeholder="Nhập thông tin email"
+                              autocomplete="off"
+                              formControlName="email"
+                              required
+                            >
+                            <p class="text-red-500 text-xs italic"
+                               *ngIf="email?.hasError('required') && (email?.dirty || email?.touched)"
+                            >Email không được bỏ trống</p>
+                            <p class="text-red-500 text-xs italic"
+                               *ngIf="email?.hasError('pattern') && (email?.dirty || email?.touched)"
+                            >Email không hợp lệ</p>
+                            <p class="text-red-500 text-xs italic"
+                               *ngIf="email?.hasError('emailExists') && (email?.dirty || email.touched)">
+                              Email đã tồn tại</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!--footer-->
+                    <div class="flex items-center justify-end p-6 pb-0 border-t border-solid border-gray-300 rounded-b">
+                      <button
+                        class="bg-white shadow-md hover:bg-blue-500 hover:text-blue-200 transition duration-200 ease-in-out text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
+                        type="submit"
+                        [disabled]="!rfAddUser.valid"
+                        *ngIf="rfAddUser.valid"
+                      ><span><i class="fa fa-user-plus mr-1"></i>Tạo user</span>
+                      </button>
+                      <button
+                        class="shadow-md bg-gray-600 text-gray-100 hover:bg-gray-700 hover:text-gray-200 transition duration-200 ease-in-out text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1"
+                        type="button"
+                        (click)="closeModal()"><span><i class="fa fa-window-close mr-1"></i>Đóng</span>
+                      </button>
+
+
+                    </div>
+                  </div>
+                  <div [ngClass]="{'hidden': openTab !== 2, 'block': openTab === 2}">
+
+                    <div class="-mx-3 md:flex flex-col mb-2 w-full">
+                      <div class="md:w-full px-3">
+                        <label class="block uppercase tracking-wide text-gray-600 text-xs font-bold mb-2"
+                        >
+                          Tải lên một file excel (*.xlsx, *.xls)
+                        </label>
+                        <app-file-upload (fileUrlOutput)="getExcel($event)"></app-file-upload>
+                      </div>
+                    </div>
+                    <div class="my-5 flex justify-end px-6">
+                      <button
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
+                        type="button" (click)="importExcelUser()">Upload
+                      </button>
+                    </div>
+
+                    <ng-container *ngIf="userTotal">
+                      <div class="font-semibold text-xl">Danh sách người dùng thêm thành công ({{userImportSuccess.length}})</div>
+                      <div *ngFor="let user of userImportSuccess" class="px-2 py-1 text-gray-700">
+                        {{user.username}}
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<div *ngIf="showModalAdd" class="fixed inset-0 z-40 bg-smoke-light"></div>
+

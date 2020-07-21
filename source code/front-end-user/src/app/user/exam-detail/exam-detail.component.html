@@ -1,0 +1,37 @@
+<xng-breadcrumb></xng-breadcrumb>
+
+<div class="flex text-center flex-col w-full h-auto items-center">
+  <h2 class="text-center my-2 mt-5 font-bold  px-2 py-1 bg-blue-300 rounded">Title: {{examUser?.exam?.title}}</h2>
+  <div class="flex flex-row flex-wrap justify-center">
+    <div class="my-2 mx-3 px-2 py-1 bg-gray-300 rounded"><span class="mx-2"><i
+      class="fa fa-book"></i></span>Course: {{examUser?.exam?.part?.course?.name}}</div>
+    <div class="my-2 mx-3 px-2 py-1 bg-gray-300 rounded">Part: {{examUser?.exam?.part?.name}}</div>
+  </div>
+  <div class="my-2 px-2 py-1 bg-gray-300 rounded"><span class="mx-2"><i class="fa fa-calendar"></i></span>This exam will open
+    at {{examUser?.exam?.beginExam | date: 'medium'}}</div>
+  <div class="my-2 px-2 py-1 bg-gray-300 rounded"><span class="mx-2"><i class="fa fa-calendar-times-o"></i></span>This exam will close
+    at {{examUser?.exam?.finishExam | date:'medium'}}</div>
+  <div class="my-2 px-2 py-1 bg-gray-300 rounded mb-8">Duration time: {{examUser?.exam?.durationExam}} min</div>
+  <div class="flex justify-center my-5" *ngIf="canStart">
+    <a *ngIf="examUser?.isStarted === false && isAvailable" [routerLink]="['./start']"
+       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
+      Start now
+    </a>
+    <a *ngIf="examUser?.isStarted=== true && examUser?.isFinished===false" [routerLink]="['./start']"
+       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
+      Resume
+    </a>
+
+  </div>
+
+  <div *ngIf="examUser?.isFinished==true">
+    <a [routerLink]="['./result']" *ngIf="examUser.isStarted==true"
+       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">View Result</a>
+    <div class="my-8 bg-red-600 px-3 py-2 uppercase text-white font-semibold" *ngIf="examUser.isStarted==true">This exam
+      was end!
+    </div>
+    <div class="my-8 bg-red-600 px-3 py-2 uppercase text-white font-semibold"
+         *ngIf="examUser.isStarted==false && examUser?.isFinished==true">You missed this exam!
+    </div>
+  </div>
+</div>

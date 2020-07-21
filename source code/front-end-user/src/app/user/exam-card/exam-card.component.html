@@ -1,0 +1,71 @@
+<!-- Article -->
+<article class="overflow-hidden rounded-lg shadow-lg hover:shadow-2xl transition duration-700">
+  <a [routerLink]="['/user/exams', examUser?.exam?.id]">
+    <div class="relative img-hover-zoom">
+      <img alt="image of {{examUser?.exam.part.course.name}}" class="bg-img block h-56 w-full"
+           src="{{examUser?.exam.part.course.imgUrl}}">
+      <i class="fa fa-circle absolute top-0 right-0 mt-4 mr-4" [ngClass]="icon"></i>
+    </div>
+  </a>
+
+  <header class="flex items-center justify-between leading-tight p-2 md:p-3">
+    <h1 class="text-lg">
+      <a class="no-underline hover:underline font-bold text-xl text-gray-700"
+         [routerLink]="['/user/exams', examUser?.exam?.id]">
+        {{examUser?.exam?.title}}
+      </a>
+    </h1>
+
+  </header>
+  <div class="text-gray-600 text-sm p-3 pb-0 flex justify-between">
+    <p>
+      {{examUser.exam.beginExam}}
+    </p>
+
+    <ng-container [ngSwitch]="status">
+      <ng-template [ngSwitchCase]="-2">
+        <p class="text-sm text-red-500 flex items-center">
+          <span class="mr-2"><i class="fa fa-lock"></i></span>
+          Missed
+        </p>
+      </ng-template>
+      <ng-template [ngSwitchCase]="-1">
+        <p class="text-sm text-gray-500 flex items-center">
+          <span class="mr-2"><i class="fa fa-lock"></i></span>
+          Completed
+        </p>
+      </ng-template>
+      <ng-template [ngSwitchCase]="0">
+        <p class="text-sm text-yellow-500 flex items-center">
+          <span class="mr-2"><i class="fa fa-lock"></i></span>
+          Waiting
+        </p>
+      </ng-template>
+      <ng-template [ngSwitchCase]="1">
+        <p class="text-sm text-green-500 flex items-center">
+          <span class="mr-2"><i class="fa fa-unlock"></i></span>
+          Doing
+        </p>
+      </ng-template>
+    </ng-container>
+
+  </div>
+
+  <footer class="flex items-center justify-between leading-none p-2 md:p-3">
+    <a class="flex items-center no-underline text-gray-600">
+      <img alt="image of " class="block rounded-full shadow-lg w-8 h-8" src="{{avatarImg}}">
+      <p class="ml-2 text-sm">
+        {{examUser.exam?.createdBy.profile?.lastName}} {{examUser.exam.createdBy.profile?.firstName}}
+      </p>
+    </a>
+    <div class="inline-block bg-gray-300 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">
+
+      <i class="fa fa-clock-o text-gray-700 lg:mr-1"></i>
+      <span>{{examUser.exam.durationExam}} min</span>
+    </div>
+  </footer>
+
+</article>
+<!-- END Article -->
+
+

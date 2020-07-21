@@ -1,0 +1,61 @@
+<xng-breadcrumb></xng-breadcrumb>
+<div class="py-3">
+  <div class="flex justify-between items-center mb-3 px-2">
+    <div class="current-exam lg:text-2xl font-semibold text-gray-800">
+      <h2 class="select-none list-title title-coming flex items-center">Coming exams <span class="mx-2"> ({{listComing.length}})</span></h2>
+    </div>
+    
+  </div>
+  <div class="list-current-exam flex flex-wrap w-full">
+    <!-- Column -->
+    <ng-container *ngFor="let examComing of listComing">
+      <div class="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3" *ngIf="!skeletonLoading">
+        <app-exam-card [examUser]="examComing"></app-exam-card>
+      </div>
+
+    </ng-container>
+    <p *ngIf="listComing.length==0 &&!skeletonLoading" class="mx-10 text-gray-700 text-sm">None of new exam is found!</p>
+    <div class="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3" *ngIf="skeletonLoading">
+      <app-skeleton></app-skeleton>
+    </div>
+    <div class="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3" *ngIf="skeletonLoading">
+      <app-skeleton></app-skeleton>
+    </div>
+    <div class="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3" *ngIf="skeletonLoading">
+      <app-skeleton></app-skeleton>
+    </div>
+  </div>
+
+</div>
+
+<div class="py-3">
+  <div class="flex justify-between items-center mb-3 px-2">
+    <div class="current-exam lg:text-2xl font-semibold text-gray-800">
+      <h2 class="select-none list-title title-complete flex items-center">Recent exams
+        <span class="mx-2">({{listComplete.length}})</span></h2>
+    </div>
+
+  </div>
+  <div class="list-current-exam flex flex-wrap">
+    <!-- Column -->
+    <ng-container *ngFor="let examComplete of listComplete">
+      <div class="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3">
+        <app-exam-card [examUser]="examComplete"></app-exam-card>
+      </div>
+    </ng-container>
+    <p *ngIf="listComplete.length==0 &&!skeletonLoading" class="mx-10 text-gray-700 text-sm">There are no exams available!</p>
+
+    <div class="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3" *ngIf="skeletonLoading">
+      <app-skeleton></app-skeleton>
+    </div>
+    <div class="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3" *ngIf="skeletonLoading">
+      <app-skeleton></app-skeleton>
+    </div>
+    <div class="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3" *ngIf="skeletonLoading">
+      <app-skeleton></app-skeleton>
+    </div>
+  </div>
+
+</div>
+
+

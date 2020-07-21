@@ -1,0 +1,25 @@
+<div class="mb-4">
+  <xng-breadcrumb></xng-breadcrumb>
+</div>
+
+
+<ng-template [ngIf]="coursePointData">
+  <apx-chart
+    [series]="chartOptions.series"
+    [chart]="chartOptions.chart"
+    [dataLabels]="chartOptions.dataLabels"
+    [plotOptions]="chartOptions.plotOptions"
+    [xaxis]="chartOptions.xAxis"
+    [title]="chartOptions.title"
+    [fill]="chartOptions.fill"
+  >
+  </apx-chart>
+  <p class="text-center font-semibold text-2xl text-gray-800 my-2">All Courses</p>
+  <div class="flex flex-wrap">
+    <ng-container *ngFor="let course of coursePointData">
+      <app-stat-card-exam [courseCard]="course"></app-stat-card-exam>
+    </ng-container>
+
+  </div>
+</ng-template>
+

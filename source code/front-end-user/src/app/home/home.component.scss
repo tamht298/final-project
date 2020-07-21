@@ -1,0 +1,68 @@
+/* Style for background animation */
+.scroll-bg {
+  -webkit-animation-name: scrollSmall;
+  animation-name: scrollSmall;
+  -webkit-animation-duration: 15s;
+  animation-duration: 15s;
+  -webkit-animation-timing-function: linear;
+  animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+}
+
+@media (min-width: 1024px) {
+  .scroll-bg {
+    -webkit-animation-name: scrollLarge;
+    animation-name: scrollLarge;
+    -webkit-animation-duration: 35s;
+    animation-duration: 35s;
+    -webkit-animation-timing-function: linear;
+    animation-timing-function: linear;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+  }
+}
+
+
+@keyframes scrollSmall {
+  0% {
+    transform: rotate(-13deg) translateY(0);
+  }
+  to {
+    transform: rotate(-13deg) translateY(-639px);
+  }
+}
+
+@keyframes scrollLarge {
+  0% {
+    transform: rotate(-13deg) translateY(0);
+  }
+  to {
+    transform: rotate(-13deg) translateY(-1278px);
+  }
+}
+
+.content-overlay {
+  background-color: rgba(0, 0, 0, 0.8)
+}
+
+.content:hover .content-overlay {
+  opacity: 1;
+}
+
+.content-details {
+  transition: all 0.4s ease-in-out 0s;
+  top: 50%;
+}
+
+.content:hover .content-details {
+  top: 40%;
+  left: 0%;
+  opacity: 1;
+  transform: translate(0%, 40%);
+
+}
+
+.fadeIn-down {
+  top: 10%
+}

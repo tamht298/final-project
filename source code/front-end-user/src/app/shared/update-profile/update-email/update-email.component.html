@@ -1,0 +1,56 @@
+<form novalidate (ngSubmit)="changeEmail()" [formGroup]="rfEmail">
+  <div class="-mx-3 md:flex flex-col mb-2 w-full">
+    <div class="md:w-full px-3">
+      <label class="block uppercase tracking-wide text-gray-600 text-xs font-bold mb-2"
+             for="email">
+        New email
+      </label>
+      <input
+        class="appearance-none border rounded-md w-full py-2 px-3 my-1 text-gray-600 bg-gray-200 leading-tight outline-none focus:border-blue-500"
+        id="email"
+        type="email"
+        placeholder="Enter new email!"
+        autocomplete="off"
+        formControlName="email"
+        required
+      >
+      <p class="text-red-500 text-xs italic"
+         *ngIf="email?.hasError('required') && (email?.dirty || email?.touched)"
+      >This field must be not empty</p>
+      <p class="text-red-500 text-xs italic"
+         *ngIf="email?.hasError('pattern') && (email?.dirty || email?.touched)"
+      >Email has invalid format</p>
+      <p class="text-red-500 text-xs italic"
+         *ngIf="email?.hasError('emailExists')&& email.value!=userProfile.email && (email?.dirty || email.touched)">
+        This email already exists</p>
+      <p class="text-red-500 text-xs italic"
+         *ngIf="email.value==userProfile.email && (email?.dirty || email?.touched)"
+      >This is old email</p>
+    </div>
+    <div class="md:w-full px-3">
+      <label class="block uppercase tracking-wide text-gray-600 text-xs font-bold mb-2"
+             for="current-pwd">
+        Current password <span class="mx-1 text-lg text-gray-700 cursor-pointer" (click)="togglePwd()">
+        <i [ngClass]="hiddenPwd ? 'fa fa-eye-slash':'fa fa-eye'"></i>
+      </span>
+      </label>
+      <input
+        class="appearance-none border rounded-md w-full py-2 px-3 my-1 text-gray-600 bg-gray-200 leading-tight outline-none focus:border-blue-500"
+        id="current-pwd"
+        [type]="hiddenPwd? 'password':'text'"
+        placeholder="********"
+        autocomplete="off"
+        formControlName="currentPassword"
+        required
+      >
+      <p class="text-red-500 text-xs italic"
+         *ngIf="currentPassword?.hasError('required') && currentPassword?.touched"
+      >This field must be not empty</p>
+    </div>
+  </div>
+  <div class="my-5 flex justify-end px-6">
+    <button [disabled]="rfEmail.invalid" *ngIf="rfEmail.valid" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
+            type="submit">Update email
+    </button>
+  </div>
+</form>

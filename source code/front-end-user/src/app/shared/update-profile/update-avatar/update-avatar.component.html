@@ -1,0 +1,16 @@
+<form (ngSubmit)="submitAvatar()">
+  <div class="-mx-3 md:flex flex-col mb-2 w-full">
+    <div class="md:w-full px-3">
+      <label class="block uppercase tracking-wide text-gray-600 text-xs font-bold mb-2"
+      >
+        Choose an image
+      </label>
+      <app-file-upload (fileUrlOutput)="updateAvatar($event)"></app-file-upload>
+    </div>
+  </div>
+  <div class="my-5 flex justify-end px-6">
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
+            type="submit">Upload
+    </button>
+  </div>
+</form>

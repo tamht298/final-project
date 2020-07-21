@@ -1,0 +1,32 @@
+<div class="font-sans antialiased h-screen bg-gray-100 w-full flex flex-row">
+
+<!--  <aside class="lg:w-1/5 bg-gray-900 lg:h-auto">-->
+<!--    <div class="mx-4 my-3">-->
+<!--      <div>-->
+<!--        <img class="h-6 lg:h-8 xl:h-9" src="../../assets/images/logo.svg" alt="Tailwind UI"/>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </aside>-->
+
+  <app-left-side [userProfile]="userProfile" *ngIf="!toggledMenu" [style.display]="'contents'"></app-left-side>
+  <div class="lg:w-full bg-gray-100 py-2 overflow-hidden overflow-y-scroll">
+
+    <div class="flex flex-wrap items-center justify-between mx-4 my-4 overflow-hidden">
+      <div class="text-gray-300 text-xl cursor-pointer bg-blue-500 hover:bg-blue-600 px-2 rounded shadow-2xl" (click)="toggleMenu()">
+        <i class="fa fa-expand" *ngIf="!toggledMenu"></i>
+        <i class="fa fa-compress" *ngIf="toggledMenu"></i>
+      </div>
+      <div class="group text-gray-600 text-2xl cursor-pointer flex items-center" (click)="signOut()">
+        <span class="text-base"><i class="fa fa-sign-out mr-2 group-hover:mr-1"></i>Log out</span>
+      </div>
+    </div>
+    <div class="px-5 py-4 m-6">
+      <router-outlet>
+
+      </router-outlet>
+
+
+    </div>
+<!--    <app-footer></app-footer>-->
+  </div>
+</div>
