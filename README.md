@@ -3,4 +3,5 @@ Học phần Đồ án tốt nghiệp TDMU HKII 2019-2020 | Website kiểm trắ
 
 # Video Demo
 Check on [youtube][video-demo]
+<!-- Markdown link & img dfn's -->
 [video-demo]: https://www.youtube.com/watch?v=7MYMoGLcaMU
