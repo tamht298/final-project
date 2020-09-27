@@ -1,41 +1,24 @@
-# final-project
-Học phần Đồ án tốt nghiệp TDMU HKII 2019-2020 | Website kiểm trắc nghiệm online
-
-# Video Demo
-Check on [youtube][video-demo]
-<!-- Markdown link & img dfn's -->
-[video-demo]: https://www.youtube.com/watch?v=7MYMoGLcaMU
-
 # Examination online webapp
-> Build a web application for 
+> Build a web application for online test in ISC Quang Trung
 
 ## Table of contents
 * [General info](#general-info)
-* [Screenshots](#screenshots)
 * [Technologies](#technologies)
-* [Setup](#setup)
+* [Demo](#demo)
 * [Features](#features)
-* [Status](#status)
-* [Inspiration](#inspiration)
 * [Contact](#contact)
 
 ## General info
-This poroject supports for the final project of my university.
-
-## Screenshots
-![Example screenshot](./img/screenshot.png)
+This project supports for my final project in university.
 
 ## Technologies
-* Tech 1 - version 1.0
-* Tech 2 - version 2.0
-* Tech 3 - version 3.0
+* Spring Boot - version 2.0.1
+* Angular - version 9
+* MySQL - version 8
+* Tailwindcss - version 1.2.0
 
-## Setup
-Describe how to install / setup your local environement / add link to demo version.
-
-## Code Examples
-Show examples of usage:
-`put-your-code-here`
+## Demo
+[Click to view on youtube](https://www.youtube.com/watch?v=7MYMoGLcaMU)
 
 ## Features
 List of features ready and TODOs for future development
@@ -47,11 +30,5 @@ To-do list:
 * Wow improvement to be done 1
 * Wow improvement to be done 2
 
-## Status
-Project is: _in progress_, _finished_, _no longer continue_ and why?
-
-## Inspiration
-Add here credits. Project inspired by..., based on...
-
 ## Contact
-Created by [@flynerdpl](https://www.flynerd.pl/) - feel free to contact me!
+Created by [@matth0998](https://twitter.com/matth0998) - feel free to contact me!
