@@ -33,7 +33,7 @@
     "@tinymce/tinymce-angular": "^3.6.0",
     "angular-svg-round-progressbar": "^3.0.1",
     "apexcharts": "^3.19.3",
-    "chart.js": "2.9.3",
+    "chart.js": "2.9.4",
     "font-awesome": "^4.7.0",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.19",
