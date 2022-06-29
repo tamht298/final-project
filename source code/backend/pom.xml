@@ -21,7 +21,7 @@
         <jjwt.version>0.9.0</jjwt.version>
         <swagger.version>2.9.2</swagger.version>
         <lombok.version>1.18.12</lombok.version>
-        <poi.version>3.17</poi.version>
+        <poi.version>4.1.1</poi.version>
         <opencsv.version>4.5</opencsv.version>
         <amazonaws.version>1.11.816</amazonaws.version>
         <guava.version>29.0-jre</guava.version>
